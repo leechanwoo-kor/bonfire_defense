@@ -103,7 +103,7 @@ class GameController extends GameComponent {
 
   @override
   void onMount() {
-    int count = 1;
+    int count = 5;
     for (var defender in config.defenders) {
       switch (defender) {
         case DefenderType.arch:
@@ -111,7 +111,7 @@ class GameController extends GameComponent {
             Archer(
               position: Vector2(
                 count * 1 * BonfireDefense.tileSize - 8,
-                1 * BonfireDefense.tileSize - 8,
+                2 * BonfireDefense.tileSize - 8,
               ),
             ),
           );
@@ -121,7 +121,7 @@ class GameController extends GameComponent {
             Knight(
               position: Vector2(
                 count * 1 * BonfireDefense.tileSize - 8,
-                1 * BonfireDefense.tileSize - 8,
+                2 * BonfireDefense.tileSize - 8,
               ),
             ),
           );
