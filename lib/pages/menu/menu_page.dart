@@ -1,4 +1,3 @@
-import 'package:bonfire_defense/pages/stages/stages_route.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatelessWidget {
@@ -15,7 +14,7 @@ class MenuPage extends StatelessWidget {
             SizedBox(
               width: 200,
               child: ElevatedButton(
-                onPressed: () => StagesRoute.open(context),
+                onPressed: () => Navigator.of(context).pushNamed('/stages'),
                 child: const Text('Play'),
               ),
             ),

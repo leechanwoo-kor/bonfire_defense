@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/routes/app_routes.dart'; // 업데이트된 라우트 설정 파일을 가져옵니다.
+import 'package:bonfire_defense/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      routes: AppRoutes.defineRoutes(), // 새로운 라우트 관리 메소드를 사용합니다.
+      routes: AppRoutes.defineRoutes(),
     );
   }
 }

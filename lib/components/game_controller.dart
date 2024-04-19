@@ -4,7 +4,7 @@ import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/orc.dart';
 import 'package:bonfire_defense/pages/game/game.dart';
-import 'package:bonfire_defense/pages/stages/stages_route.dart';
+import 'package:bonfire_defense/routes/app_routes.dart';
 import 'package:bonfire_defense/util/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
@@ -90,7 +90,7 @@ class GameController extends GameComponent {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).popUntil(
-                  (route) => route.settings.name == StagesRoute.routeName,
+                  (route) => route.settings.name == AppRoutes.stagesRoute,
                 );
               },
               child: const Text('OK'),

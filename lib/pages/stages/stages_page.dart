@@ -1,4 +1,3 @@
-import 'package:bonfire_defense/pages/game/game_route.dart';
 import 'package:bonfire_defense/pages/stages/stages.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,10 @@ class StagesPage extends StatelessWidget {
               child: SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: () => GameRoute.open(context, e),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/game',
+                    arguments: e,
+                  ),
                   child: Text(e.name),
                 ),
               ),
