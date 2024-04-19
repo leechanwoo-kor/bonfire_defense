@@ -1,7 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/pages/game/game_route.dart';
-import 'package:bonfire_defense/pages/menu/menu_route.dart';
-import 'package:bonfire_defense/pages/stages/stages_route.dart';
+import 'package:bonfire_defense/routes/app_routes.dart'; // 업데이트된 라우트 설정 파일을 가져옵니다.
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,20 +12,15 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Bonfire Defense',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      routes: {
-        ...MenuRoute.build(),
-        ...StagesRoute.build(),
-        ...GameRoute.build(),
-      },
+      routes: AppRoutes.defineRoutes(), // 새로운 라우트 관리 메소드를 사용합니다.
     );
   }
 }
