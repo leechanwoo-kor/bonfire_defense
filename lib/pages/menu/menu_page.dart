@@ -22,8 +22,8 @@ class MenuPage extends StatelessWidget {
             SizedBox(
               width: 200,
               child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('Creditos'),
+                onPressed: () => Navigator.of(context).pushNamed('/about'),
+                child: const Text('About'),
               ),
             ),
           ],
