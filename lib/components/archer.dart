@@ -10,7 +10,7 @@ class Archer extends Defender {
             fileName: 'archer.png',
           ).getAnimation(),
           initDirection: Direction.down,
-          visionTile: 2,
+          visionTile: 3,
         );
 
   @override

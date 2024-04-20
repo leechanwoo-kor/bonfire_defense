@@ -24,7 +24,7 @@ class GameController extends GameComponent {
   void update(double dt) {
     if (_running) {
       if (_countEnemy < config.enemies.length) {
-        if (checkInterval('addsEnemy', 4000, dt)) {
+        if (checkInterval('addsEnemy', 1000, dt)) {
           _addsEnemy();
         }
       }

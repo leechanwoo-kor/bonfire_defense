@@ -100,6 +100,11 @@ abstract class GameStages {
         EnemyType.orc,
         EnemyType.orc,
         EnemyType.orc,
+        EnemyType.orc,
+        EnemyType.orc,
+        EnemyType.orc,
+        EnemyType.orc,
+        EnemyType.orc,
       ],
       defenders: [
         DefenderType.arch,
@@ -112,46 +117,46 @@ abstract class GameStages {
       enemyPath: [
         Vector2(
           9 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          3 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          2 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
           5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          3 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          2 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
           5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          6 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
           9 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          6 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
           9 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          8 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          9 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          11 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          8 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          13 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          9 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          11 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          13 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          6 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          15 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          5 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          17 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          6 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          15 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          3 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          17 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          2 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          11 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
-          3 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          13 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          2 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
         Vector2(
-          11 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
+          13 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
           -1 * BonfireDefense.tileSize + BonfireDefense.tileSize / 2,
         ),
       ],

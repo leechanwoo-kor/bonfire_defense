@@ -3,7 +3,7 @@ import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:flutter/widgets.dart';
 
 class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
-  static const _speeedDefault = 30.0;
+  static const _speeedDefault = 50.0;
   final List<Vector2> path;
   Orc({
     required super.position,

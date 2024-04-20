@@ -11,7 +11,7 @@ class Knight extends Defender {
             fileName: 'human-soldier-red.png',
           ).getAnimation(),
           initDirection: Direction.down,
-          visionTile: 1,
+          visionTile: 2,
           colorVision: Colors.red,
         );
 
