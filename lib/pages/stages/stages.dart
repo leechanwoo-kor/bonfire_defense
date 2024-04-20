@@ -2,7 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/pages/game/game.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 
-enum GameStageEnum { test1, test2, tower_defense }
+enum GameStageEnum { test1, test2, towerDefense }
 
 abstract class GameStages {
   static StageConfig get(GameStageEnum stage) => _stages[stage]!;
@@ -92,7 +92,7 @@ abstract class GameStages {
         ),
       ],
     ),
-    GameStageEnum.tower_defense: StageConfig(
+    GameStageEnum.towerDefense: StageConfig(
       tiledMapPath: 'map/map3.tmj',
       enemies: [
         EnemyType.orc,
