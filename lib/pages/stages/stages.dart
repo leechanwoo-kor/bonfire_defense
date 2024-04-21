@@ -17,7 +17,7 @@ abstract class GameStages {
       defenders: [
         DefenderType.arch,
       ],
-      enemyIntialPosition: Vector2(
+      enemyInitialPosition: Vector2(
         -1 * BonfireDefense.tileSize,
         7 * BonfireDefense.tileSize,
       ),
@@ -57,7 +57,7 @@ abstract class GameStages {
         DefenderType.arch,
         DefenderType.knight,
       ],
-      enemyIntialPosition: Vector2(
+      enemyInitialPosition: Vector2(
         -1 * BonfireDefense.tileSize,
         2 * BonfireDefense.tileSize,
       ),
@@ -110,7 +110,7 @@ abstract class GameStages {
         DefenderType.arch,
         DefenderType.knight,
       ],
-      enemyIntialPosition: Vector2(
+      enemyInitialPosition: Vector2(
         9 * BonfireDefense.tileSize,
         -1 * BonfireDefense.tileSize,
       ),

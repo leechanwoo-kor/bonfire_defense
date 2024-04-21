@@ -19,8 +19,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 14.0)),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.deepPurple,
+          textTheme: ButtonTextTheme.primary,
+        ),
       ),
       routes: AppRoutes.defineRoutes(),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: child!,
+        );
+      },
     );
   }
 }

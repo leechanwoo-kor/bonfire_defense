@@ -1,37 +1,39 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
-import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/knight.dart';
-import 'package:bonfire_defense/components/orc.dart';
+import 'package:bonfire_defense/game_managers/end_game_manager.dart';
+import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/pages/game/game.dart';
-import 'package:bonfire_defense/app_routes.dart';
 import 'package:bonfire_defense/util/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
-import 'package:flutter/material.dart';
 
 class GameController extends GameComponent {
   final StageConfig config;
-
-  int _countEnemy = 0;
   bool _running = false;
+  int _countEnemy = 0;
 
-  GameController({
-    required this.config,
-  });
+  bool get isRunning => _running;
+  int get countEnemy => _countEnemy;
+  set running(bool value) => _running = value;
+
+  void increaseCountEnemy() {
+    _countEnemy++;
+  }
+
+  late EnemyManager _enemyManager;
+  late EndGameManager _endGameManager;
+
+  GameController({required this.config}) {
+    _enemyManager = EnemyManager(this);
+    _endGameManager = EndGameManager(this);
+  }
 
   @override
   void update(double dt) {
     if (_running) {
-      if (_countEnemy < config.enemies.length) {
-        if (checkInterval('addsEnemy', 1000, dt)) {
-          _addsEnemy();
-        }
-      }
-
-      if (checkInterval('checkEndGame', 1000, dt)) {
-        _checkEndGame();
-      }
+      _enemyManager.addsEnemy(dt);
+      _endGameManager.checkEndGame(dt);
     }
 
     super.update(dt);
@@ -40,65 +42,9 @@ class GameController extends GameComponent {
   void startStage() {
     _running = true;
     gameRef.overlays.remove(StartButton.overlayName);
-    gameRef.query<Defender>().forEach(
-      (element) {
-        element.showRadiusVision(false);
-      },
-    );
-  }
-
-  void _addsEnemy() {
-    Enemy enemy;
-    switch (config.enemies[_countEnemy]) {
-      case EnemyType.orc:
-        enemy = Orc(
-          position: Vector2(
-            config.enemyIntialPosition.x - 8,
-            config.enemyIntialPosition.y - 8,
-          ),
-          path: List.of(config.enemyPath),
-        );
-        break;
-    }
-    gameRef.add(enemy);
-    _countEnemy++;
-  }
-
-  void _checkEndGame() {
-    if (config.enemies.length == _countEnemy) {
-      final enemies = gameRef.query<Enemy>();
-      if (enemies.isEmpty) {
-        _running = false;
-        final gameSensor = gameRef.query<EndGameSensor>().first;
-        if (gameSensor.counter > config.countEnemyPermited) {
-          showDialogEndGame('Game over!');
-        } else {
-          showDialogEndGame('Win!');
-        }
-      }
-    }
-  }
-
-  void showDialogEndGame(String text) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(text),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRoutes.stagesRoute,
-                );
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+    gameRef.query<Defender>().forEach((element) {
+      element.showRadiusVision(false);
+    });
   }
 
   @override
