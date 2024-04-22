@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/app_routes.dart';
+import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/game_controller.dart';
 import 'package:flutter/material.dart';
