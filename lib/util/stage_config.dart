@@ -8,6 +8,9 @@ class StageConfig {
   final List<DefenderType> defenders;
   final int countEnemyPermited;
 
+  final int tilesInWidth;
+  final int tilesInHeight;
+
   StageConfig({
     required this.tiledMapPath,
     required this.enemyPath,
@@ -15,6 +18,8 @@ class StageConfig {
     required this.enemies,
     required this.defenders,
     this.countEnemyPermited = 1,
+    required this.tilesInWidth,
+    required this.tilesInHeight,
   });
 }
 

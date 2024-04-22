@@ -9,6 +9,8 @@ abstract class GameStages {
 
   static final Map<GameStageEnum, StageConfig> _stages = {
     GameStageEnum.test1: StageConfig(
+      tilesInHeight: 10,
+      tilesInWidth: 20,
       tiledMapPath: 'map/map.tmj',
       enemies: [
         EnemyType.orc,
@@ -45,6 +47,8 @@ abstract class GameStages {
       ],
     ),
     GameStageEnum.test2: StageConfig(
+      tilesInHeight: 10,
+      tilesInWidth: 20,
       tiledMapPath: 'map/map2.tmj',
       enemies: [
         EnemyType.orc,
@@ -93,6 +97,8 @@ abstract class GameStages {
       ],
     ),
     GameStageEnum.towerDefense: StageConfig(
+      tilesInHeight: 12,
+      tilesInWidth: 20,
       tiledMapPath: 'map/map3.tmj',
       enemies: [
         EnemyType.orc,
@@ -162,6 +168,8 @@ abstract class GameStages {
       ],
     ),
     GameStageEnum.main: StageConfig(
+      tilesInHeight: 12,
+      tilesInWidth: 20,
       tiledMapPath: 'map/main.tmj',
       enemies: [
         EnemyType.orc,

@@ -12,9 +12,12 @@ class GameController extends GameComponent {
   final StageConfig config;
   bool _running = false;
   int _countEnemy = 0;
+  final int _playerHealth = 20;
+  int score = 0;
 
   bool get isRunning => _running;
   int get countEnemy => _countEnemy;
+  int get playerHealth => _playerHealth;
   set running(bool value) => _running = value;
 
   void increaseCountEnemy() {
@@ -78,4 +81,8 @@ class GameController extends GameComponent {
 
     super.onMount();
   }
+
+  activateSpecialAbility() {}
+
+  pauseGame() {}
 }
