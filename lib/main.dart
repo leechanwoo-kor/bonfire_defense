@@ -1,12 +1,21 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/pages/stages/stages.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Flame.device.fullScreen();
   Flame.device.setLandscape();
-  runApp(const MyApp());
+
+  runApp(
+    ChangeNotifierProvider<GameController>(
+      create: (_) => GameController(config: GameStages.get(GameStageEnum.main)),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

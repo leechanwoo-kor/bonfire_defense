@@ -7,21 +7,31 @@ import 'package:bonfire_defense/pages/game/game.dart';
 import 'package:bonfire_defense/util/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
+import 'package:flutter/material.dart';
 
-class GameController extends GameComponent {
+class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
   bool _running = false;
   int _countEnemy = 0;
-  final int _playerHealth = 20;
+  int _count = 0;
   int score = 0;
 
   bool get isRunning => _running;
   int get countEnemy => _countEnemy;
-  int get playerHealth => _playerHealth;
-  set running(bool value) => _running = value;
+  int get count => _count;
+  set running(bool value) {
+    _running = value;
+    notifyListeners();
+  }
 
   void increaseCountEnemy() {
     _countEnemy++;
+    notifyListeners();
+  }
+
+  void increaseCount() {
+    _count++;
+    notifyListeners();
   }
 
   late EnemyManager _enemyManager;
@@ -48,6 +58,7 @@ class GameController extends GameComponent {
     gameRef.query<Defender>().forEach((element) {
       element.showRadiusVision(false);
     });
+    notifyListeners();
   }
 
   @override
@@ -79,6 +90,7 @@ class GameController extends GameComponent {
       count = count + 3;
     }
 
+    notifyListeners();
     super.onMount();
   }
 

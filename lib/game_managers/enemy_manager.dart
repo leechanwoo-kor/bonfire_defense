@@ -28,9 +28,9 @@ class EnemyManager {
           path: List.of(_gameController.config.enemyPath),
         );
         break;
-      // 여기에 더 많은 적 유형을 추가할 수 있습니다.
     }
     _gameController.gameRef.add(enemy);
     _gameController.increaseCountEnemy();
+    _gameController.increaseCount();
   }
 }
