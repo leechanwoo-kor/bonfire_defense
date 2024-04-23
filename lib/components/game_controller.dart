@@ -82,7 +82,6 @@ class GameController extends GameComponent with ChangeNotifier {
   void startStage() {
     _running = true;
     gameRef.overlays.remove(StartButton.overlayName);
-    // gameRef.overlays.remove(UnitSelectionOverlay.overlayName);
     gameRef.query<Defender>().forEach((element) {
       element.showRadiusVision(false);
     });

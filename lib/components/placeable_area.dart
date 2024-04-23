@@ -29,17 +29,15 @@ class PlaceableArea extends GameDecoration with TapGesture {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    if (placeable) {
-      final rect = Rect.fromLTWH(
-        position.x,
-        position.y,
-        size.x,
-        size.y,
-      );
-      canvas.drawRect(
-        rect,
-        Paint()..color = Colors.green.withOpacity(0.5),
-      );
-    }
+    final rect = Rect.fromLTWH(
+      position.x,
+      position.y,
+      size.x,
+      size.y,
+    );
+    canvas.drawRect(
+      rect,
+      Paint()..color = Colors.green.withOpacity(0.5),
+    );
   }
 }

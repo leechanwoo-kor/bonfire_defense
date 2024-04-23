@@ -28,12 +28,11 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   @override
   void initState() {
     super.initState();
+    controller = Provider.of<GameController>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
-    controller = Provider.of<GameController>(context);
-
     final double mapWidth =
         widget.config.tilesInWidth * BonfireDefense.tileSize;
     final double mapHeight =
