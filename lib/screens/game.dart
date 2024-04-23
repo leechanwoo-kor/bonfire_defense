@@ -1,10 +1,12 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/command_widget.dart';
 import 'package:bonfire_defense/widgets/info_widget.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
+import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +49,11 @@ class _BonfireDefenseState extends State<BonfireDefense> {
               size: properties.size,
             );
           },
+          'place': (properties) => PlaceableArea(
+                position: properties.position,
+                size: properties.size,
+                placeable: true,
+              ),
         },
       ),
       // backgroundColor: const Color(0xff85a643),
@@ -66,11 +73,16 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         CommandWidget.overlayName: (context, game) => CommandWidget(
               controller: controller,
             ),
+        UnitSelectionOverlay.overlayName: (context, game) =>
+            UnitSelectionOverlay(
+              controller: controller,
+            ),
       },
       initialActiveOverlays: [
         StartButton.overlayName,
         InfoWidget.overlayName,
         CommandWidget.overlayName,
+        UnitSelectionOverlay.overlayName,
       ],
     );
   }

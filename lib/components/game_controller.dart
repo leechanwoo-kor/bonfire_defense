@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
+  Map<String, bool> overlaysActive = {};
+
   bool _running = false;
   int _countEnemy = 0;
   int _count = 0;
@@ -19,6 +21,20 @@ class GameController extends GameComponent with ChangeNotifier {
   bool get isRunning => _running;
   int get countEnemy => _countEnemy;
   int get count => _count;
+
+  // 오버레이 상태 변경 메소드
+  void setOverlayActive(String overlayName, bool isActive) {
+    if (overlaysActive[overlayName] != isActive) {
+      overlaysActive[overlayName] = isActive;
+      notifyListeners();
+    }
+  }
+
+  // 오버레이 상태 조회 메소드
+  bool isOverlayActive(String overlayName) {
+    return overlaysActive[overlayName] ?? false;
+  }
+
   set running(bool value) {
     try {
       if (_running != value) {
@@ -66,6 +82,7 @@ class GameController extends GameComponent with ChangeNotifier {
   void startStage() {
     _running = true;
     gameRef.overlays.remove(StartButton.overlayName);
+    // gameRef.overlays.remove(UnitSelectionOverlay.overlayName);
     gameRef.query<Defender>().forEach((element) {
       element.showRadiusVision(false);
     });
