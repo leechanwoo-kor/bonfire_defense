@@ -1,14 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/game_controller.dart';
 import 'package:bonfire_defense/pages/stages/stages.dart';
 import 'package:bonfire_defense/routes.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Flame.device.fullScreen();
-  Flame.device.setLandscape();
+  if (!kIsWeb) {
+    Flame.device.fullScreen();
+    Flame.device.setPortrait();
+  }
 
   runApp(
     ChangeNotifierProvider<GameController>(
@@ -36,10 +39,30 @@ class MyApp extends StatelessWidget {
       ),
       routes: AppRoutes.defineRoutes(),
       builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: const TextScaler.linear(1.0)),
-          child: child!,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            double aspectRatio = 16 / 9;
+            double screenWidth = constraints.maxWidth;
+            double screenHeight = constraints.maxHeight;
+
+            double calculatedHeight = screenWidth * aspectRatio;
+            if (calculatedHeight > screenHeight) {
+              screenWidth = screenHeight / aspectRatio;
+              calculatedHeight = screenHeight;
+            }
+
+            return Center(
+              child: SizedBox(
+                width: screenWidth,
+                height: calculatedHeight,
+                child: MediaQuery(
+                  data: MediaQuery.of(context)
+                      .copyWith(textScaler: const TextScaler.linear(1.0)),
+                  child: child!,
+                ),
+              ),
+            );
+          },
         );
       },
     );
