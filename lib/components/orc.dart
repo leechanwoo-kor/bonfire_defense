@@ -1,11 +1,15 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/game_controller.dart';
 import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:flutter/widgets.dart';
 
 class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
+  final GameController _gameController;
+
   static const _speeedDefault = 50.0;
   final List<Vector2> path;
-  Orc({
+  Orc(
+    this._gameController, {
     required super.position,
     required this.path,
   }) : super(
@@ -47,6 +51,7 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
   @override
   void die() {
     removeFromParent();
+    _gameController.decreaseCount();
     super.die();
   }
 

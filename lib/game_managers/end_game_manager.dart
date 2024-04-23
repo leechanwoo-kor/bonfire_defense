@@ -10,15 +10,18 @@ class EndGameManager {
   EndGameManager(this.gameController);
 
   void checkEndGame(double dt) {
-    if (gameController.countEnemy == gameController.config.enemies.length) {
-      final enemies = gameController.gameRef.query<Enemy>();
-      if (enemies.isEmpty) {
-        gameController.running = false;
-        final gameSensor = gameController.gameRef.query<EndGameSensor>().first;
-        if (gameSensor.counter > gameController.config.countEnemyPermited) {
-          showDialogEndGame('Game over!');
-        } else {
-          showDialogEndGame('Win!');
+    if (gameController.checkInterval('addsEnemy', 1000, dt)) {
+      if (gameController.countEnemy == gameController.config.enemies.length) {
+        final enemies = gameController.gameRef.query<Enemy>();
+        if (enemies.isEmpty) {
+          gameController.running = false;
+          final gameSensor =
+              gameController.gameRef.query<EndGameSensor>().first;
+          if (gameSensor.counter > gameController.config.countEnemyPermited) {
+            showDialogEndGame('Game over!');
+          } else {
+            showDialogEndGame('Win!');
+          }
         }
       }
     }

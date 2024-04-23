@@ -20,8 +20,14 @@ class GameController extends GameComponent with ChangeNotifier {
   int get countEnemy => _countEnemy;
   int get count => _count;
   set running(bool value) {
-    _running = value;
-    notifyListeners();
+    try {
+      if (_running != value) {
+        _running = value;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error setting running: $e');
+    }
   }
 
   void increaseCountEnemy() {
@@ -31,6 +37,11 @@ class GameController extends GameComponent with ChangeNotifier {
 
   void increaseCount() {
     _count++;
+    notifyListeners();
+  }
+
+  void decreaseCount() {
+    _count--;
     notifyListeners();
   }
 

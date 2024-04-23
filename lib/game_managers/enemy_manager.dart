@@ -21,6 +21,7 @@ class EnemyManager {
     switch (_gameController.config.enemies[_gameController.countEnemy]) {
       case EnemyType.orc:
         enemy = Orc(
+          _gameController,
           position: Vector2(
             _gameController.config.enemyInitialPosition.x - 8,
             _gameController.config.enemyInitialPosition.y - 8,
@@ -29,7 +30,13 @@ class EnemyManager {
         );
         break;
     }
-    _gameController.gameRef.add(enemy);
+    if (!enemy.isMounted) {
+      try {
+        _gameController.gameRef.add(enemy);
+      } catch (e) {
+        print("Error adding enemy: $e");
+      }
+    }
     _gameController.increaseCountEnemy();
     _gameController.increaseCount();
   }
