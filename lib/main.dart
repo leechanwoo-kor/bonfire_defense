@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/game_controller.dart';
-import 'package:bonfire_defense/pages/stages/stages.dart';
+import 'package:bonfire_defense/util/stages.dart';
 import 'package:bonfire_defense/routes.dart';
 
 void main() {

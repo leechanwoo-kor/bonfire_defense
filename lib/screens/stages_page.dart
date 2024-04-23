@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/pages/stages/stages.dart';
+import 'package:bonfire_defense/util/stages.dart';
 import 'package:flutter/material.dart';
 
 class StagesPage extends StatelessWidget {

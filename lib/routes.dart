@@ -1,9 +1,9 @@
-import 'package:bonfire_defense/pages/about/about_page.dart';
+import 'package:bonfire_defense/screens/about_page.dart';
 import 'package:flutter/material.dart';
-import 'package:bonfire_defense/pages/stages/stages_page.dart';
-import 'package:bonfire_defense/pages/menu/menu_page.dart';
-import 'package:bonfire_defense/pages/game/game.dart';
-import 'package:bonfire_defense/pages/stages/stages.dart';
+import 'package:bonfire_defense/screens/stages_page.dart';
+import 'package:bonfire_defense/screens/menu_page.dart';
+import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/util/stages.dart';
 
 class AppRoutes {
   static const String homeRoute = '/';

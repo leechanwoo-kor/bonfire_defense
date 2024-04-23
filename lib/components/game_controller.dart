@@ -3,7 +3,7 @@ import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
-import 'package:bonfire_defense/pages/game/game.dart';
+import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
