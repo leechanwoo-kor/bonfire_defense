@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
   final OverlayManager overlayManager = OverlayManager();
+  Map<DefenderType, int> defenderCount = {};
 
   void setOverlayActive(String overlayName, bool isActive) {
     if (overlayManager.isActive(overlayName) != isActive) {
@@ -107,7 +108,15 @@ class GameController extends GameComponent with ChangeNotifier {
     );
     GameComponent defender = DefenderFactory.createDefender(type, unitPosition);
     gameRef.add(defender);
+
+    defenderCount[type] = (defenderCount[type] ?? 0) + 1;
+
     notifyListeners();
+  }
+
+  // 유닛 타입의 카운트를 반환
+  int getDefenderCount(DefenderType type) {
+    return defenderCount[type] ?? 0;
   }
 
   activateSpecialAbility() {}
