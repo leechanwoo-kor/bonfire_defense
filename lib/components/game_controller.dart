@@ -16,11 +16,14 @@ class GameController extends GameComponent with ChangeNotifier {
   bool _running = false;
   int _countEnemy = 0;
   int _count = 0;
-  int score = 0;
+  int _score = 0;
+  int _life = 10;
 
   bool get isRunning => _running;
   int get countEnemy => _countEnemy;
   int get count => _count;
+  int get score => _score;
+  int get life => _life;
 
   // 오버레이 상태 변경 메소드
   void setOverlayActive(String overlayName, bool isActive) {
@@ -46,18 +49,16 @@ class GameController extends GameComponent with ChangeNotifier {
     }
   }
 
-  void increaseCountEnemy() {
-    _countEnemy++;
-    notifyListeners();
-  }
-
-  void increaseCount() {
-    _count++;
-    notifyListeners();
-  }
-
-  void decreaseCount() {
-    _count--;
+  void updateStats({
+    int enemyChange = 0,
+    int countChange = 0,
+    int scoreChange = 0,
+    int lifeChange = 0,
+  }) {
+    _countEnemy += enemyChange;
+    _count += countChange;
+    _score += scoreChange;
+    _life += lifeChange;
     notifyListeners();
   }
 

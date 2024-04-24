@@ -2,6 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/game_controller.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
+import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/command_widget.dart';
 import 'package:bonfire_defense/widgets/info_widget.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BonfireDefense extends StatefulWidget {
-  static const tileSize = 16.0;
+  static const tileSize = GameConfig.tileSize;
   final StageConfig config;
   const BonfireDefense({
     super.key,
@@ -44,6 +45,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         objectsBuilder: {
           'endGame': (properties) {
             return EndGameSensor(
+              controller,
               position: properties.position,
               size: properties.size,
             );

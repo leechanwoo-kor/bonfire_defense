@@ -37,7 +37,6 @@ class EnemyManager {
         print("Error adding enemy: $e");
       }
     }
-    _gameController.increaseCountEnemy();
-    _gameController.increaseCount();
+    _gameController.updateStats(enemyChange: 1, countChange: 1);
   }
 }

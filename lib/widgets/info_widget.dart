@@ -22,10 +22,14 @@ class InfoWidget extends StatelessWidget {
         color: Colors.black.withOpacity(0.8),
         padding: const EdgeInsets.all(10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               'Count: ${controller.count}',
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            Text(
+              'Life❤️: ${controller.life}',
               style: const TextStyle(color: Colors.white, fontSize: 18),
             ),
             Text(
