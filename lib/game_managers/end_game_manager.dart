@@ -14,7 +14,7 @@ class EndGameManager {
       if (gameController.countEnemy == gameController.config.enemies.length) {
         final enemies = gameController.gameRef.query<Enemy>();
         if (enemies.isEmpty) {
-          gameController.running = false;
+          // gameController.running = false;
           final gameSensor =
               gameController.gameRef.query<EndGameSensor>().first;
           if (gameSensor.counter > gameController.config.countEnemyPermited) {

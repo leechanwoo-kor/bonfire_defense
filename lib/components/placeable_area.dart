@@ -1,17 +1,15 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
-  final bool placeable;
-
   PlaceableArea({
     required super.position,
     required super.size,
-    this.placeable = true,
   });
 
   @override
@@ -21,12 +19,8 @@ class PlaceableArea extends GameDecoration with TapGesture {
     // Overlay가 활성화되어 있거나 현재 위치에 이미 다른 유닛이 배치되어 있으면 실행하지 않음
     if (!gameController.isOverlayActive(UnitSelectionOverlay.overlayName) &&
         isPlaceable()) {
-      if (placeable) {
-        gameController.setPlacementPosition(position);
-        gameController.setOverlayActive(UnitSelectionOverlay.overlayName, true);
-      } else {
-        print("Error: Placement area is not placeable.");
-      }
+      gameController.setPlacementPosition(position);
+      gameController.setOverlayActive(UnitSelectionOverlay.overlayName, true);
     }
   }
 
@@ -41,8 +35,8 @@ class PlaceableArea extends GameDecoration with TapGesture {
     for (var defender in defenders) {
       // 각 Defender의 위치와 크기에 대한 사각형을 생성합니다.
       Rect defenderRect = Rect.fromLTWH(
-        defender.position.x,
-        defender.position.y,
+        defender.position.x - (BonfireDefense.tileSize - defender.size.x) / 2,
+        defender.position.y - (BonfireDefense.tileSize - defender.size.y) / 2,
         GameConfig.tileSize,
         GameConfig.tileSize,
       );

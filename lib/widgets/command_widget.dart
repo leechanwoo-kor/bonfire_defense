@@ -22,11 +22,11 @@ class CommandWidget extends StatelessWidget {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () => controller.activateSpecialAbility(),
-                child: Text('Special Ability'),
+                child: const Text('Special Ability'),
               ),
               ElevatedButton(
                 onPressed: () => controller.pauseGame(),
-                child: Text('Pause'),
+                child: const Text('Pause'),
               ),
               // 여기에 더 많은 게임 명령을 추가할 수 있습니다.
             ],

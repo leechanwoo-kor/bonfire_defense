@@ -32,22 +32,22 @@ class GameController extends GameComponent with ChangeNotifier {
   int _score = 0;
   int _life = 10;
 
-  bool get isRunning => _running;
+  // bool get isRunning => _running;
   int get countEnemy => _countEnemy;
   int get count => _count;
   int get score => _score;
   int get life => _life;
 
-  set running(bool value) {
-    try {
-      if (_running != value) {
-        _running = value;
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error setting running: $e');
-    }
-  }
+  // set running(bool value) {
+  //   try {
+  //     if (_running != value) {
+  //       _running = value;
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     print('Error setting running: $e');
+  //   }
+  // }
 
   void updateStats({
     int enemyChange = 0,
@@ -97,8 +97,7 @@ class GameController extends GameComponent with ChangeNotifier {
 
   void addDefender(DefenderType type, Vector2? tilePosition) {
     if (tilePosition == null) {
-      print("Error: No tile position set.");
-      return; // Early return if no position is set.
+      return;
     }
 
     Vector2 unitSize = Vector2.all(32.0);
