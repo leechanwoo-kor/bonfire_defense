@@ -18,10 +18,7 @@ class GameController extends GameComponent with ChangeNotifier {
   void setOverlayActive(String overlayName, bool isActive) {
     if (overlayManager.isActive(overlayName) != isActive) {
       overlayManager.setActive(overlayName, isActive);
-      print("Overlay $overlayName set to $isActive");
       notifyListeners();
-    } else {
-      print("Overlay $overlayName already set to $isActive");
     }
   }
 

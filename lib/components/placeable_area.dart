@@ -14,7 +14,6 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
   @override
   void onTap() {
-    print("tap!");
     if (placeable) {
       final gameController = gameRef.context.read<GameController>();
       gameController.setPlacementPosition(position);
