@@ -7,8 +7,7 @@ class UnitSelectionOverlay extends StatelessWidget {
   static String overlayName = 'unitSelectionOverlay';
   final GameController controller;
 
-  const UnitSelectionOverlay({Key? key, required this.controller})
-      : super(key: key);
+  const UnitSelectionOverlay({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class UnitSelectionOverlay extends StatelessWidget {
       if (controller.isOverlayActive(UnitSelectionOverlay.overlayName)) {
         return Container(
           alignment: Alignment.center,
-          color: Colors.black.withOpacity(0.8), // 반투명 검은색 배경
+          color: Colors.black.withOpacity(0.8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -69,7 +68,7 @@ class UnitSelectionOverlay extends StatelessWidget {
           ),
         );
       } else {
-        return const SizedBox.shrink(); // 오버레이가 비활성화된 경우 아무것도 표시하지 않음
+        return const SizedBox.shrink();
       }
     });
   }
