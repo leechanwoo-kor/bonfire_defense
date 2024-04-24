@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 
 class CommandWidget extends StatelessWidget {
   static String overlayName = 'commandWidget';

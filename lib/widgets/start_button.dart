@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:flutter/material.dart';
 
 class StartButton extends StatelessWidget {

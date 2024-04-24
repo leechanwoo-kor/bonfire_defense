@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 
 class InfoWidget extends StatelessWidget {
   static String overlayName = 'infoWidget';
@@ -9,10 +9,6 @@ class InfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // listen: true를 추가하여 데이터 변경을 감지하고 위젯을 자동으로 업데이트
-    final GameController controller =
-        Provider.of<GameController>(context, listen: true);
-
     return Positioned(
       bottom: 0,
       left: 0,
@@ -24,17 +20,26 @@ class InfoWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              'Count: ${controller.count}',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            Selector<GameController, int>(
+              selector: (_, controller) => controller.count,
+              builder: (_, count, __) => Text(
+                'Count: $count',
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
-            Text(
-              'Life❤️: ${controller.life}',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            Selector<GameController, int>(
+              selector: (_, controller) => controller.life,
+              builder: (_, life, __) => Text(
+                'Life❤️: $life',
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
-            Text(
-              'Score: ${controller.score}',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            Selector<GameController, int>(
+              selector: (_, controller) => controller.score,
+              builder: (_, score, __) => Text(
+                'Score: $score',
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),

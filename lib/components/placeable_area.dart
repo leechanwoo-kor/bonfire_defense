@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:provider/provider.dart';
 

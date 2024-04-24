@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 
 class EndGameSensor extends GameDecoration with Sensor {
   final GameController _gameController;

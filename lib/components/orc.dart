@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/widgets.dart';

@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
-import 'package:bonfire_defense/components/game_controller.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:flutter/material.dart';
 
 class EndGameManager {
