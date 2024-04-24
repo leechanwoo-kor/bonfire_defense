@@ -38,7 +38,7 @@ class EndGameManager {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRoutes.stagesRoute,
+                  (route) => route.settings.name == AppRoutes.homeRoute,
                 );
               },
               child: const Text('OK'),
