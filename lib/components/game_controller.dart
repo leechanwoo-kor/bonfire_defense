@@ -3,6 +3,7 @@ import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
+import 'package:bonfire_defense/game_managers/overlay_manager.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
@@ -11,7 +12,17 @@ import 'package:flutter/material.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
+  final OverlayManager overlayManager = OverlayManager();
   Map<String, bool> overlaysActive = {};
+
+  setOverlayActive(String overlayName, bool isActive) {
+    overlayManager.setActive(overlayName, isActive);
+    notifyListeners();
+  }
+
+  bool isOverlayActive(String overlayName) {
+    return overlayManager.isActive(overlayName);
+  }
 
   bool _running = false;
   int _countEnemy = 0;
@@ -24,19 +35,6 @@ class GameController extends GameComponent with ChangeNotifier {
   int get count => _count;
   int get score => _score;
   int get life => _life;
-
-  // 오버레이 상태 변경 메소드
-  void setOverlayActive(String overlayName, bool isActive) {
-    if (overlaysActive[overlayName] != isActive) {
-      overlaysActive[overlayName] = isActive;
-      notifyListeners();
-    }
-  }
-
-  // 오버레이 상태 조회 메소드
-  bool isOverlayActive(String overlayName) {
-    return overlaysActive[overlayName] ?? false;
-  }
 
   set running(bool value) {
     try {
