@@ -38,7 +38,7 @@ class UnitSelectionOverlay extends StatelessWidget {
                   ),
                   _buildUnitCard(
                     context,
-                    image: const AssetImage('assets/images/arch.png'),
+                    image: const AssetImage('assets/images/knight.png'),
                     title: '기사 배치',
                     onTap: controller.getDefenderCount(DefenderType.knight) > 0
                         ? null
