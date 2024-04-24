@@ -14,12 +14,11 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
   @override
   void onTap() {
+    print("tap!");
     if (placeable) {
       final gameController = gameRef.context.read<GameController>();
-      bool isActive =
-          gameController.isOverlayActive(UnitSelectionOverlay.overlayName);
-      gameController.setOverlayActive(
-          UnitSelectionOverlay.overlayName, !isActive);
+      gameController.setPlacementPosition(position);
+      gameController.setOverlayActive(UnitSelectionOverlay.overlayName, true);
     } else {
       print("Error: Placement area is not placeable.");
     }

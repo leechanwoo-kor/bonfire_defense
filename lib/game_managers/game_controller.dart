@@ -5,7 +5,7 @@ import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/game_managers/overlay_manager.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/defender.dart';
+import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +13,15 @@ import 'package:flutter/material.dart';
 class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
   final OverlayManager overlayManager = OverlayManager();
-  Map<String, bool> overlaysActive = {};
 
-  setOverlayActive(String overlayName, bool isActive) {
-    overlayManager.setActive(overlayName, isActive);
-    notifyListeners();
+  void setOverlayActive(String overlayName, bool isActive) {
+    if (overlayManager.isActive(overlayName) != isActive) {
+      overlayManager.setActive(overlayName, isActive);
+      print("Overlay $overlayName set to $isActive");
+      notifyListeners();
+    } else {
+      print("Overlay $overlayName already set to $isActive");
+    }
   }
 
   bool isOverlayActive(String overlayName) {
@@ -82,45 +86,47 @@ class GameController extends GameComponent with ChangeNotifier {
     _running = true;
     gameRef.overlays.remove(StartButton.overlayName);
     gameRef.query<Defender>().forEach((element) {
-      element.showRadiusVision(false);
+      // element.showRadiusVision(false);
     });
     notifyListeners();
   }
 
-  @override
-  void onMount() {
-    int count = 5;
-    for (var defender in config.defenders) {
-      switch (defender) {
-        case DefenderType.arch:
-          gameRef.add(
-            Archer(
-              position: Vector2(
-                count * 1 * BonfireDefense.tileSize - 8,
-                2 * BonfireDefense.tileSize - 8,
-              ),
-            ),
-          );
-          break;
-        case DefenderType.knight:
-          gameRef.add(
-            Knight(
-              position: Vector2(
-                count * 1 * BonfireDefense.tileSize - 8,
-                2 * BonfireDefense.tileSize - 8,
-              ),
-            ),
-          );
-          break;
-      }
-      count = count + 3;
+  Vector2? placementPosition;
+
+  void setPlacementPosition(Vector2 position) {
+    placementPosition = position;
+  }
+
+  void addDefender(DefenderType type, Vector2? tilePosition) {
+    if (tilePosition == null) {
+      print("Error: No tile position set.");
+      return; // Early return if no position is set.
     }
 
+    Vector2 unitSize = Vector2.all(32.0);
+    Vector2 unitPosition = Vector2(
+      tilePosition.x + (BonfireDefense.tileSize - unitSize.x) / 2,
+      tilePosition.y + (BonfireDefense.tileSize - unitSize.y) / 2,
+    );
+    GameComponent defender = DefenderFactory.createDefender(type, unitPosition);
+    gameRef.add(defender);
     notifyListeners();
-    super.onMount();
   }
 
   activateSpecialAbility() {}
 
   pauseGame() {}
+}
+
+class DefenderFactory {
+  static GameComponent createDefender(DefenderType type, Vector2 position) {
+    switch (type) {
+      case DefenderType.arch:
+        return Archer(position: position);
+      case DefenderType.knight:
+        return Knight(position: position);
+      default:
+        throw UnimplementedError('Defender type $type not supported');
+    }
+  }
 }
