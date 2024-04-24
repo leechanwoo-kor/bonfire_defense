@@ -24,10 +24,6 @@ abstract class GameStages {
         EnemyType.orc,
         EnemyType.orc,
       ],
-      defenders: [
-        DefenderType.arch,
-        DefenderType.knight,
-      ],
       enemyInitialPosition: Vector2(
         6 * BonfireDefense.tileSize,
         -1 * BonfireDefense.tileSize,

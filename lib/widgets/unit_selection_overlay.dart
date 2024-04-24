@@ -40,6 +40,16 @@ class UnitSelectionOverlay extends StatelessWidget {
                 },
                 child: const Text('기사 배치'),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  controller.addDefender(
+                      DefenderType.lancer, controller.placementPosition);
+                  controller.setOverlayActive(
+                      UnitSelectionOverlay.overlayName, false);
+                  print('창병 배치');
+                },
+                child: const Text('창병 배치'),
+              ),
             ],
           ),
         );

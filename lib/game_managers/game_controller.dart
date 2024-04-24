@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/knight.dart';
+import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/game_managers/overlay_manager.dart';
@@ -125,6 +126,8 @@ class DefenderFactory {
         return Archer(position: position);
       case DefenderType.knight:
         return Knight(position: position);
+      case DefenderType.lancer:
+        return Lancer(position: position);
       default:
         throw UnimplementedError('Defender type $type not supported');
     }

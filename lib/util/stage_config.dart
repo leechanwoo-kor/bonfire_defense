@@ -5,7 +5,6 @@ class StageConfig {
   final List<Vector2> enemyPath;
   final Vector2 enemyInitialPosition;
   final List<EnemyType> enemies;
-  final List<DefenderType> defenders;
   final int countEnemyPermited;
 
   final int tilesInWidth;
@@ -16,7 +15,6 @@ class StageConfig {
     required this.enemyPath,
     required this.enemyInitialPosition,
     required this.enemies,
-    required this.defenders,
     this.countEnemyPermited = 1,
     required this.tilesInWidth,
     required this.tilesInHeight,
@@ -25,4 +23,4 @@ class StageConfig {
 
 enum EnemyType { orc }
 
-enum DefenderType { arch, knight }
+enum DefenderType { arch, knight, lancer }
