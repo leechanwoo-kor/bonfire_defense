@@ -1,23 +1,30 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
+import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
-import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
+import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
   final GameConfig config;
-
   Map<DefenderType, int> defenderCount = {};
-
   bool _running = false;
   int _countEnemy = 0;
   int _count = 0;
   int _score = 0;
   int _life = 10;
+
+  late EnemyManager _enemyManager;
+  late EndGameManager _endGameManager;
+
+  GameController({required this.config}) {
+    _enemyManager = EnemyManager(this);
+    _endGameManager = EndGameManager(this);
+  }
 
   bool get isRunning => _running;
   int get countEnemy => _countEnemy;
@@ -26,13 +33,9 @@ class GameController extends GameComponent with ChangeNotifier {
   int get life => _life;
 
   set running(bool value) {
-    try {
-      if (_running != value) {
-        _running = value;
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error setting running: $e');
+    if (_running != value) {
+      _running = value;
+      notifyListeners();
     }
   }
 
@@ -47,14 +50,6 @@ class GameController extends GameComponent with ChangeNotifier {
     _score += scoreChange;
     _life += lifeChange;
     notifyListeners();
-  }
-
-  late EnemyManager _enemyManager;
-  late EndGameManager _endGameManager;
-
-  GameController({required this.config}) {
-    _enemyManager = EnemyManager(this);
-    _endGameManager = EndGameManager(this);
   }
 
   @override
@@ -72,6 +67,11 @@ class GameController extends GameComponent with ChangeNotifier {
     notifyListeners();
   }
 
+  pauseGame() {
+    _running = false;
+    notifyListeners();
+  }
+
   Vector2? placementPosition;
 
   void setPlacementPosition(Vector2 position) {
@@ -79,10 +79,7 @@ class GameController extends GameComponent with ChangeNotifier {
   }
 
   void addDefender(DefenderType type, Vector2? tilePosition) {
-    if (tilePosition == null) {
-      return;
-    }
-
+    if (tilePosition == null) return;
     Vector2 unitSize = Vector2.all(32.0);
     Vector2 unitPosition = Vector2(
       tilePosition.x + (BonfireDefense.tileSize - unitSize.x) / 2,
@@ -90,22 +87,56 @@ class GameController extends GameComponent with ChangeNotifier {
     );
     GameComponent defender = DefenderFactory.createDefender(type, unitPosition);
     gameRef.add(defender);
-
     defenderCount[type] = (defenderCount[type] ?? 0) + 1;
-
     notifyListeners();
   }
 
-  // 유닛 타입의 카운트를 반환
   int getDefenderCount(DefenderType type) {
     return defenderCount[type] ?? 0;
   }
 
-  activateSpecialAbility() {}
+  activateSpecialAbility() {
+    // Implementation of special abilities
+  }
+}
 
-  pauseGame() {
-    _running = false;
-    notifyListeners();
+class EndGameManager {
+  final GameController gameController;
+
+  EndGameManager(this.gameController);
+
+  void checkEndGame(double dt) {
+    if (!gameController.checkInterval('addsEnemy', 1000, dt)) return;
+    if (gameController.countEnemy != gameController.config.enemies.length)
+      return;
+
+    final enemies = gameController.gameRef.query<Enemy>();
+    if (enemies.isEmpty) {
+      gameController.running = false;
+      final gameSensor = gameController.gameRef.query<EndGameSensor>().first;
+      String message =
+          gameSensor.counter > gameController.config.countEnemyPermited
+              ? 'Game over!'
+              : 'Win!';
+      showDialogEndGame(message);
+    }
+  }
+
+  void showDialogEndGame(String text) {
+    showDialog(
+      context: gameController.context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(text),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRoutes.homeRoute),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 }
 
