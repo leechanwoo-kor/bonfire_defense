@@ -9,78 +9,108 @@ class GameControlOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GameController controller =
-        Provider.of<GameController>(context, listen: false);
-
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            height: 60,
-            color: Colors.blueGrey.withOpacity(0.8),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () => controller.activateSpecialAbility(),
-                    child: const Text('Special Ability'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (!controller.isRunning) {
-                        controller.startStage(); // 게임 시작 기능
-                      } else {
-                        controller.pauseGame(); // 일시 정지 기능
-                      }
-                    },
-                    child: Selector<GameController, bool>(
-                      selector: (_, controller) => controller.isRunning,
-                      builder: (_, isRunning, __) => Text(
-                          isRunning ? 'Pause' : 'Start'), // 버튼 상태에 따라 텍스트 변경
-                    ),
-                  ),
-                  // 필요하다면 여기에 더 많은 버튼을 추가할 수 있습니다.
-                ],
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Selector<GameController, int>(
+              selector: (_, controller) => controller.stage,
+              builder: (_, stage, __) => Text(
+                'Stage: $stage',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-          Container(
-            height: 70,
-            color: Colors.black.withOpacity(0.8),
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        ),
+        Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Selector<GameController, int>(
-                  selector: (_, controller) => controller.count,
-                  builder: (_, count, __) => Text(
-                    'Count: $count',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                Container(
+                  height: 60,
+                  color: Colors.blueGrey.withOpacity(0.8),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () => Provider.of<GameController>(context,
+                                  listen: false)
+                              .activateSpecialAbility(),
+                          child: const Text('Special Ability'),
+                        ),
+                        Selector<GameController, bool>(
+                          selector: (_, controller) => controller.isRunning,
+                          builder: (context, isRunning, __) => ElevatedButton(
+                            onPressed: isRunning
+                                ? null
+                                : () {
+                                    Provider.of<GameController>(context,
+                                            listen: false)
+                                        .startStage();
+                                  },
+                            child: const Text('Start'),
+                            style: ElevatedButton.styleFrom(
+                              disabledForegroundColor:
+                                  Colors.grey.withOpacity(0.38),
+                              disabledBackgroundColor: Colors.grey
+                                  .withOpacity(0.12), // Color when disabled
+                            ),
+                          ),
+                        ),
+                        // Additional buttons can be added here if needed.
+                      ],
+                    ),
                   ),
                 ),
-                Selector<GameController, int>(
-                  selector: (_, controller) => controller.life,
-                  builder: (_, life, __) => Text(
-                    'Life❤️: $life',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-                Selector<GameController, int>(
-                  selector: (_, controller) => controller.score,
-                  builder: (_, score, __) => Text(
-                    'Score: $score',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                Container(
+                  height: 70,
+                  color: Colors.black.withOpacity(0.8),
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Selector<GameController, int>(
+                        selector: (_, controller) => controller.count,
+                        builder: (_, count, __) => Text(
+                          'Count: $count',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      Selector<GameController, int>(
+                        selector: (_, controller) => controller.life,
+                        builder: (_, life, __) => Text(
+                          'Life❤️: $life',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      Selector<GameController, int>(
+                        selector: (_, controller) => controller.score,
+                        builder: (_, score, __) => Text(
+                          'Score: $score',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

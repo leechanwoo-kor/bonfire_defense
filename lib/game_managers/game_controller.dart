@@ -17,6 +17,7 @@ class GameController extends GameComponent with ChangeNotifier {
   int _count = 0;
   int _score = 0;
   int _life = 10;
+  int _stage = 1;
 
   late EnemyManager _enemyManager;
   late EndGameManager _endGameManager;
@@ -31,6 +32,7 @@ class GameController extends GameComponent with ChangeNotifier {
   int get count => _count;
   int get score => _score;
   int get life => _life;
+  int get stage => _stage;
 
   set running(bool value) {
     if (_running != value) {
@@ -67,8 +69,10 @@ class GameController extends GameComponent with ChangeNotifier {
     notifyListeners();
   }
 
-  pauseGame() {
+  void nextStage() {
     _running = false;
+    _stage++;
+    _countEnemy = 0; // Reset the count for the new stage
     notifyListeners();
   }
 
@@ -114,15 +118,15 @@ class EndGameManager {
     if (enemies.isEmpty) {
       gameController.running = false;
       final gameSensor = gameController.gameRef.query<EndGameSensor>().first;
-      String message =
-          gameSensor.counter > gameController.config.countEnemyPermited
-              ? 'Game over!'
-              : 'Win!';
-      showDialogEndGame(message);
+      if (gameSensor.counter > gameController.config.countEnemyPermited) {
+        showDialogEndGame('Game over!', true);
+      } else {
+        showDialogEndGame('Stage ${gameController.stage} cleared!', false);
+      }
     }
   }
 
-  void showDialogEndGame(String text) {
+  void showDialogEndGame(String text, bool isGameOver) {
     showDialog(
       context: gameController.context,
       barrierDismissible: false,
@@ -130,8 +134,15 @@ class EndGameManager {
         title: Text(text),
         actions: [
           ElevatedButton(
-            onPressed: () => Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRoutes.homeRoute),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              if (isGameOver) {
+                Navigator.of(context).popUntil(
+                    (route) => route.settings.name == AppRoutes.homeRoute);
+              } else {
+                gameController.nextStage(); // Continue to the next stage
+              }
+            },
             child: const Text('OK'),
           ),
         ],

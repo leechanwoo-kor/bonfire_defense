@@ -9,6 +9,7 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   static const _speedDefault = GameConfig.defaultSpeed;
   final List<Vector2> path;
+
   Orc(
     this._gameController, {
     required super.position,
@@ -16,6 +17,7 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
   }) : super(
           size: Vector2.all(32),
           speed: _speedDefault,
+          life: 100 + (_gameController.stage - 1) * 10,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
         ) {
     setupPathFinding(
