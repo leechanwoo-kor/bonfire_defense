@@ -39,16 +39,16 @@ class GameController extends GameComponent with ChangeNotifier {
   int get score => _score;
   int get life => _life;
 
-  // set running(bool value) {
-  //   try {
-  //     if (_running != value) {
-  //       _running = value;
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     print('Error setting running: $e');
-  //   }
-  // }
+  set running(bool value) {
+    try {
+      if (_running != value) {
+        _running = value;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error setting running: $e');
+    }
+  }
 
   void updateStats({
     int enemyChange = 0,

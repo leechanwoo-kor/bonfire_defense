@@ -5,13 +5,16 @@ import 'package:bonfire_defense/util/stage_config.dart';
 
 class EnemyManager {
   final GameController _controller;
-
   EnemyManager(this._controller);
 
+  double _timer = 0;
+
   void addsEnemy(double dt) {
-    if (_controller.countEnemy < _controller.config.enemies.length) {
-      if (_controller.checkInterval('addsEnemy', 1000, dt)) {
+    _timer += dt * 1000;
+    if (_timer >= 1000) {
+      if (_controller.countEnemy < _controller.config.enemies.length) {
         _createEnemy();
+        _timer = 0;
       }
     }
   }
