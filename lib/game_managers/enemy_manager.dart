@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/components/orc.dart';
-import 'package:bonfire_defense/util/stage_config.dart';
+import 'package:bonfire_defense/util/game_config.dart';
 
 class EnemyManager {
   final GameController _controller;

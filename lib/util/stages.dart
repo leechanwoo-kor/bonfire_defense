@@ -1,14 +1,14 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/stage_config.dart';
+import 'package:bonfire_defense/util/game_config.dart';
 
 enum GameStageEnum { main }
 
 abstract class GameStages {
-  static StageConfig get(GameStageEnum stage) => _stages[stage]!;
+  static GameConfig get(GameStageEnum stage) => _stages[stage]!;
 
-  static final Map<GameStageEnum, StageConfig> _stages = {
-    GameStageEnum.main: StageConfig(
+  static final Map<GameStageEnum, GameConfig> _stages = {
+    GameStageEnum.main: GameConfig(
       tilesInHeight: 12,
       tilesInWidth: 20,
       tiledMapPath: 'map/main.tmj',

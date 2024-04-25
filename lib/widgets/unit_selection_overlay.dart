@@ -1,6 +1,6 @@
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/util/stage_config.dart';
+import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
