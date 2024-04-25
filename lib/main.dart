@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:provider/provider.dart';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
-import 'package:bonfire_defense/util/stages.dart';
+import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/routes.dart';
+import 'package:bonfire_defense/util/stages.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +15,13 @@ void main() {
   }
 
   runApp(
-    ChangeNotifierProvider<GameController>(
-      create: (_) => GameController(config: GameStages.get(GameStageEnum.main)),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) =>
+                GameController(config: GameStages.get(GameStageEnum.main))),
+        ChangeNotifierProvider(create: (_) => OverlayProvider()),
+      ],
       child: const MyApp(),
     ),
   );

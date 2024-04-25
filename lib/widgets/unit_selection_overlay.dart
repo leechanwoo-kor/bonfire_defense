@@ -1,4 +1,5 @@
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +12,10 @@ class UnitSelectionOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
+
     return Consumer<GameController>(builder: (context, controller, child) {
-      if (controller.isOverlayActive(UnitSelectionOverlay.overlayName)) {
+      if (overlayProvider.isActive(UnitSelectionOverlay.overlayName)) {
         return Container(
           alignment: Alignment.center,
           color: Colors.black.withOpacity(0.8),
@@ -32,7 +35,7 @@ class UnitSelectionOverlay extends StatelessWidget {
                         : () {
                             controller.addDefender(DefenderType.arch,
                                 controller.placementPosition);
-                            controller.setOverlayActive(
+                            overlayProvider.setActive(
                                 UnitSelectionOverlay.overlayName, false);
                           },
                   ),
@@ -45,7 +48,7 @@ class UnitSelectionOverlay extends StatelessWidget {
                         : () {
                             controller.addDefender(DefenderType.knight,
                                 controller.placementPosition);
-                            controller.setOverlayActive(
+                            overlayProvider.setActive(
                                 UnitSelectionOverlay.overlayName, false);
                           },
                   ),
@@ -58,7 +61,7 @@ class UnitSelectionOverlay extends StatelessWidget {
                         : () {
                             controller.addDefender(DefenderType.lancer,
                                 controller.placementPosition);
-                            controller.setOverlayActive(
+                            overlayProvider.setActive(
                                 UnitSelectionOverlay.overlayName, false);
                           },
                   ),
@@ -67,7 +70,7 @@ class UnitSelectionOverlay extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  controller.setOverlayActive(
+                  overlayProvider.setActive(
                       UnitSelectionOverlay.overlayName, false);
                 },
                 child: const Text('취소'),

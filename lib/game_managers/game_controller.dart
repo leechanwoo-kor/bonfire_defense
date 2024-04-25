@@ -1,31 +1,19 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
+import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
-import 'package:bonfire_defense/game_managers/overlay_manager.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/util/stage_config.dart';
 import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/material.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
   final StageConfig config;
-  final OverlayManager overlayManager = OverlayManager();
+
   Map<DefenderType, int> defenderCount = {};
-
-  void setOverlayActive(String overlayName, bool isActive) {
-    if (overlayManager.isActive(overlayName) != isActive) {
-      overlayManager.setActive(overlayName, isActive);
-      notifyListeners();
-    }
-  }
-
-  bool isOverlayActive(String overlayName) {
-    return overlayManager.isActive(overlayName);
-  }
 
   bool _running = false;
   int _countEnemy = 0;
