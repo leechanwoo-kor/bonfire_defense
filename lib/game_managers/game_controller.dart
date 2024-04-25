@@ -1,13 +1,11 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
-import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/game_managers/end_game_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/game_config.dart';
-import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/material.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
@@ -21,7 +19,7 @@ class GameController extends GameComponent with ChangeNotifier {
   int _score = 0;
   int _life = 10;
 
-  // bool get isRunning => _running;
+  bool get isRunning => _running;
   int get countEnemy => _countEnemy;
   int get count => _count;
   int get score => _score;
@@ -71,10 +69,6 @@ class GameController extends GameComponent with ChangeNotifier {
 
   void startStage() {
     _running = true;
-    gameRef.overlays.remove(StartButton.overlayName);
-    gameRef.query<Defender>().forEach((element) {
-      // element.showRadiusVision(false);
-    });
     notifyListeners();
   }
 
@@ -109,7 +103,10 @@ class GameController extends GameComponent with ChangeNotifier {
 
   activateSpecialAbility() {}
 
-  pauseGame() {}
+  pauseGame() {
+    _running = false;
+    notifyListeners();
+  }
 }
 
 class DefenderFactory {

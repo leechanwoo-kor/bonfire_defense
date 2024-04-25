@@ -1,11 +1,9 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
-import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/util/game_config.dart';
-import 'package:bonfire_defense/widgets/command_widget.dart';
-import 'package:bonfire_defense/widgets/info_widget.dart';
-import 'package:bonfire_defense/widgets/start_button.dart';
+import 'package:bonfire_defense/widgets/game_control_overlay.dart';
 import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,22 +63,15 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         controller,
       ],
       overlayBuilderMap: {
-        StartButton.overlayName: (context, game) => StartButton(
-              controller: controller,
-            ),
-        InfoWidget.overlayName: (context, game) => const InfoWidget(),
-        CommandWidget.overlayName: (context, game) => CommandWidget(
-              controller: controller,
-            ),
+        GameControlOverlay.overlayName: (context, game) =>
+            const GameControlOverlay(),
         UnitSelectionOverlay.overlayName: (context, game) =>
             UnitSelectionOverlay(
               controller: controller,
             ),
       },
       initialActiveOverlays: [
-        StartButton.overlayName,
-        InfoWidget.overlayName,
-        CommandWidget.overlayName,
+        GameControlOverlay.overlayName,
         UnitSelectionOverlay.overlayName,
       ],
     );
