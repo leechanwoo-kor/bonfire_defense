@@ -48,7 +48,8 @@ class GameControlOverlay extends StatelessWidget {
                           child: const Text('Special Ability'),
                         ),
                         Selector<GameStateProvider, bool>(
-                          selector: (_, state) => state.running,
+                          selector: (_, state) =>
+                              state.state == GameState.running,
                           builder: (context, isRunning, __) => ElevatedButton(
                             onPressed: isRunning
                                 ? null

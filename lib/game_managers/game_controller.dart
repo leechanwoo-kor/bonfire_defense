@@ -32,7 +32,7 @@ class GameController extends GameComponent with ChangeNotifier {
   void update(double dt) {
     GameStateProvider state =
         Provider.of<GameStateProvider>(gameRef.context, listen: false);
-    if (state.running) {
+    if (state.state == GameState.running) {
       _enemyManager.addsEnemy(dt);
       _endGameManager.checkEndGame(dt);
     }

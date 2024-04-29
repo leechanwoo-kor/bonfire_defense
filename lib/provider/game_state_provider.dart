@@ -1,17 +1,19 @@
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 
+enum GameState { idle, running, paused, ended }
+
 class GameStateProvider with ChangeNotifier {
-  bool _running = false;
+  GameState _state = GameState.idle;
   int _currentStage = 1;
 
   void startGame() {
-    _running = true;
+    _state = GameState.running;
     notifyListeners();
   }
 
   void stopGame() {
-    _running = false;
+    _state = GameState.idle;
     notifyListeners();
   }
 
@@ -20,7 +22,7 @@ class GameStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool get running => _running;
+  GameState get state => _state;
   int get currentStage => _currentStage;
 }
 
