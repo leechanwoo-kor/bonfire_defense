@@ -1,3 +1,4 @@
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,25 +47,26 @@ class GameControlOverlay extends StatelessWidget {
                           onPressed: () => {},
                           child: const Text('Special Ability'),
                         ),
-                        Selector<StatsProvider, bool>(
-                          selector: (_, stats) => stats.running,
+                        Selector<GameStateProvider, bool>(
+                          selector: (_, state) => state.running,
                           builder: (context, isRunning, __) => ElevatedButton(
                             onPressed: isRunning
                                 ? null
                                 : () {
-                                    Provider.of<StatsProvider>(context,
+                                    Provider.of<GameStateProvider>(context,
                                             listen: false)
-                                        .running = true;
+                                        .startGame();
                                   },
                             style: ElevatedButton.styleFrom(
                               disabledForegroundColor:
                                   Colors.grey.withOpacity(0.38),
-                              disabledBackgroundColor: Colors.grey
-                                  .withOpacity(0.12), // Color when disabled
+                              disabledBackgroundColor:
+                                  Colors.grey.withOpacity(0.12),
                             ),
                             child: const Text('Start'),
                           ),
                         ),
+
                         // Additional buttons can be added here if needed.
                       ],
                     ),

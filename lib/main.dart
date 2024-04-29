@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/routes.dart';
@@ -21,6 +22,7 @@ void main() {
         ChangeNotifierProvider(
             create: (_) =>
                 GameController(config: GameStages.get(GameStageEnum.main))),
+        ChangeNotifierProvider(create: (_) => GameStateProvider()),
         ChangeNotifierProvider(create: (_) => StatsProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),
       ],

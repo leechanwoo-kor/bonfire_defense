@@ -2,6 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/util/game_config.dart';
@@ -32,9 +33,9 @@ class GameController extends GameComponent with ChangeNotifier {
 
   @override
   void update(double dt) {
-    StatsProvider stats =
-        Provider.of<StatsProvider>(gameRef.context, listen: false);
-    if (stats.running) {
+    GameStateProvider state =
+        Provider.of<GameStateProvider>(gameRef.context, listen: false);
+    if (state.running) {
       _enemyManager.addsEnemy(dt);
       _endGameManager.checkEndGame(dt);
     }
@@ -42,17 +43,13 @@ class GameController extends GameComponent with ChangeNotifier {
     super.update(dt);
   }
 
-  void startStage() {
-    StatsProvider stats =
-        Provider.of<StatsProvider>(gameRef.context, listen: false);
-    stats.running = true;
-  }
-
   void nextStage() {
+    GameStateProvider state =
+        Provider.of<GameStateProvider>(gameRef.context, listen: false);
     StatsProvider stats =
         Provider.of<StatsProvider>(gameRef.context, listen: false);
-    stats.running = false;
-    stats.updateStage();
+    state.stopGame();
+    state.nextStage();
     stats.resetEnemyCount();
   }
 
@@ -69,6 +66,9 @@ class EndGameManager {
   EndGameManager(this.gameController);
 
   void checkEndGame(double dt) {
+    GameStateProvider state = Provider.of<GameStateProvider>(
+        gameController.gameRef.context,
+        listen: false);
     StatsProvider stats = Provider.of<StatsProvider>(
         gameController.gameRef.context,
         listen: false);
@@ -80,12 +80,12 @@ class EndGameManager {
 
     final enemies = gameController.gameRef.query<Enemy>();
     if (enemies.isEmpty) {
-      stats.running = false;
+      state.stopGame();
       final gameSensor = gameController.gameRef.query<EndGameSensor>().first;
       if (gameSensor.counter > gameController.config.countEnemyPermited) {
         showDialogEndGame('Game over!', true);
       } else {
-        showDialogEndGame('Stage ${stats.stage} cleared!', false);
+        showDialogEndGame('Stage ${state.currentStage} cleared!', false);
       }
     }
   }
