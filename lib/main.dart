@@ -23,6 +23,8 @@ void main() {
             create: (_) =>
                 GameController(config: GameStages.get(GameStageEnum.main))),
         ChangeNotifierProvider(create: (_) => GameStateProvider()),
+        ChangeNotifierProvider(create: (_) => DefenderStateProvider()),
+        ChangeNotifierProvider(create: (_) => EnemyStateProvider()),
         ChangeNotifierProvider(create: (_) => StatsProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),
       ],
