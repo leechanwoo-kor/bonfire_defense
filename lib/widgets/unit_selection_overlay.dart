@@ -15,79 +15,73 @@ class UnitSelectionOverlay extends StatelessWidget {
     OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
 
     return Consumer<GameController>(builder: (context, controller, child) {
-      if (overlayProvider.isActive(UnitSelectionOverlay.overlayName)) {
-        return Container(
-          alignment: Alignment.center,
-          color: Colors.black.withOpacity(0.8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  _buildUnitCard(
-                    context,
-                    image: const AssetImage('assets/images/arch.png'),
-                    title: '궁수 배치',
-                    onTap: controller.getDefenderCount(DefenderType.arch) > 0
-                        ? null
-                        : () {
-                            controller.addDefender(DefenderType.arch,
-                                controller.placementPosition);
-                            overlayProvider.setActive(
-                                UnitSelectionOverlay.overlayName, false);
-                          },
-                  ),
-                  _buildUnitCard(
-                    context,
-                    image: const AssetImage('assets/images/knight.png'),
-                    title: '기사 배치',
-                    onTap: controller.getDefenderCount(DefenderType.knight) > 0
-                        ? null
-                        : () {
-                            controller.addDefender(DefenderType.knight,
-                                controller.placementPosition);
-                            overlayProvider.setActive(
-                                UnitSelectionOverlay.overlayName, false);
-                          },
-                  ),
-                  _buildUnitCard(
-                    context,
-                    image: const AssetImage('assets/images/lancer.png'),
-                    title: '창병 배치',
-                    onTap: controller.getDefenderCount(DefenderType.lancer) > 0
-                        ? null
-                        : () {
-                            controller.addDefender(DefenderType.lancer,
-                                controller.placementPosition);
-                            overlayProvider.setActive(
-                                UnitSelectionOverlay.overlayName, false);
-                          },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  overlayProvider.setActive(
-                      UnitSelectionOverlay.overlayName, false);
-                },
-                child: const Text('취소'),
-              ),
-            ],
-          ),
-        );
-      } else {
+      if (!overlayProvider.isActive(UnitSelectionOverlay.overlayName)) {
         return const SizedBox.shrink();
       }
+
+      return Container(
+        alignment: Alignment.center,
+        color: Colors.black.withOpacity(0.8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: DefenderType.values
+                  .map((type) => _buildUnitCard(
+                        context,
+                        type: type,
+                        onTap: controller.getDefenderCount(type) > 0
+                            ? null
+                            : () =>
+                                placeDefender(context, type, overlayProvider),
+                      ))
+                  .toList(),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                overlayProvider.setActive(
+                    UnitSelectionOverlay.overlayName, false);
+              },
+              child: const Text('취소'),
+            ),
+          ],
+        ),
+      );
     });
   }
 
+  void placeDefender(BuildContext context, DefenderType type,
+      OverlayProvider overlayProvider) {
+    controller.addDefender(type, controller.placementPosition);
+    overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
+  }
+
   Widget _buildUnitCard(BuildContext context,
-      {required AssetImage image, required String title, VoidCallback? onTap}) {
+      {required DefenderType type, VoidCallback? onTap}) {
     bool isDisabled = onTap == null;
     double opacity = isDisabled ? 0.5 : 1.0;
+
+    String title;
+    AssetImage image;
+    switch (type) {
+      case DefenderType.arch:
+        title = '궁수 배치';
+        image = const AssetImage('assets/images/arch.png');
+        break;
+      case DefenderType.knight:
+        title = '기사 배치';
+        image = const AssetImage('assets/images/knight.png');
+        break;
+      case DefenderType.lancer:
+        title = '창병 배치';
+        image = const AssetImage('assets/images/lancer.png');
+        break;
+      default:
+        throw UnimplementedError('Defender type $type not supported');
+    }
 
     return GestureDetector(
       onTap: onTap,

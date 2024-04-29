@@ -1,11 +1,8 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
-import 'package:bonfire_defense/components/knight.dart';
-import 'package:bonfire_defense/components/lancer.dart';
+import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/routes.dart';
-import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +16,22 @@ class GameController extends GameComponent with ChangeNotifier {
   int _life = 10;
   int _stage = 1;
 
+  late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
   late EndGameManager _endGameManager;
 
   GameController({required this.config}) {
+    _defenderManager = DefenderManager(this);
     _enemyManager = EnemyManager(this);
     _endGameManager = EndGameManager(this);
+  }
+
+  void addDefender(DefenderType type, Vector2? tilePosition) {
+    _defenderManager.addDefender(type, tilePosition);
+  }
+
+  int getDefenderCount(DefenderType type) {
+    return _defenderManager.getDefenderCount(type);
   }
 
   bool get isRunning => _running;
@@ -82,23 +89,6 @@ class GameController extends GameComponent with ChangeNotifier {
     placementPosition = position;
   }
 
-  void addDefender(DefenderType type, Vector2? tilePosition) {
-    if (tilePosition == null) return;
-    Vector2 unitSize = Vector2.all(32.0);
-    Vector2 unitPosition = Vector2(
-      tilePosition.x + (BonfireDefense.tileSize - unitSize.x) / 2,
-      tilePosition.y + (BonfireDefense.tileSize - unitSize.y) / 2,
-    );
-    GameComponent defender = DefenderFactory.createDefender(type, unitPosition);
-    gameRef.add(defender);
-    defenderCount[type] = (defenderCount[type] ?? 0) + 1;
-    notifyListeners();
-  }
-
-  int getDefenderCount(DefenderType type) {
-    return defenderCount[type] ?? 0;
-  }
-
   activateSpecialAbility() {
     // Implementation of special abilities
   }
@@ -149,20 +139,5 @@ class EndGameManager {
         ],
       ),
     );
-  }
-}
-
-class DefenderFactory {
-  static GameComponent createDefender(DefenderType type, Vector2 position) {
-    switch (type) {
-      case DefenderType.arch:
-        return Archer(position: position);
-      case DefenderType.knight:
-        return Knight(position: position);
-      case DefenderType.lancer:
-        return Lancer(position: position);
-      default:
-        throw UnimplementedError('Defender type $type not supported');
-    }
   }
 }
