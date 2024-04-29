@@ -58,13 +58,13 @@ class GameControlOverlay extends StatelessWidget {
                                             listen: false)
                                         .startStage();
                                   },
-                            child: const Text('Start'),
                             style: ElevatedButton.styleFrom(
                               disabledForegroundColor:
                                   Colors.grey.withOpacity(0.38),
                               disabledBackgroundColor: Colors.grey
                                   .withOpacity(0.12), // Color when disabled
                             ),
+                            child: const Text('Start'),
                           ),
                         ),
                         // Additional buttons can be added here if needed.

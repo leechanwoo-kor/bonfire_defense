@@ -111,8 +111,9 @@ class EndGameManager {
 
   void checkEndGame(double dt) {
     if (!gameController.checkInterval('addsEnemy', 1000, dt)) return;
-    if (gameController.countEnemy != gameController.config.enemies.length)
+    if (gameController.countEnemy != gameController.config.enemies.length) {
       return;
+    }
 
     final enemies = gameController.gameRef.query<Enemy>();
     if (enemies.isEmpty) {
