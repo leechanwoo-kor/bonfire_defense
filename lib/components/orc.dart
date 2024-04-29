@@ -19,7 +19,12 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
   }) : super(
           size: Vector2.all(32),
           speed: _speedDefault,
-          life: 100 + (_gameController.stage - 1) * 10,
+          life: 100 +
+              (Provider.of<StatsProvider>(_gameController.gameRef.context,
+                              listen: false)
+                          .stage -
+                      1) *
+                  10,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
         ) {
     setupPathFinding(

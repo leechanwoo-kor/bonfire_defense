@@ -1,4 +1,3 @@
-import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +15,8 @@ class GameControlOverlay extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Selector<GameController, int>(
-              selector: (_, controller) => controller.stage,
+            child: Selector<StatsProvider, int>(
+              selector: (_, stats) => stats.stage,
               builder: (_, stage, __) => Text(
                 'Stage: $stage',
                 style: const TextStyle(
@@ -44,20 +43,18 @@ class GameControlOverlay extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         ElevatedButton(
-                          onPressed: () => Provider.of<GameController>(context,
-                                  listen: false)
-                              .activateSpecialAbility(),
+                          onPressed: () => {},
                           child: const Text('Special Ability'),
                         ),
-                        Selector<GameController, bool>(
-                          selector: (_, controller) => controller.isRunning,
+                        Selector<StatsProvider, bool>(
+                          selector: (_, stats) => stats.running,
                           builder: (context, isRunning, __) => ElevatedButton(
                             onPressed: isRunning
                                 ? null
                                 : () {
-                                    Provider.of<GameController>(context,
+                                    Provider.of<StatsProvider>(context,
                                             listen: false)
-                                        .startStage();
+                                        .running = true;
                                   },
                             style: ElevatedButton.styleFrom(
                               disabledForegroundColor:

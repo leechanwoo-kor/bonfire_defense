@@ -11,8 +11,6 @@ import 'package:provider/provider.dart';
 class GameController extends GameComponent with ChangeNotifier {
   final GameConfig config;
   Map<DefenderType, int> defenderCount = {};
-  bool _running = false;
-  int _stage = 1;
 
   late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
@@ -32,19 +30,11 @@ class GameController extends GameComponent with ChangeNotifier {
     return _defenderManager.getDefenderCount(type);
   }
 
-  bool get isRunning => _running;
-  int get stage => _stage;
-
-  set running(bool value) {
-    if (_running != value) {
-      _running = value;
-      notifyListeners();
-    }
-  }
-
   @override
   void update(double dt) {
-    if (_running) {
+    StatsProvider stats =
+        Provider.of<StatsProvider>(gameRef.context, listen: false);
+    if (stats.running) {
       _enemyManager.addsEnemy(dt);
       _endGameManager.checkEndGame(dt);
     }
@@ -53,27 +43,23 @@ class GameController extends GameComponent with ChangeNotifier {
   }
 
   void startStage() {
-    _running = true;
-    notifyListeners();
+    StatsProvider stats =
+        Provider.of<StatsProvider>(gameRef.context, listen: false);
+    stats.running = true;
   }
 
   void nextStage() {
     StatsProvider stats =
         Provider.of<StatsProvider>(gameRef.context, listen: false);
-    _running = false;
-    _stage++;
+    stats.running = false;
+    stats.updateStage();
     stats.resetEnemyCount();
-    notifyListeners();
   }
 
   Vector2? placementPosition;
 
   void setPlacementPosition(Vector2 position) {
     placementPosition = position;
-  }
-
-  activateSpecialAbility() {
-    // Implementation of special abilities
   }
 }
 
@@ -94,12 +80,12 @@ class EndGameManager {
 
     final enemies = gameController.gameRef.query<Enemy>();
     if (enemies.isEmpty) {
-      gameController.running = false;
+      stats.running = false;
       final gameSensor = gameController.gameRef.query<EndGameSensor>().first;
       if (gameSensor.counter > gameController.config.countEnemyPermited) {
         showDialogEndGame('Game over!', true);
       } else {
-        showDialogEndGame('Stage ${gameController.stage} cleared!', false);
+        showDialogEndGame('Stage ${stats.stage} cleared!', false);
       }
     }
   }
