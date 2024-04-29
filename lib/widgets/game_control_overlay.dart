@@ -1,6 +1,7 @@
+import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bonfire_defense/game_managers/game_controller.dart';
 
 class GameControlOverlay extends StatelessWidget {
   static const String overlayName = 'gameControlOverlay';
@@ -79,24 +80,24 @@ class GameControlOverlay extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Selector<GameController, int>(
-                        selector: (_, controller) => controller.count,
+                      Selector<StatsProvider, int>(
+                        selector: (_, stats) => stats.count,
                         builder: (_, count, __) => Text(
                           'Count: $count',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 18),
                         ),
                       ),
-                      Selector<GameController, int>(
-                        selector: (_, controller) => controller.life,
+                      Selector<StatsProvider, int>(
+                        selector: (_, stats) => stats.life,
                         builder: (_, life, __) => Text(
                           'Life❤️: $life',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 18),
                         ),
                       ),
-                      Selector<GameController, int>(
-                        selector: (_, controller) => controller.score,
+                      Selector<StatsProvider, int>(
+                        selector: (_, stats) => stats.score,
                         builder: (_, score, __) => Text(
                           'Score: $score',
                           style: const TextStyle(

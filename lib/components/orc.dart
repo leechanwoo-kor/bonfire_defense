@@ -1,8 +1,10 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
   final GameController _gameController;
@@ -53,8 +55,12 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   @override
   void die() {
+    StatsProvider stats = Provider.of<StatsProvider>(
+        _gameController.gameRef.context,
+        listen: false);
     removeFromParent();
-    _gameController.updateStats(countChange: -1, scoreChange: 1);
+    stats.updateCount(-1);
+    stats.updateScore(1);
     super.die();
   }
 

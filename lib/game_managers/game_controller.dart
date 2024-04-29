@@ -2,18 +2,16 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
+import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
   final GameConfig config;
   Map<DefenderType, int> defenderCount = {};
   bool _running = false;
-  int _countEnemy = 0;
-  int _count = 0;
-  int _score = 0;
-  int _life = 10;
   int _stage = 1;
 
   late DefenderManager _defenderManager;
@@ -35,10 +33,6 @@ class GameController extends GameComponent with ChangeNotifier {
   }
 
   bool get isRunning => _running;
-  int get countEnemy => _countEnemy;
-  int get count => _count;
-  int get score => _score;
-  int get life => _life;
   int get stage => _stage;
 
   set running(bool value) {
@@ -46,19 +40,6 @@ class GameController extends GameComponent with ChangeNotifier {
       _running = value;
       notifyListeners();
     }
-  }
-
-  void updateStats({
-    int enemyChange = 0,
-    int countChange = 0,
-    int scoreChange = 0,
-    int lifeChange = 0,
-  }) {
-    _countEnemy += enemyChange;
-    _count += countChange;
-    _score += scoreChange;
-    _life += lifeChange;
-    notifyListeners();
   }
 
   @override
@@ -77,9 +58,11 @@ class GameController extends GameComponent with ChangeNotifier {
   }
 
   void nextStage() {
+    StatsProvider stats =
+        Provider.of<StatsProvider>(gameRef.context, listen: false);
     _running = false;
     _stage++;
-    _countEnemy = 0; // Reset the count for the new stage
+    stats.resetEnemyCount();
     notifyListeners();
   }
 
@@ -100,8 +83,12 @@ class EndGameManager {
   EndGameManager(this.gameController);
 
   void checkEndGame(double dt) {
+    StatsProvider stats = Provider.of<StatsProvider>(
+        gameController.gameRef.context,
+        listen: false);
+
     if (!gameController.checkInterval('addsEnemy', 1000, dt)) return;
-    if (gameController.countEnemy != gameController.config.enemies.length) {
+    if (stats.countEnemy != gameController.config.enemies.length) {
       return;
     }
 
