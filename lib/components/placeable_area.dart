@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
-import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/util/game_config.dart';
@@ -15,13 +15,13 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
   @override
   void onTap() {
-    final gameController = gameRef.context.read<GameController>();
+    final state = gameRef.context.read<DefenderStateProvider>();
     OverlayProvider overlayProvider = gameRef.context.read<OverlayProvider>();
 
     // Overlay가 활성화되어 있거나 현재 위치에 이미 다른 유닛이 배치되어 있으면 실행하지 않음
     if (!overlayProvider.isActive(UnitSelectionOverlay.overlayName) &&
         isPlaceable()) {
-      gameController.setPlacementPosition(position);
+      state.setPlacementPosition(position);
       overlayProvider.setActive(UnitSelectionOverlay.overlayName, true);
     }
   }

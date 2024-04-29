@@ -1,4 +1,5 @@
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class UnitSelectionOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
 
-    return Consumer<GameController>(builder: (context, controller, child) {
+    return Consumer<DefenderStateProvider>(builder: (context, state, child) {
       if (!overlayProvider.isActive(UnitSelectionOverlay.overlayName)) {
         return const SizedBox.shrink();
       }
@@ -32,10 +33,10 @@ class UnitSelectionOverlay extends StatelessWidget {
                   .map((type) => _buildUnitCard(
                         context,
                         type: type,
-                        onTap: controller.getDefenderCount(type) > 0
+                        onTap: state.getDefenderCount(type) > 0
                             ? null
-                            : () =>
-                                placeDefender(context, type, overlayProvider),
+                            : () => placeDefender(
+                                context, type, overlayProvider, state),
                       ))
                   .toList(),
             ),
@@ -54,9 +55,12 @@ class UnitSelectionOverlay extends StatelessWidget {
   }
 
   void placeDefender(BuildContext context, DefenderType type,
-      OverlayProvider overlayProvider) {
-    controller.addDefender(type, controller.placementPosition);
-    overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
+      OverlayProvider overlayProvider, DefenderStateProvider state) {
+    if (state.placementPosition != null) {
+      controller.addDefender(type, state.placementPosition);
+      state.addDefender(type);
+      overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
+    }
   }
 
   Widget _buildUnitCard(BuildContext context,

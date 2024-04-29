@@ -1,3 +1,4 @@
+import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class GameStateProvider with ChangeNotifier {
 }
 
 class DefenderStateProvider with ChangeNotifier {
-  Map<DefenderType, int> _defenderCounts = {};
+  final Map<DefenderType, int> _defenderCounts = {};
 
   void addDefender(DefenderType type) {
     if (_defenderCounts.containsKey(type)) {
@@ -40,6 +41,14 @@ class DefenderStateProvider with ChangeNotifier {
 
   int getDefenderCount(DefenderType type) {
     return _defenderCounts[type] ?? 0;
+  }
+
+  Vector2? _placementPosition;
+  Vector2? get placementPosition => _placementPosition;
+
+  void setPlacementPosition(Vector2? position) {
+    _placementPosition = position;
+    notifyListeners();
   }
 }
 

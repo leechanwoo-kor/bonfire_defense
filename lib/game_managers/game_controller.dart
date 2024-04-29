@@ -24,10 +24,6 @@ class GameController extends GameComponent with ChangeNotifier {
     _defenderManager.addDefender(type, tilePosition);
   }
 
-  int getDefenderCount(DefenderType type) {
-    return _defenderManager.getDefenderCount(type);
-  }
-
   @override
   void update(double dt) {
     GameStateProvider state =
@@ -48,11 +44,5 @@ class GameController extends GameComponent with ChangeNotifier {
     state.stopGame();
     state.nextStage();
     enemyState.resetEnemyCount();
-  }
-
-  Vector2? placementPosition;
-
-  void setPlacementPosition(Vector2 position) {
-    placementPosition = position;
   }
 }
