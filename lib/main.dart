@@ -3,7 +3,6 @@ import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/util/stages.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -27,7 +26,6 @@ void main() {
         ChangeNotifierProvider(create: (_) => GameStateProvider()),
         ChangeNotifierProvider(create: (_) => DefenderStateProvider()),
         ChangeNotifierProvider(create: (_) => EnemyStateProvider()),
-        ChangeNotifierProvider(create: (_) => StatsProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),
       ],
       child: const MyApp(),

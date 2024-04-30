@@ -3,7 +3,6 @@ import 'package:bonfire_defense/components/orc.dart';
 import 'package:bonfire_defense/game_managers/entity_manager.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +34,7 @@ class EnemyManager extends EntityManager {
     EnemyStateProvider enemyState = Provider.of<EnemyStateProvider>(
         gameController.gameRef.context,
         listen: false);
-    StatsProvider gameStats = Provider.of<StatsProvider>(
+    GameStateProvider state = Provider.of<GameStateProvider>(
         gameController.gameRef.context,
         listen: false);
 
@@ -58,7 +57,7 @@ class EnemyManager extends EntityManager {
       try {
         gameController.gameRef.add(enemy);
         enemyState.updateEnemyCount(1);
-        gameStats.updateCount(1);
+        state.updateCount(1);
       } catch (e) {
         print("Error adding enemy: $e");
       }

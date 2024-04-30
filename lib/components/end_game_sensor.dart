@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
-import 'package:bonfire_defense/provider/stats_provider.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:provider/provider.dart';
 
 class EndGameSensor extends GameDecoration with Sensor {
@@ -12,15 +12,16 @@ class EndGameSensor extends GameDecoration with Sensor {
       {required super.position, required super.size});
   @override
   void onContact(GameComponent component) {
-    StatsProvider stats = Provider.of<StatsProvider>(
-        _gameController.gameRef.context,
-        listen: false);
+    GameStateProvider state = Provider.of<GameStateProvider>(
+      _gameController.context,
+      listen: false,
+    );
 
     if (component is Enemy) {
       counter++;
       component.removeFromParent();
-      stats.updateCount(-1);
-      stats.updateLife(-1);
+      state.updateCount(-1);
+      state.updateLife(-1);
     }
     super.onContact(component);
   }
