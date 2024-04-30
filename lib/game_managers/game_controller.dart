@@ -8,17 +8,19 @@ import 'package:provider/provider.dart';
 class GameController extends GameComponent with ChangeNotifier {
   late EnemyManager _enemyManager;
   late EndGameManager _endGameManager;
+  late GameStateProvider? _gameStateProvider;
 
-  GameController() {
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
     _enemyManager = EnemyManager(this);
     _endGameManager = EndGameManager(this);
+    _gameStateProvider = Provider.of<GameStateProvider>(context, listen: false);
   }
 
   @override
   void update(double dt) {
-    GameStateProvider state =
-        Provider.of<GameStateProvider>(gameRef.context, listen: false);
-    if (state.state == GameState.running) {
+    if (_gameStateProvider?.state == GameState.running) {
       _enemyManager.update(dt);
       _endGameManager.checkEndGame(dt);
     }
