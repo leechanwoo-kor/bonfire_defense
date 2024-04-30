@@ -58,8 +58,7 @@ class UnitSelectionOverlay extends StatelessWidget {
   void placeDefender(BuildContext context, DefenderType type,
       OverlayProvider overlayProvider, DefenderStateProvider state) {
     if (state.placementPosition != null) {
-      DefenderManager defenderManager =
-          Provider.of<DefenderManager>(context, listen: false);
+      DefenderManager defenderManager = DefenderManager(context.read());
       defenderManager.addDefender(type, state.placementPosition);
       state.addDefender(type);
       overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);

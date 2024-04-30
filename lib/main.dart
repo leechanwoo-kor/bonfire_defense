@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
@@ -27,9 +26,6 @@ void main() {
                 GameConfigProvider(GameStages.get(GameStageEnum.main))),
         ChangeNotifierProvider(create: (_) => GameStateProvider()),
         ChangeNotifierProvider(create: (_) => DefenderStateProvider()),
-        ChangeNotifierProvider(
-          create: (context) => DefenderManager(context.read<GameController>()),
-        ),
         ChangeNotifierProvider(create: (_) => EnemyStateProvider()),
         ChangeNotifierProvider(create: (_) => StatsProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),

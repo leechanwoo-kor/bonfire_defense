@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GameController extends GameComponent with ChangeNotifier {
-  // late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
   late EndGameManager _endGameManager;
 
   GameController() {
-    // _defenderManager = DefenderManager(this);
     _enemyManager = EnemyManager(this);
     _endGameManager = EndGameManager(this);
   }
@@ -21,7 +19,7 @@ class GameController extends GameComponent with ChangeNotifier {
     GameStateProvider state =
         Provider.of<GameStateProvider>(gameRef.context, listen: false);
     if (state.state == GameState.running) {
-      _enemyManager.addsEnemy(dt);
+      _enemyManager.update(dt);
       _endGameManager.checkEndGame(dt);
     }
 
