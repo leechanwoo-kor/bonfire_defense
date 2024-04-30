@@ -2,6 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/widgets/game_control_overlay.dart';
 import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
@@ -9,11 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BonfireDefense extends StatefulWidget {
-  static const tileSize = GameConfig.tileSize;
-  final GameConfig config;
+  static const tileSize = 16.0;
   const BonfireDefense({
     super.key,
-    required this.config,
   });
 
   @override
@@ -22,23 +21,24 @@ class BonfireDefense extends StatefulWidget {
 
 class _BonfireDefenseState extends State<BonfireDefense> {
   late GameController controller;
+  late GameConfig config;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     controller = Provider.of<GameController>(context, listen: false);
+    config =
+        Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
   }
 
   @override
   Widget build(BuildContext context) {
-    final double mapWidth =
-        widget.config.tilesInWidth * BonfireDefense.tileSize;
-    final double mapHeight =
-        widget.config.tilesInHeight * BonfireDefense.tileSize;
+    final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
+    final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
 
     return BonfireWidget(
       map: WorldMapByTiled(
-        TiledReader.asset(widget.config.tiledMapPath),
+        TiledReader.asset(config.tiledMapPath),
         objectsBuilder: {
           'endGame': (properties) {
             return EndGameSensor(

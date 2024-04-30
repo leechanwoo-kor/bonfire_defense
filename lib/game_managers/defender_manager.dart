@@ -1,12 +1,13 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/game_managers/game_controller.dart';
-import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/util/game_config.dart';
+import 'package:flutter/widgets.dart';
 
-class DefenderManager {
+class DefenderManager extends ChangeNotifier {
   final GameController gameController;
   Map<DefenderType, int> defenderCount = {};
 
@@ -22,6 +23,7 @@ class DefenderManager {
     GameComponent defender = createDefender(type, unitPosition);
     gameController.gameRef.add(defender);
     defenderCount[type] = (defenderCount[type] ?? 0) + 1;
+    notifyListeners();
   }
 
   static GameComponent createDefender(DefenderType type, Vector2 position) {

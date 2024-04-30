@@ -16,8 +16,8 @@ class GameControlOverlay extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Selector<StatsProvider, int>(
-              selector: (_, stats) => stats.stage,
+            child: Selector<GameStateProvider, int>(
+              selector: (_, state) => state.currentStage,
               builder: (_, stage, __) => Text(
                 'Stage: $stage',
                 style: const TextStyle(

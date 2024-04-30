@@ -3,7 +3,6 @@ import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -39,8 +38,8 @@ class PlaceableArea extends GameDecoration with TapGesture {
       Rect defenderRect = Rect.fromLTWH(
         defender.position.x - (BonfireDefense.tileSize - defender.size.x) / 2,
         defender.position.y - (BonfireDefense.tileSize - defender.size.y) / 2,
-        GameConfig.tileSize,
-        GameConfig.tileSize,
+        16.0,
+        16.0,
       );
 
       // 사각형이 중첩되는지 확인합니다.

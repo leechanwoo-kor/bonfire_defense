@@ -1,3 +1,4 @@
+import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
@@ -57,7 +58,9 @@ class UnitSelectionOverlay extends StatelessWidget {
   void placeDefender(BuildContext context, DefenderType type,
       OverlayProvider overlayProvider, DefenderStateProvider state) {
     if (state.placementPosition != null) {
-      controller.addDefender(type, state.placementPosition);
+      DefenderManager defenderManager =
+          Provider.of<DefenderManager>(context, listen: false);
+      defenderManager.addDefender(type, state.placementPosition);
       state.addDefender(type);
       overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
     }

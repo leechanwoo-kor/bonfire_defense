@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/stats_provider.dart';
 import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:bonfire_defense/util/game_config.dart';
@@ -20,9 +21,9 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
           size: Vector2.all(32),
           speed: _speedDefault,
           life: 100 +
-              (Provider.of<StatsProvider>(_gameController.gameRef.context,
+              (Provider.of<GameStateProvider>(_gameController.gameRef.context,
                               listen: false)
-                          .stage -
+                          .currentStage -
                       1) *
                   10,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),

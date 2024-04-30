@@ -1,7 +1,6 @@
 import 'package:bonfire_defense/screens/about_page.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
-import 'package:bonfire_defense/util/stages.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -14,11 +13,7 @@ class AppRoutes {
     return {
       homeRoute: (_) => const MenuPage(),
       aboutRoute: (_) => const AboutPage(),
-      gameRoute: (context) => BonfireDefense(
-            config: GameStages.get(
-              ModalRoute.of(context)?.settings.arguments as GameStageEnum,
-            ),
-          ),
+      gameRoute: (context) => const BonfireDefense(),
     };
   }
 
