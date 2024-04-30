@@ -24,9 +24,9 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   late GameConfig config;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    controller = Provider.of<GameController>(context, listen: false);
+  void initState() {
+    super.initState();
+    controller = GameController();
     config =
         Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
   }

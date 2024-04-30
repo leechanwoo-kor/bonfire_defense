@@ -47,6 +47,15 @@ class GameStateProvider with ChangeNotifier {
 
   GameState get state => _state;
   int get currentStage => _currentStage;
+
+  void init() {
+    _state = GameState.idle;
+    _currentStage = 1;
+    _count = 0;
+    _score = 0;
+    _life = 10;
+    notifyListeners();
+  }
 }
 
 class DefenderStateProvider with ChangeNotifier {
@@ -70,6 +79,12 @@ class DefenderStateProvider with ChangeNotifier {
 
   void setPlacementPosition(Vector2? position) {
     _placementPosition = position;
+    notifyListeners();
+  }
+
+  void init() {
+    _defenderCounts.clear();
+    _placementPosition = null;
     notifyListeners();
   }
 }

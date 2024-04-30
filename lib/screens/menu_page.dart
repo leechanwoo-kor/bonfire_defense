@@ -1,5 +1,8 @@
+import 'package:bonfire_defense/provider/game_state_provider.dart';
+import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/util/stages.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -15,10 +18,25 @@ class MenuPage extends StatelessWidget {
             SizedBox(
               width: 200,
               child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed(
-                  '/game',
-                  arguments: GameStageEnum.main,
-                ),
+                onPressed: () {
+                  GameStateProvider stateProvider =
+                      Provider.of<GameStateProvider>(context, listen: false);
+                  stateProvider.init();
+                  DefenderStateProvider defenderStateProvider =
+                      Provider.of<DefenderStateProvider>(context,
+                          listen: false);
+                  defenderStateProvider.init();
+                  EnemyStateProvider enemyStateProvider =
+                      Provider.of<EnemyStateProvider>(context, listen: false);
+                  enemyStateProvider.resetEnemyCount();
+                  OverlayProvider overlayProvider =
+                      Provider.of<OverlayProvider>(context, listen: false);
+                  overlayProvider.clearOverlays();
+                  Navigator.of(context).pushNamed(
+                    '/game',
+                    arguments: GameStageEnum.main,
+                  );
+                },
                 child: const Text('Play'),
               ),
             ),

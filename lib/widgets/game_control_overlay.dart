@@ -43,6 +43,12 @@ class GameControlOverlay extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Menu'),
+                        ),
+                        ElevatedButton(
                           onPressed: () => {},
                           child: const Text('Special Ability'),
                         ),

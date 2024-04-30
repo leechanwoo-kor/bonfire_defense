@@ -13,4 +13,9 @@ class OverlayProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clearOverlays() {
+    _overlaysActive.clear();
+    notifyListeners();
+  }
 }

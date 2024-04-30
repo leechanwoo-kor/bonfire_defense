@@ -16,7 +16,6 @@ class Archer extends Defender {
 
   @override
   void performAttack() {
-    // 구체적인 궁수의 공격 로직 구현
     seeComponentType<Enemy>(
       radiusVision: visionRange,
       observed: (enemies) {
