@@ -7,18 +7,23 @@ import 'package:bonfire_defense/util/game_config.dart';
 import 'package:provider/provider.dart';
 
 class EnemyManager extends EntityManager {
-  EnemyManager(super.controller);
+  final GameStateProvider state;
+  final EnemyStateProvider enemyStateProvider;
+  final GameConfig config;
+
+  EnemyManager(super.gameController)
+      : state = Provider.of<GameStateProvider>(gameController.gameRef.context,
+            listen: false),
+        enemyStateProvider = Provider.of<EnemyStateProvider>(
+            gameController.gameRef.context,
+            listen: false),
+        config = Provider.of<GameConfigProvider>(gameController.gameRef.context,
+                listen: false)
+            .currentConfig;
 
   @override
   bool canAddEntity() {
-    EnemyStateProvider enemyState = Provider.of<EnemyStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
-    GameConfig config = Provider.of<GameConfigProvider>(
-            gameController.gameRef.context,
-            listen: false)
-        .currentConfig;
-    return enemyState.enemyCount < config.enemies.length;
+    return enemyStateProvider.enemyCount < config.enemies.length;
   }
 
   @override
@@ -27,21 +32,14 @@ class EnemyManager extends EntityManager {
   }
 
   void _createEnemy() {
-    GameConfig config = Provider.of<GameConfigProvider>(
-            gameController.gameRef.context,
-            listen: false)
-        .currentConfig;
-    EnemyStateProvider enemyState = Provider.of<EnemyStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
     GameStateProvider state = Provider.of<GameStateProvider>(
         gameController.gameRef.context,
         listen: false);
 
-    if (enemyState.enemyCount >= config.enemies.length) return;
+    if (enemyStateProvider.enemyCount >= config.enemies.length) return;
     Enemy enemy;
 
-    switch (config.enemies[enemyState.enemyCount]) {
+    switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
         enemy = Orc(
           gameController,
@@ -56,7 +54,7 @@ class EnemyManager extends EntityManager {
     if (!enemy.isMounted) {
       try {
         gameController.gameRef.add(enemy);
-        enemyState.updateEnemyCount(1);
+        enemyStateProvider.updateEnemyCount(1);
         state.updateCount(1);
       } catch (e) {
         print("Error adding enemy: $e");

@@ -11,34 +11,29 @@ import 'package:provider/provider.dart';
 class EndGameManager {
   final GameController gameController;
 
-  EndGameManager(this.gameController);
+  final GameConfig config;
+  final GameStateProvider state;
+  final EnemyStateProvider enemyStateProvider;
+
+  EndGameManager(this.gameController)
+      : state = Provider.of<GameStateProvider>(gameController.gameRef.context,
+            listen: false),
+        enemyStateProvider = Provider.of<EnemyStateProvider>(
+            gameController.gameRef.context,
+            listen: false),
+        config = Provider.of<GameConfigProvider>(gameController.gameRef.context,
+                listen: false)
+            .currentConfig;
 
   void nextStage() {
-    GameStateProvider state = Provider.of<GameStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
-    EnemyStateProvider enemyState = Provider.of<EnemyStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
     state.stopGame();
     state.nextStage();
-    enemyState.resetEnemyCount();
+    enemyStateProvider.resetEnemyCount();
   }
 
   void checkEndGame(double dt) {
-    GameConfig config = Provider.of<GameConfigProvider>(
-            gameController.gameRef.context,
-            listen: false)
-        .currentConfig;
-    GameStateProvider state = Provider.of<GameStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
-    EnemyStateProvider enemyState = Provider.of<EnemyStateProvider>(
-        gameController.gameRef.context,
-        listen: false);
-
     if (!gameController.checkInterval('addsEnemy', 1000, dt)) return;
-    if (enemyState.enemyCount != config.enemies.length) {
+    if (enemyStateProvider.enemyCount != config.enemies.length) {
       return;
     }
 

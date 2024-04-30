@@ -10,15 +10,15 @@ import 'package:provider/provider.dart';
 
 class DefenderManager {
   final GameController gameController;
+  final DefenderStateProvider defenderStateProvider;
 
-  DefenderManager(this.gameController);
+  DefenderManager(this.gameController)
+      : defenderStateProvider = Provider.of<DefenderStateProvider>(
+            gameController.gameRef.context,
+            listen: false);
 
   void addDefender(DefenderType type, Vector2? tilePosition) {
     if (tilePosition == null) return;
-
-    DefenderStateProvider defenderStateProvider =
-        Provider.of<DefenderStateProvider>(gameController.gameRef.context,
-            listen: false);
 
     Vector2 unitSize = Vector2.all(32.0);
     Vector2 unitPosition = Vector2(
