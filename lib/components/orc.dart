@@ -1,30 +1,22 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/game_managers/game_controller.dart';
-import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/util/character_spritesheet.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
-  final GameController _gameController;
+  final void Function(Orc) onDeath;
 
   static const _speedDefault = GameConfig.defaultSpeed;
   final List<Vector2> path;
 
-  Orc(
-    this._gameController, {
+  Orc({
+    required this.onDeath,
     required super.position,
     required this.path,
+    required int life,
   }) : super(
           size: Vector2.all(32),
           speed: _speedDefault,
-          life: 100 +
-              (Provider.of<GameStateProvider>(_gameController.gameRef.context,
-                              listen: false)
-                          .currentStage -
-                      1) *
-                  10,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
         ) {
     setupPathFinding(
@@ -60,14 +52,9 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   @override
   void die() {
-    GameStateProvider state = Provider.of<GameStateProvider>(
-      _gameController.context,
-      listen: false,
-    );
-    removeFromParent();
-    state.updateCount(-1);
-    state.updateScore(1);
     super.die();
+    onDeath(this);
+    removeFromParent();
   }
 
   @override

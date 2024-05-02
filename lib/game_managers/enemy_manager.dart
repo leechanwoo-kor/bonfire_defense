@@ -51,12 +51,13 @@ class EnemyManager extends EntityManager {
     switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
         enemy = Orc(
-          gameController,
+          onDeath: death,
           position: Vector2(
             config.enemyInitialPosition.x - 8,
             config.enemyInitialPosition.y - 8,
           ),
           path: List.of(config.enemyPath),
+          life: 100 + (state.currentStage * 10),
         );
         break;
     }
@@ -69,5 +70,10 @@ class EnemyManager extends EntityManager {
         print("Error adding enemy: $e");
       }
     }
+  }
+
+  void death(Orc orc) {
+    state.updateCount(-1);
+    state.updateScore(1);
   }
 }
