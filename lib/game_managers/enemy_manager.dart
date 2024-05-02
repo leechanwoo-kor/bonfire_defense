@@ -22,6 +22,8 @@ class EnemyManager extends EntityManager {
             .currentConfig;
 
   Future<void> startWave() async {
+    state.waving();
+
     while (canAddEntity()) {
       addEntity();
       await Future.delayed(const Duration(milliseconds: 1000));

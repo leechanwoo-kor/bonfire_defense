@@ -54,9 +54,9 @@ class GameControlOverlay extends StatelessWidget {
                         ),
                         Selector<GameStateProvider, bool>(
                           selector: (_, state) =>
-                              state.state == GameState.running,
-                          builder: (context, isRunning, __) => ElevatedButton(
-                            onPressed: isRunning
+                              state.state == GameState.waving,
+                          builder: (context, isWaving, __) => ElevatedButton(
+                            onPressed: isWaving
                                 ? null
                                 : () {
                                     Provider.of<GameStateProvider>(context,

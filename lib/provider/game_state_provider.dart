@@ -2,7 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 
-enum GameState { idle, running, paused, ended }
+enum GameState { idle, running, paused, ended, waving }
 
 class GameStateProvider with ChangeNotifier {
   GameState _state = GameState.idle;
@@ -42,6 +42,16 @@ class GameStateProvider with ChangeNotifier {
 
   void nextStage() {
     _currentStage++;
+    notifyListeners();
+  }
+
+  void waving() {
+    _state = GameState.waving;
+    notifyListeners();
+  }
+
+  void endGame() {
+    _state = GameState.ended;
     notifyListeners();
   }
 
