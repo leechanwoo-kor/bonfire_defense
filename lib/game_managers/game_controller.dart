@@ -38,8 +38,6 @@ class GameController extends GameComponent {
       _enemyManager.startWave();
       checkWave();
     }
-
-    super.update(dt);
   }
 
   void addDefender(DefenderType type, Vector2? tilePosition) {
