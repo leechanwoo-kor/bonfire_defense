@@ -4,14 +4,15 @@ import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/game_managers/game_manager.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/util/game_config.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GameController extends GameComponent with ChangeNotifier {
+class GameController extends GameComponent {
   late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
   late EndGameManager _endGameManager;
   late GameStateProvider _gameStateProvider;
+
+  bool _waveStarted = false;
 
   @override
   Future<void> onLoad() async {
@@ -24,8 +25,15 @@ class GameController extends GameComponent with ChangeNotifier {
 
   @override
   void update(double dt) {
+    super.update(dt);
+    if (_gameStateProvider.state == GameState.running && !_waveStarted) {
+      _enemyManager.startWave();
+      _waveStarted = true;
+    } else if (_gameStateProvider.state != GameState.running) {
+      _waveStarted = false;
+    }
+
     if (_gameStateProvider.state == GameState.running) {
-      _enemyManager.update(dt);
       _endGameManager.checkEndGame(dt);
     }
 

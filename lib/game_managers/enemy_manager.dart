@@ -21,6 +21,13 @@ class EnemyManager extends EntityManager {
                 listen: false)
             .currentConfig;
 
+  Future<void> startWave() async {
+    while (canAddEntity()) {
+      addEntity();
+      await Future.delayed(const Duration(milliseconds: 1000));
+    }
+  }
+
   @override
   bool canAddEntity() {
     return enemyStateProvider.enemyCount < config.enemies.length;
