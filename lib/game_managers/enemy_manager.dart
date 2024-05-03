@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/orc.dart';
+import 'package:bonfire_defense/components/skeleton.dart';
 import 'package:bonfire_defense/game_managers/entity_manager.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
@@ -60,6 +61,16 @@ class EnemyManager extends EntityManager {
           life: 100 + (state.currentStage * 10),
         );
         break;
+      case EnemyType.skeleton:
+        enemy = Skeleton(
+          onDeath: death,
+          position: Vector2(
+            config.enemyInitialPosition.x - 8,
+            config.enemyInitialPosition.y - 8,
+          ),
+          path: List.of(config.enemyPath),
+          life: 100 + (state.currentStage * 10),
+        );
     }
     if (!enemy.isMounted) {
       try {
@@ -72,7 +83,7 @@ class EnemyManager extends EntityManager {
     }
   }
 
-  void death(Orc orc) {
+  void death(SimpleEnemy enemy) {
     state.updateCount(-1);
     state.updateScore(1);
   }

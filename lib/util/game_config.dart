@@ -22,6 +22,6 @@ class GameConfig {
   });
 }
 
-enum EnemyType { orc }
+enum EnemyType { orc, skeleton }
 
 enum DefenderType { arch, knight, lancer }
