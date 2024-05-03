@@ -16,7 +16,6 @@ class Knight extends Defender {
 
   @override
   void performAttack() {
-    // 구체적인 기사의 공격 로직 구현
     seeComponentType<Enemy>(
       radiusVision: visionRange,
       observed: (enemies) {
