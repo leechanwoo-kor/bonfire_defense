@@ -2,7 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/screens/game.dart';
 
-abstract class Defender extends SimpleAlly with DragGesture, EndDragInTile {
+abstract class Defender extends SimpleAlly {
   final int attackInterval;
   final double visionRange;
   double lastAttackTime = 0;
@@ -49,8 +49,9 @@ mixin EndDragInTile on DragGesture {
     Rect proposedRect = Rect.fromLTWH(proposedPosition.x, proposedPosition.y,
         BonfireDefense.tileSize, BonfireDefense.tileSize);
 
-    // 게임 내 모든 PlaceableArea 가져오기
+    // 게임 내 모든 PlaceableArea, Defender 가져오기
     Iterable<PlaceableArea> placeableAreas = gameRef.query<PlaceableArea>();
+    Iterable<Defender> defenders = gameRef.query<Defender>();
 
     bool isPlaceable = placeableAreas.any((area) {
       Rect areaRect = Rect.fromLTWH(
@@ -58,7 +59,13 @@ mixin EndDragInTile on DragGesture {
       return areaRect.overlaps(proposedRect);
     });
 
-    if (isPlaceable) {
+    bool hasDefender = defenders.any((defender) {
+      Rect defenderRect = Rect.fromLTWH(defender.position.x,
+          defender.position.y, defender.size.x, defender.size.y);
+      return defender != this && defenderRect.overlaps(proposedRect);
+    });
+
+    if (isPlaceable && !hasDefender) {
       position = proposedPosition;
       originalPosition = proposedPosition;
     } else {
