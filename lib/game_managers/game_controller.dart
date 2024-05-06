@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/end_game_sensor.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
@@ -56,8 +55,7 @@ class GameController extends GameComponent {
         if (_gameStateProvider.count == 0) {
           _gameStateProvider.stopGame();
 
-          final gameSensor = gameRef.query<EndGameSensor>().first;
-          if (gameSensor.counter > config.countEnemyPermited) {
+          if (_gameStateProvider.life <= 0) {
             var msg = 'Game over!';
             showDialogEndGame(msg, true);
           } else {

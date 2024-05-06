@@ -6,7 +6,6 @@ class GameConfig {
   final List<Vector2> enemyPath;
   final Vector2 enemyInitialPosition;
   final List<EnemyType> enemies;
-  final int countEnemyPermited;
 
   final int tilesInWidth;
   final int tilesInHeight;
@@ -16,7 +15,6 @@ class GameConfig {
     required this.enemyPath,
     required this.enemyInitialPosition,
     required this.enemies,
-    this.countEnemyPermited = 1,
     required this.tilesInWidth,
     required this.tilesInHeight,
   });
