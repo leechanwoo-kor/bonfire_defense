@@ -33,10 +33,8 @@ class UnitSelectionOverlay extends StatelessWidget {
                   .map((type) => _buildUnitCard(
                         context,
                         type: type,
-                        onTap: state.getDefenderCount(type) > 0
-                            ? null
-                            : () => placeDefender(
-                                context, type, overlayProvider, state),
+                        onTap: () => placeDefender(
+                            context, type, overlayProvider, state),
                       ))
                   .toList(),
             ),
@@ -56,17 +54,25 @@ class UnitSelectionOverlay extends StatelessWidget {
 
   void placeDefender(BuildContext context, DefenderType type,
       OverlayProvider overlayProvider, DefenderStateProvider state) {
-    if (state.placementPosition != null) {
+    GameStateProvider gameState =
+        Provider.of<GameStateProvider>(context, listen: false);
+
+    if (state.placementPosition != null &&
+        gameState.gold >= defenderCosts[type]!) {
       controller.addDefender(type, state.placementPosition);
       state.addDefender(type);
+      gameState.updateGold(-defenderCosts[type]!);
       overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
     }
   }
 
   Widget _buildUnitCard(BuildContext context,
       {required DefenderType type, VoidCallback? onTap}) {
-    bool isDisabled = onTap == null;
-    double opacity = isDisabled ? 0.5 : 1.0;
+    int cost = defenderCosts[type]!;
+    GameStateProvider gameState = Provider.of<GameStateProvider>(context);
+
+    bool canAfford = gameState.gold >= cost;
+    double opacity = canAfford ? 1.0 : 0.5;
 
     String title;
     AssetImage image;
@@ -88,7 +94,7 @@ class UnitSelectionOverlay extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: gameState.gold >= cost ? onTap : null,
       child: Opacity(
         opacity: opacity,
         child: Card(
@@ -103,7 +109,7 @@ class UnitSelectionOverlay extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    color: isDisabled ? Colors.grey : Colors.black,
+                    color: canAfford ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

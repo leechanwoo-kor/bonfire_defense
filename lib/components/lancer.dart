@@ -37,7 +37,7 @@ class Lancer extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      25,
+      35,
       null,
     );
   }

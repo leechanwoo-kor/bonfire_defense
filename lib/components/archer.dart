@@ -11,7 +11,7 @@ class Archer extends Defender {
           animation:
               CharacterSpritesheet(fileName: 'archer.png').getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 2000,
+          attackInterval: 500,
         );
 
   @override
@@ -37,7 +37,7 @@ class Archer extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      20,
+      10,
       null,
     );
   }
