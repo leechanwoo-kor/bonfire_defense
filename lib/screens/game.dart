@@ -5,7 +5,6 @@ import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:bonfire_defense/widgets/game_control_overlay.dart';
-import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +54,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
       ),
       // backgroundColor: const Color(0xff85a643),
       cameraConfig: CameraConfig(
-        initPosition: Vector2(mapWidth / 2, mapHeight / 2),
+        initPosition: Vector2(mapWidth / 2, mapHeight),
         moveOnlyMapArea: true,
         initialMapZoomFit: InitialMapZoomFitEnum.fitWidth,
       ),
@@ -63,16 +62,12 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         controller,
       ],
       overlayBuilderMap: {
-        GameControlOverlay.overlayName: (context, game) =>
-            const GameControlOverlay(),
-        UnitSelectionOverlay.overlayName: (context, game) =>
-            UnitSelectionOverlay(
+        GameControlOverlay.overlayName: (context, game) => GameControlOverlay(
               controller: controller,
             ),
       },
-      initialActiveOverlays: [
+      initialActiveOverlays: const [
         GameControlOverlay.overlayName,
-        UnitSelectionOverlay.overlayName,
       ],
     );
   }

@@ -1,9 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/widgets/unit_selection_overlay.dart';
 import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
@@ -15,26 +13,21 @@ class PlaceableArea extends GameDecoration with TapGesture {
   @override
   void onTap() {
     final state = gameRef.context.read<DefenderStateProvider>();
-    OverlayProvider overlayProvider = gameRef.context.read<OverlayProvider>();
-
-    // Overlay가 활성화되어 있거나 현재 위치에 이미 다른 유닛이 배치되어 있으면 실행하지 않음
-    if (!overlayProvider.isActive(UnitSelectionOverlay.overlayName) &&
-        isPlaceable()) {
+    if (isPlaceable()) {
       state.setPlacementPosition(position);
-      overlayProvider.setActive(UnitSelectionOverlay.overlayName, true);
     }
   }
 
 // 현재 위치에 Defender가 이미 배치되어 있는지 확인
   bool isPlaceable() {
-    // 게임에서 모든 Defender를 가져옵니다.
+    // 게임에서 모든 Defender를 가져옴
     Iterable<GameComponent> defenders = gameRef.query<Defender>();
 
-    // 현재 PlaceableArea의 위치에 대한 사각형을 생성합니다.
+    // 현재 PlaceableArea의 위치에 대한 사각형 생성
     Rect placeableRect = Rect.fromLTWH(position.x, position.y, size.x, size.y);
 
     for (var defender in defenders) {
-      // 각 Defender의 위치와 크기에 대한 사각형을 생성합니다.
+      // 각 Defender의 위치와 크기에 대한 사각형 생성
       Rect defenderRect = Rect.fromLTWH(
         defender.position.x - (BonfireDefense.tileSize - defender.size.x) / 2,
         defender.position.y - (BonfireDefense.tileSize - defender.size.y) / 2,
@@ -42,11 +35,11 @@ class PlaceableArea extends GameDecoration with TapGesture {
         16.0,
       );
 
-      // 사각형이 중첩되는지 확인합니다.
+      // 사각형이 중첩되는지 확인
       if (placeableRect.overlaps(defenderRect)) {
-        return false; // 여기에 이미 Defender가 배치되어 있습니다.
+        return false; // 이미 Defender 배치되어 있음
       }
     }
-    return true; // Defender가 배치되어 있지 않으므로 배치 가능합니다.
+    return true; // Defender가 배치되어 있지 않으므로 배치 가능
   }
 }
