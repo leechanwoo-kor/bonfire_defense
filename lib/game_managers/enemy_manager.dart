@@ -49,6 +49,8 @@ class EnemyManager extends EntityManager {
     if (enemyStateProvider.enemyCount >= config.enemies.length) return;
     Enemy enemy;
 
+    int baseLife = 100 + (state.currentStage * 10);
+
     switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
         enemy = Orc(
@@ -58,7 +60,7 @@ class EnemyManager extends EntityManager {
             config.enemyInitialPosition.y - 8,
           ),
           path: List.of(config.enemyPath),
-          life: 100 + (state.currentStage * 10),
+          life: baseLife,
         );
         break;
       case EnemyType.skeleton:
@@ -69,7 +71,7 @@ class EnemyManager extends EntityManager {
             config.enemyInitialPosition.y - 8,
           ),
           path: List.of(config.enemyPath),
-          life: 100 + (state.currentStage * 10),
+          life: baseLife,
         );
     }
     if (!enemy.isMounted) {
@@ -85,6 +87,6 @@ class EnemyManager extends EntityManager {
 
   void death(SimpleEnemy enemy) {
     state.updateCount(-1);
-    state.updateGold(1);
+    state.updateGold(10);
   }
 }

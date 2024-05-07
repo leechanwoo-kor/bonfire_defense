@@ -11,7 +11,7 @@ class Lancer extends Defender {
           animation: CharacterSpritesheet(fileName: 'human-soldier-red.png')
               .getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 1000,
+          attackInterval: 2500,
         );
 
   @override
@@ -37,7 +37,7 @@ class Lancer extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      35,
+      100,
       null,
     );
   }

@@ -25,7 +25,7 @@ enum EnemyType { orc, skeleton }
 enum DefenderType { arch, knight, lancer }
 
 const Map<DefenderType, int> defenderCosts = {
-  DefenderType.arch: 2,
-  DefenderType.knight: 3,
-  DefenderType.lancer: 5,
+  DefenderType.arch: 20,
+  DefenderType.knight: 30,
+  DefenderType.lancer: 50,
 };

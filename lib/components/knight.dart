@@ -38,7 +38,7 @@ class Knight extends Defender {
     for (var enemy in enemies) {
       enemy.receiveDamage(
         AttackFromEnum.PLAYER_OR_ALLY,
-        40,
+        30,
         null,
       );
     }

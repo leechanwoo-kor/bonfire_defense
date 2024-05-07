@@ -8,7 +8,7 @@ class GameStateProvider with ChangeNotifier {
   GameState _state = GameState.idle;
   int _currentStage = 1;
   int _count = 0;
-  int _gold = 5;
+  int _gold = 50;
   int _life = 10;
 
   int get count => _count;
@@ -62,7 +62,7 @@ class GameStateProvider with ChangeNotifier {
     _state = GameState.idle;
     _currentStage = 1;
     _count = 0;
-    _gold = 5;
+    _gold = 50;
     _life = 10;
     notifyListeners();
   }
