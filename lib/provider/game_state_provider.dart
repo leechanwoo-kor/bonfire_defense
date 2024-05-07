@@ -92,6 +92,15 @@ class DefenderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  DefenderType? _selectedDefender;
+
+  void setSelectedDefender(DefenderType? type) {
+    _selectedDefender = type;
+    notifyListeners();
+  }
+
+  DefenderType? get selectedDefender => _selectedDefender;
+
   void init() {
     _defenderCounts.clear();
     _placementPosition = null;

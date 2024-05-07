@@ -1,18 +1,35 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/util/game_config.dart';
 import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
+  GameController controller;
+
   PlaceableArea({
     required super.position,
     required super.size,
+    required this.controller,
   });
 
   @override
   void onTap() {
     final state = gameRef.context.read<DefenderStateProvider>();
+    final gameState = gameRef.context.read<GameStateProvider>();
+    final type = state.selectedDefender;
+
+    if (type != null &&
+        isPlaceable() &&
+        gameState.gold >= defenderCosts[type]!) {
+      controller.addDefender(type, position);
+      state.addDefender(type);
+      gameState.updateGold(-defenderCosts[type]!);
+      state.setSelectedDefender(null); // 유닛 배치 후 선택 해제
+    }
+
     if (isPlaceable()) {
       state.setPlacementPosition(position);
     }

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class GameControlOverlay extends StatelessWidget {
   static const String overlayName = 'gameControlOverlay';
-  final GameController controller; // 필요에 따라 컨트롤러 전달
+  final GameController controller;
 
   const GameControlOverlay({super.key, required this.controller});
 
@@ -81,13 +81,6 @@ class UnitSelectionInterface extends StatelessWidget {
                   .toList(),
             ),
             const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     overlayProvider.setActive(
-            //         UnitSelectionOverlay.overlayName, false);
-            //   },
-            //   child: const Text('취소'),
-            // ),
           ],
         ),
       );
@@ -96,16 +89,7 @@ class UnitSelectionInterface extends StatelessWidget {
 
   void placeDefender(BuildContext context, DefenderType type,
       OverlayProvider overlayProvider, DefenderStateProvider state) {
-    GameStateProvider gameState =
-        Provider.of<GameStateProvider>(context, listen: false);
-
-    if (state.placementPosition != null &&
-        gameState.gold >= defenderCosts[type]!) {
-      controller.addDefender(type, state.placementPosition);
-      state.addDefender(type);
-      gameState.updateGold(-defenderCosts[type]!);
-      // overlayProvider.setActive(UnitSelectionOverlay.overlayName, false);
-    }
+    state.setSelectedDefender(type);
   }
 
   Widget _buildUnitCard(BuildContext context,
@@ -113,8 +97,12 @@ class UnitSelectionInterface extends StatelessWidget {
     int cost = defenderCosts[type]!;
     GameStateProvider gameState = Provider.of<GameStateProvider>(context);
 
+    DefenderStateProvider defenderState =
+        Provider.of<DefenderStateProvider>(context, listen: true);
+
     bool canAfford = gameState.gold >= cost;
     double opacity = canAfford ? 1.0 : 0.5;
+    bool isSelected = defenderState.selectedDefender == type;
 
     String title;
     AssetImage image;
@@ -141,6 +129,13 @@ class UnitSelectionInterface extends StatelessWidget {
         opacity: opacity,
         child: Card(
           color: Colors.white,
+          shadowColor: isSelected ? Colors.yellowAccent : Colors.black,
+          elevation: isSelected ? 8.0 : 2.0,
+          shape: isSelected
+              ? RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.yellowAccent, width: 2))
+              : RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

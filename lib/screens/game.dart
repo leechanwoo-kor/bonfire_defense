@@ -47,6 +47,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
             );
           },
           'place': (properties) => PlaceableArea(
+                controller: controller,
                 position: properties.position,
                 size: properties.size,
               ),
