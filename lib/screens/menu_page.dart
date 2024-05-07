@@ -1,6 +1,7 @@
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/util/stages.dart';
+import 'package:bonfire_defense/screens/about_page.dart';
+import 'package:bonfire_defense/screens/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,14 @@ class MenuPage extends StatelessWidget {
           children: [
             buildMenuButton(context, 'Play', () => startGame(context)),
             const SizedBox(height: 16),
-            buildMenuButton(context, 'About',
-                () => Navigator.of(context).pushNamed('/about')),
+            buildMenuButton(
+                context,
+                'About',
+                () => Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutPage()),
+                    (route) => false)),
+            // () => Navigator.of(context).pushNamed('/about')),
           ],
         ),
       ),
@@ -38,7 +45,11 @@ class MenuPage extends StatelessWidget {
 
   void startGame(BuildContext context) {
     initializeProviders(context);
-    Navigator.of(context).pushNamed('/game', arguments: GameStageEnum.main);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const BonfireDefense()),
+        (route) => false);
+    // Navigator.of(context).pushNamed('/game', arguments: GameStageEnum.main);
   }
 
   void initializeProviders(BuildContext context) {

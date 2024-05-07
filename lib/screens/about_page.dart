@@ -1,3 +1,4 @@
+import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -5,7 +6,10 @@ class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   void _back(BuildContext context) {
-    Navigator.of(context).pop();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const MenuPage()),
+        (route) => false);
   }
 
   @override

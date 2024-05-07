@@ -1,4 +1,5 @@
 import 'package:bonfire_defense/provider/game_state_provider.dart';
+import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,11 @@ class GameControlOverlay extends StatelessWidget {
                       children: <Widget>[
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MenuPage()),
+                                (route) => false);
                           },
                           child: const Text('Menu'),
                         ),
