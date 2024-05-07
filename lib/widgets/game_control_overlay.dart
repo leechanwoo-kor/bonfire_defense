@@ -102,9 +102,9 @@ class GameControlOverlay extends StatelessWidget {
                         ),
                       ),
                       Selector<GameStateProvider, int>(
-                        selector: (_, state) => state.score,
-                        builder: (_, score, __) => Text(
-                          'Score: $score',
+                        selector: (_, state) => state.gold,
+                        builder: (_, gold, __) => Text(
+                          'Gold🪙: $gold',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 18),
                         ),

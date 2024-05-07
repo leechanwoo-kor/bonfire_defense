@@ -85,6 +85,6 @@ class EnemyManager extends EntityManager {
 
   void death(SimpleEnemy enemy) {
     state.updateCount(-1);
-    state.updateScore(1);
+    state.updateGold(1);
   }
 }

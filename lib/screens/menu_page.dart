@@ -15,42 +15,36 @@ class MenuPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () {
-                  GameStateProvider stateProvider =
-                      Provider.of<GameStateProvider>(context, listen: false);
-                  stateProvider.init();
-                  DefenderStateProvider defenderStateProvider =
-                      Provider.of<DefenderStateProvider>(context,
-                          listen: false);
-                  defenderStateProvider.init();
-                  EnemyStateProvider enemyStateProvider =
-                      Provider.of<EnemyStateProvider>(context, listen: false);
-                  enemyStateProvider.resetEnemyCount();
-                  OverlayProvider overlayProvider =
-                      Provider.of<OverlayProvider>(context, listen: false);
-                  overlayProvider.clearOverlays();
-                  Navigator.of(context).pushNamed(
-                    '/game',
-                    arguments: GameStageEnum.main,
-                  );
-                },
-                child: const Text('Play'),
-              ),
-            ),
+            buildMenuButton(context, 'Play', () => startGame(context)),
             const SizedBox(height: 16),
-            SizedBox(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed('/about'),
-                child: const Text('About'),
-              ),
-            ),
+            buildMenuButton(context, 'About',
+                () => Navigator.of(context).pushNamed('/about')),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildMenuButton(
+      BuildContext context, String label, VoidCallback onPressed) {
+    return SizedBox(
+      width: 200,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Text(label),
+      ),
+    );
+  }
+
+  void startGame(BuildContext context) {
+    initializeProviders(context);
+    Navigator.of(context).pushNamed('/game', arguments: GameStageEnum.main);
+  }
+
+  void initializeProviders(BuildContext context) {
+    context.read<GameStateProvider>().init();
+    context.read<DefenderStateProvider>().init();
+    context.read<EnemyStateProvider>().resetEnemyCount();
+    context.read<OverlayProvider>().clearOverlays();
   }
 }
