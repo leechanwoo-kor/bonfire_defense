@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bonfire_defense/components/defenderCard.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
@@ -14,28 +12,42 @@ class GameControlOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Align(
-          alignment: Alignment.topCenter,
-          child: GameStageDisplay(),
-        ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                UnitSelectionInterface(),
-                const GameControlButtons(),
-                const GameStatusBar(),
-              ],
+    return Consumer2<GameStateProvider, DefenderStateProvider>(
+        builder: (context, gameState, defenderState, child) {
+      void placeDefender(BuildContext context, int index, DefenderType type) {
+        defenderState.setSelectedDefender(type);
+        defenderState.setSelectedDefenderIndex(index);
+      }
+
+      return Column(
+        children: [
+          const Align(
+            alignment: Alignment.topCenter,
+            child: GameStageDisplay(),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  UnitSelectionInterface(
+                    selectedTypes: defenderState.availableDefenders.toList(),
+                    gold: gameState.gold,
+                    selectedDefender: defenderState.selectedDefender,
+                    selectedDefenderIndex: defenderState.selectedDefenderIndex,
+                    placeDefender: placeDefender,
+                  ),
+                  const GameControlButtons(),
+                  const GameStatusBar(),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 
@@ -62,55 +74,53 @@ class GameStageDisplay extends StatelessWidget {
 }
 
 class UnitSelectionInterface extends StatelessWidget {
-  final Random random = Random();
+  final List<DefenderType> selectedTypes;
+  final int gold;
+  final DefenderType? selectedDefender;
+  final int? selectedDefenderIndex;
+  final Function(BuildContext, int, DefenderType) placeDefender;
 
-  UnitSelectionInterface({super.key});
+  const UnitSelectionInterface({
+    super.key,
+    required this.selectedTypes,
+    required this.gold,
+    required this.selectedDefender,
+    required this.selectedDefenderIndex,
+    required this.placeDefender,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<GameStateProvider, DefenderStateProvider>(
-        builder: (context, gameState, defenderState, child) {
-      List<DefenderType> selectedTypes =
-          defenderState.availableDefenders.toList();
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.black.withOpacity(0.8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(selectedTypes.length, (index) {
+              DefenderType type = selectedTypes[index];
+              DefenderCard card =
+                  DefenderCard.getCards().firstWhere((c) => c.type == type);
+              bool canAfford = gold >= card.cost;
+              bool isSelected =
+                  selectedDefender == type && selectedDefenderIndex == index;
 
-      return Container(
-        alignment: Alignment.center,
-        color: Colors.black.withOpacity(0.8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(selectedTypes.length, (index) {
-                DefenderType type = selectedTypes[index];
-                DefenderCard card =
-                    DefenderCard.getCards().firstWhere((c) => c.type == type);
-                bool canAfford = gameState.gold >= card.cost;
-                bool isSelected = defenderState.selectedDefender == type &&
-                    defenderState.selectedDefenderIndex == index;
-
-                return UnitCard(
-                  index: index,
-                  card: card,
-                  canAfford: canAfford,
-                  isSelected: isSelected,
-                  onTap: () =>
-                      placeDefender(context, index, type, defenderState),
-                );
-              }),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      );
-    });
-  }
-
-  void placeDefender(BuildContext context, int index, DefenderType type,
-      DefenderStateProvider state) {
-    state.setSelectedDefender(type);
-    state.setSelectedDefenderIndex(index);
+              return UnitCard(
+                index: index,
+                card: card,
+                canAfford: canAfford,
+                isSelected: isSelected,
+                onTap: () => placeDefender(context, index, type),
+              );
+            }),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
   }
 }
 
@@ -232,8 +242,6 @@ class GameControlButtons extends StatelessWidget {
                 child: const Text('Start'),
               ),
             ),
-
-            // Additional buttons can be added here if needed.
           ],
         ),
       ),
