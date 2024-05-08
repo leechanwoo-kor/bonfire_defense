@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
@@ -54,12 +56,18 @@ class GameControlOverlay extends StatelessWidget {
 
 class UnitSelectionInterface extends StatelessWidget {
   final GameController controller;
+  final Random random = Random();
 
-  const UnitSelectionInterface({super.key, required this.controller});
+  UnitSelectionInterface({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
+
+    List<DefenderType> shuffledTypes = DefenderType.values.toList();
+    shuffledTypes.shuffle(random);
+
+    List<DefenderType> selectedTypes = shuffledTypes.take(3).toList();
 
     return Consumer<DefenderStateProvider>(builder: (context, state, child) {
       return Container(
@@ -71,7 +79,7 @@ class UnitSelectionInterface extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: DefenderType.values
+              children: selectedTypes
                   .map((type) => _buildUnitCard(
                         context,
                         type: type,
@@ -108,16 +116,20 @@ class UnitSelectionInterface extends StatelessWidget {
     AssetImage image;
     switch (type) {
       case DefenderType.arch:
-        title = '궁수 배치';
+        title = 'Archer';
         image = const AssetImage('assets/images/arch.png');
         break;
       case DefenderType.knight:
-        title = '기사 배치';
+        title = 'Knight';
         image = const AssetImage('assets/images/knight.png');
         break;
       case DefenderType.lancer:
-        title = '창병 배치';
+        title = 'Lancer';
         image = const AssetImage('assets/images/lancer.png');
+        break;
+      case DefenderType.orcArcher:
+        title = 'Orc Archer';
+        image = const AssetImage('assets/images/arch.png');
         break;
       default:
         throw UnimplementedError('Defender type $type not supported');
@@ -141,10 +153,18 @@ class UnitSelectionInterface extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image(image: image, height: 80),
-                const SizedBox(height: 8),
                 Text(
                   title,
+                  style: TextStyle(
+                    color: canAfford ? Colors.black : Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Image(image: image, height: 80),
+                const SizedBox(height: 4),
+                Text(
+                  '${cost}G',
                   style: TextStyle(
                     color: canAfford ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
