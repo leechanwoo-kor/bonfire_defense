@@ -3,6 +3,7 @@ import 'package:bonfire_defense/components/archer.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/components/orc_archer.dart';
+import 'package:bonfire_defense/components/orc_warrior.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
@@ -41,6 +42,8 @@ class DefenderManager {
         return Lancer(position: position);
       case DefenderType.orcArcher:
         return OrcArcher(position: position);
+      case DefenderType.orcWarrior:
+        return OrcWarrior(position: position);
       default:
         throw UnimplementedError('Defender type $type not supported');
     }

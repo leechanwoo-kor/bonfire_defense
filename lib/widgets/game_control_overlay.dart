@@ -129,6 +129,10 @@ class UnitSelectionInterface extends StatelessWidget {
         title = 'Orc Archer';
         image = const AssetImage('assets/images/arch.png');
         break;
+      case DefenderType.orcWarrior:
+        title = 'Orc Warrior';
+        image = const AssetImage('assets/images/knight.png');
+        break;
       default:
         throw UnimplementedError('Defender type $type not supported');
     }

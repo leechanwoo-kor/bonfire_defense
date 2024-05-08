@@ -22,13 +22,14 @@ class GameConfig {
 
 enum EnemyType { orc, skeleton }
 
-enum DefenderType { arch, knight, lancer, orcArcher }
+enum DefenderType { arch, knight, lancer, orcArcher, orcWarrior }
 
 const Map<DefenderType, int> defenderCosts = {
   DefenderType.arch: 20,
   DefenderType.knight: 30,
   DefenderType.lancer: 50,
   DefenderType.orcArcher: 20,
+  DefenderType.orcWarrior: 30,
 };
 
 const Map<DefenderType, String> defenderNames = {
@@ -36,4 +37,5 @@ const Map<DefenderType, String> defenderNames = {
   DefenderType.knight: "기사",
   DefenderType.lancer: "창병",
   DefenderType.orcArcher: "오크 궁수",
+  DefenderType.orcWarrior: "오크 전사",
 };
