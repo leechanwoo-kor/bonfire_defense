@@ -60,7 +60,7 @@ class GameController extends GameComponent {
             showDialogEndGame(msg, true);
           } else {
             var msg = 'Stage ${_gameStateProvider.currentStage} cleared!';
-            showDialogEndGame(msg, false);
+            showFullOverlay(context, msg, false);
           }
         }
       }
@@ -92,5 +92,46 @@ class GameController extends GameComponent {
         ],
       ),
     );
+  }
+
+  void showFullOverlay(BuildContext context, String message, bool isGameOver) {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        child: Material(
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: Text(
+              message,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // 오버레이를 화면에 추가
+    Overlay.of(context).insert(overlayEntry);
+
+    // 특정 시간 후에 오버레이 제거 및 다음 액션 수행
+    Future.delayed(const Duration(seconds: 1), () {
+      overlayEntry.remove();
+      if (isGameOver) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const MenuPage()),
+          (route) => false,
+        );
+      } else {
+        nextStage();
+      }
+    });
   }
 }
