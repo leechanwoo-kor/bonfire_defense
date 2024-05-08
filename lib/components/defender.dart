@@ -1,14 +1,21 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/widgets/defender_detail_overlay.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-abstract class Defender extends SimpleAlly {
+abstract class Defender extends SimpleAlly with TapGesture {
   final int attackInterval;
   final double visionRange;
+  final DefenderType type;
   double lastAttackTime = 0;
   Vector2 originalPosition = Vector2.zero();
 
   Defender({
+    required this.type,
     required super.position,
     required super.size,
     required this.attackInterval,
@@ -37,6 +44,24 @@ abstract class Defender extends SimpleAlly {
   }
 
   void performAttack();
+
+  @override
+  void onTap() {
+    showDialog(
+      context: gameRef.context,
+      builder: (context) => DefenderInfoDialog(
+          defender: this,
+          onClose: () => Navigator.pop(context),
+          onSell: () => sellDefender(context)),
+    );
+  }
+
+  void sellDefender(BuildContext context) {
+    int refundAmount = defenderCosts[type]! ~/ 2;
+    gameRef.context.read<GameStateProvider>().updateGold(refundAmount);
+    removeFromParent();
+    Navigator.pop(context);
+  }
 }
 
 mixin EndDragInTile on DragGesture {
