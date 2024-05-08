@@ -65,8 +65,7 @@ class UnitSelectionInterface extends StatelessWidget {
     OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
 
     return Consumer<DefenderStateProvider>(builder: (context, state, child) {
-      List<DefenderType> selectedTypes =
-          state.availableDefenders.take(3).toList();
+      List<DefenderType> selectedTypes = state.availableDefenders.toList();
 
       return Container(
         alignment: Alignment.center,
