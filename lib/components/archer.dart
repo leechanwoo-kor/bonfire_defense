@@ -8,6 +8,7 @@ class Archer extends Defender {
   Archer({required super.position})
       : super(
           type: DefenderType.arch,
+          attackDamage: 20,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 5,
           animation:
@@ -39,7 +40,7 @@ class Archer extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      20,
+      attackDamage,
       null,
     );
   }

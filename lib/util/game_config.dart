@@ -39,3 +39,11 @@ const Map<DefenderType, String> defenderNames = {
   DefenderType.orcArcher: "오크 궁수",
   DefenderType.orcWarrior: "오크 전사",
 };
+
+const Map<DefenderType, String> defenderType = {
+  DefenderType.arch: "power",
+  DefenderType.knight: "power",
+  DefenderType.lancer: "splash",
+  DefenderType.orcArcher: "speed",
+  DefenderType.orcWarrior: "splash",
+};

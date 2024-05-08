@@ -8,6 +8,7 @@ class OrcArcher extends Defender {
   OrcArcher({required super.position})
       : super(
           type: DefenderType.orcArcher,
+          attackDamage: 20,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 5,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
@@ -38,7 +39,7 @@ class OrcArcher extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      20,
+      attackDamage,
       null,
     );
   }

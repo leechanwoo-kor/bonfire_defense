@@ -8,6 +8,7 @@ class Lancer extends Defender {
   Lancer({required super.position})
       : super(
           type: DefenderType.lancer,
+          attackDamage: 100,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 4,
           animation: CharacterSpritesheet(fileName: 'human-soldier-red.png')
@@ -39,7 +40,7 @@ class Lancer extends Defender {
   void _executeDamage(Enemy enemy) {
     enemy.receiveDamage(
       AttackFromEnum.PLAYER_OR_ALLY,
-      100,
+      attackDamage,
       null,
     );
   }

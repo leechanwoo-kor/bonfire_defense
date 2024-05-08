@@ -8,6 +8,7 @@ class OrcWarrior extends Defender {
   OrcWarrior({required super.position})
       : super(
           type: DefenderType.orcWarrior,
+          attackDamage: 30,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 3,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
@@ -39,7 +40,7 @@ class OrcWarrior extends Defender {
     for (var enemy in enemies) {
       enemy.receiveDamage(
         AttackFromEnum.PLAYER_OR_ALLY,
-        30,
+        attackDamage,
         null,
       );
     }

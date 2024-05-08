@@ -11,11 +11,13 @@ abstract class Defender extends SimpleAlly with TapGesture {
   final int attackInterval;
   final double visionRange;
   final DefenderType type;
+  final double attackDamage;
   double lastAttackTime = 0;
   Vector2 originalPosition = Vector2.zero();
 
   Defender({
     required this.type,
+    required this.attackDamage,
     required super.position,
     required super.size,
     required this.attackInterval,
@@ -50,9 +52,11 @@ abstract class Defender extends SimpleAlly with TapGesture {
     showDialog(
       context: gameRef.context,
       builder: (context) => DefenderInfoDialog(
-          defender: this,
-          onClose: () => Navigator.pop(context),
-          onSell: () => sellDefender(context)),
+        defender: this,
+        onClose: () => Navigator.pop(context),
+        onSell: () => sellDefender(context),
+        onUpgrade: () {},
+      ),
     );
   }
 

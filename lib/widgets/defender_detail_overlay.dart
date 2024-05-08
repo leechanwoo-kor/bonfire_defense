@@ -4,14 +4,16 @@ import 'package:bonfire_defense/components/defender.dart';
 
 class DefenderInfoDialog extends StatelessWidget {
   final Defender defender;
-  final VoidCallback onClose; // Changed from Function to VoidCallback
-  final VoidCallback onSell; // Changed from Function to VoidCallback
+  final VoidCallback onClose;
+  final VoidCallback onSell;
+  final VoidCallback onUpgrade;
 
   const DefenderInfoDialog({
     super.key,
     required this.defender,
     required this.onClose,
     required this.onSell,
+    required this.onUpgrade,
   });
 
   @override
@@ -23,25 +25,49 @@ class DefenderInfoDialog extends StatelessWidget {
         alignment: Alignment.topRight,
         children: [
           Container(
-            padding: const EdgeInsets.all(16.0),
-            width: 300.0,
-            height: 250.0,
+            padding: const EdgeInsets.fromLTRB(0, 16.0, 16.0, 16.0),
+            width: 250.0,
+            height: 150.0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Defender Information",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text("Type: ${defenderNames[defender.type]}"),
-                Text(
-                    "Position: (${defender.position.x}, ${defender.position.y})"),
-                Text("Attack Interval: ${defender.attackInterval}ms"),
-                Text("Vision Range: ${defender.visionRange} units"),
-                ElevatedButton(
-                  onPressed: onSell,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child:
-                      Text("Sell (Get ${defenderCosts[defender.type]! ~/ 2}G)"),
+                Row(
+                  children: [
+                    Image.asset('assets/images/logo/bonfire.gif',
+                        width: 50.0, height: 50.0),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${defenderNames[defender.type]}",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          Text("Attack Power: ${defender.attackDamage}"),
+                          Text("Attack Type: ${defenderType[defender.type]}"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: onSell,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red, elevation: 4.0),
+                      child: const Text("Sell"),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: onUpgrade,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green, elevation: 4.0),
+                      child: const Text("Upgrade"),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -51,7 +77,8 @@ class DefenderInfoDialog extends StatelessWidget {
             top: 4.0,
             child: InkResponse(
               onTap: onClose,
-              child: const Icon(Icons.close, color: Colors.black),
+              child: Image.asset('assets/images/icons/X.png',
+                  width: 50.0, height: 50.0),
             ),
           ),
         ],

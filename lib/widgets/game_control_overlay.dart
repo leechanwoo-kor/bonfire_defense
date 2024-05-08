@@ -269,16 +269,28 @@ class GameStatusBar extends StatelessWidget {
           ),
           Selector<GameStateProvider, int>(
             selector: (_, state) => state.life,
-            builder: (_, life, __) => Text(
-              'Life❤️: $life',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            builder: (context, life, __) => Row(
+              children: [
+                Image.asset('assets/images/icons/HeartFull.png',
+                    width: 36.0, height: 36.0),
+                Text(
+                  ': $life',
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
             ),
           ),
           Selector<GameStateProvider, int>(
             selector: (_, state) => state.gold,
-            builder: (_, gold, __) => Text(
-              'Gold🪙: $gold',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            builder: (context, gold, __) => Row(
+              children: [
+                Image.asset('assets/images/icons/Coin.png',
+                    width: 52.0, height: 52.0),
+                Text(
+                  ': $gold',
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
             ),
           ),
         ],
