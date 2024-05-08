@@ -16,22 +16,9 @@ class GameControlOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
+        const Align(
           alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Selector<GameStateProvider, int>(
-              selector: (_, state) => state.currentStage,
-              builder: (_, stage, __) => Text(
-                'Stage: $stage',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          child: GameStageDisplay(),
         ),
         Expanded(
           child: Align(
@@ -52,6 +39,28 @@ class GameControlOverlay extends StatelessWidget {
   }
 }
 
+class GameStageDisplay extends StatelessWidget {
+  const GameStageDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<GameStateProvider, int>(
+      selector: (_, state) => state.currentStage,
+      builder: (_, stage, __) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'Stage: $stage',
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class UnitSelectionInterface extends StatelessWidget {
   final Random random = Random();
 
@@ -59,8 +68,10 @@ class UnitSelectionInterface extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DefenderStateProvider>(builder: (context, state, child) {
-      List<DefenderType> selectedTypes = state.availableDefenders.toList();
+    return Consumer2<GameStateProvider, DefenderStateProvider>(
+        builder: (context, gameState, defenderState, child) {
+      List<DefenderType> selectedTypes =
+          defenderState.availableDefenders.toList();
 
       return Container(
         alignment: Alignment.center,
@@ -72,11 +83,20 @@ class UnitSelectionInterface extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(selectedTypes.length, (index) {
+                DefenderType type = selectedTypes[index];
+                DefenderCard card =
+                    DefenderCard.getCards().firstWhere((c) => c.type == type);
+                bool canAfford = gameState.gold >= card.cost;
+                bool isSelected = defenderState.selectedDefender == type &&
+                    defenderState.selectedDefenderIndex == index;
+
                 return UnitCard(
                   index: index,
-                  type: selectedTypes[index],
-                  onTap: () => placeDefender(
-                      context, index, selectedTypes[index], state),
+                  card: card,
+                  canAfford: canAfford,
+                  isSelected: isSelected,
+                  onTap: () =>
+                      placeDefender(context, index, type, defenderState),
                 );
               }),
             ),
@@ -96,33 +116,26 @@ class UnitSelectionInterface extends StatelessWidget {
 
 class UnitCard extends StatelessWidget {
   final int index;
-  final DefenderType type;
+  final DefenderCard card;
+  final bool canAfford;
+  final bool isSelected;
   final VoidCallback onTap;
 
   const UnitCard({
     super.key,
     required this.index,
-    required this.type,
+    required this.card,
+    required this.canAfford,
+    required this.isSelected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    DefenderCard card =
-        DefenderCard.getCards().firstWhere((c) => c.type == type);
-    GameStateProvider gameState = Provider.of<GameStateProvider>(context);
-    DefenderStateProvider defenderState =
-        Provider.of<DefenderStateProvider>(context, listen: true);
-
-    bool canAfford = gameState.gold >= card.cost;
-    double opacity = canAfford ? 1.0 : 0.5;
-    bool isSelected = defenderState.selectedDefender == type &&
-        defenderState.selectedDefenderIndex == index;
-
     return GestureDetector(
       onTap: canAfford ? onTap : null,
       child: Opacity(
-        opacity: opacity,
+        opacity: canAfford ? 1.0 : 0.5,
         child: Card(
           color: Colors.white,
           shadowColor: isSelected ? Colors.yellowAccent : Colors.black,
