@@ -64,12 +64,10 @@ class UnitSelectionInterface extends StatelessWidget {
   Widget build(BuildContext context) {
     OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
 
-    List<DefenderType> shuffledTypes = DefenderType.values.toList();
-    shuffledTypes.shuffle(random);
-
-    List<DefenderType> selectedTypes = shuffledTypes.take(3).toList();
-
     return Consumer<DefenderStateProvider>(builder: (context, state, child) {
+      List<DefenderType> selectedTypes =
+          state.availableDefenders.take(3).toList();
+
       return Container(
         alignment: Alignment.center,
         color: Colors.black.withOpacity(0.8),
@@ -146,7 +144,7 @@ class UnitSelectionInterface extends StatelessWidget {
           shape: isSelected
               ? RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.yellowAccent, width: 2))
+                  side: const BorderSide(color: Colors.yellowAccent, width: 2))
               : RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -200,9 +198,24 @@ class GameControlButtons extends StatelessWidget {
               },
               child: const Text('Menu'),
             ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: const Text('Special Ability'),
+            Selector<GameStateProvider, int>(
+              selector: (_, state) => state.gold,
+              builder: (context, gold, __) => ElevatedButton(
+                onPressed: gold >= 10
+                    ? () {
+                        Provider.of<GameStateProvider>(context, listen: false)
+                            .updateGold(-10);
+                        Provider.of<DefenderStateProvider>(context,
+                                listen: false)
+                            .shuffleDefenders();
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  disabledForegroundColor: Colors.grey.withOpacity(0.38),
+                  disabledBackgroundColor: Colors.grey.withOpacity(0.12),
+                ),
+                child: const Text('Reroll(10G)'),
+              ),
             ),
             Selector<GameStateProvider, bool>(
               selector: (_, state) => state.state == GameState.waving,

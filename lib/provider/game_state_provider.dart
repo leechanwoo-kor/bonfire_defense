@@ -101,6 +101,13 @@ class DefenderStateProvider with ChangeNotifier {
 
   DefenderType? get selectedDefender => _selectedDefender;
 
+  List<DefenderType> availableDefenders = DefenderType.values;
+
+  void shuffleDefenders() {
+    availableDefenders = availableDefenders.toList()..shuffle();
+    notifyListeners();
+  }
+
   void init() {
     _defenderCounts.clear();
     _placementPosition = null;
