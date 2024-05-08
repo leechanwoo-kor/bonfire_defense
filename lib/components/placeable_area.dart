@@ -27,6 +27,7 @@ class PlaceableArea extends GameDecoration with TapGesture {
       controller.addDefender(type, position);
       state.addDefender(type);
       gameState.updateGold(-defenderCosts[type]!);
+      state.replaceDefenderAfterPlacement(type);
       state.setSelectedDefender(null); // 유닛 배치 후 선택 해제
     }
 

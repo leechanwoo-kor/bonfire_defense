@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,8 @@ class GameStateProvider with ChangeNotifier {
   int _gold = 50;
   int _life = 10;
 
+  GameState get state => _state;
+  int get currentStage => _currentStage;
   int get count => _count;
   int get gold => _gold;
   int get life => _life;
@@ -55,9 +59,6 @@ class GameStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  GameState get state => _state;
-  int get currentStage => _currentStage;
-
   void init() {
     _state = GameState.idle;
     _currentStage = 1;
@@ -69,14 +70,14 @@ class GameStateProvider with ChangeNotifier {
 }
 
 class DefenderStateProvider with ChangeNotifier {
+  DefenderStateProvider() {
+    init();
+  }
+
   final Map<DefenderType, int> _defenderCounts = {};
 
   void addDefender(DefenderType type) {
-    if (_defenderCounts.containsKey(type)) {
-      _defenderCounts[type] = _defenderCounts[type]! + 1;
-    } else {
-      _defenderCounts[type] = 1;
-    }
+    _defenderCounts[type] = (_defenderCounts[type] ?? 0) + 1;
     notifyListeners();
   }
 
@@ -101,14 +102,38 @@ class DefenderStateProvider with ChangeNotifier {
 
   DefenderType? get selectedDefender => _selectedDefender;
 
-  List<DefenderType> availableDefenders = DefenderType.values;
+  List<DefenderType> availableDefenders = [];
+
+  DefenderType pickRandomDefender() {
+    Random random = Random();
+    return DefenderType.values[random.nextInt(DefenderType.values.length)];
+  }
+
+  List<DefenderType> pickRandomDefenders(int count) {
+    Random random = Random();
+    return List.generate(
+        count,
+        (index) =>
+            DefenderType.values[random.nextInt(DefenderType.values.length)]);
+  }
 
   void shuffleDefenders() {
-    availableDefenders = availableDefenders.toList()..shuffle();
+    availableDefenders = pickRandomDefenders(3);
+    availableDefenders.shuffle();
+    availableDefenders = availableDefenders.take(3).toList();
     notifyListeners();
   }
 
+  void replaceDefenderAfterPlacement(DefenderType placedDefender) {
+    int index = availableDefenders.indexOf(placedDefender);
+    if (index != -1) {
+      availableDefenders[index] = pickRandomDefender();
+      notifyListeners();
+    }
+  }
+
   void init() {
+    shuffleDefenders();
     _defenderCounts.clear();
     _placementPosition = null;
     notifyListeners();
