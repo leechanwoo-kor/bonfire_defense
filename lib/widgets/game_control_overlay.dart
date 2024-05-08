@@ -77,14 +77,15 @@ class UnitSelectionInterface extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: selectedTypes
-                  .map((type) => _buildUnitCard(
-                        context,
-                        type: type,
-                        onTap: () => placeDefender(
-                            context, type, overlayProvider, state),
-                      ))
-                  .toList(),
+              children: List.generate(selectedTypes.length, (index) {
+                return _buildUnitCard(
+                  context,
+                  index: index,
+                  type: selectedTypes[index],
+                  onTap: () => placeDefender(context, index,
+                      selectedTypes[index], overlayProvider, state),
+                );
+              }),
             ),
             const SizedBox(height: 20),
           ],
@@ -93,13 +94,14 @@ class UnitSelectionInterface extends StatelessWidget {
     });
   }
 
-  void placeDefender(BuildContext context, DefenderType type,
+  void placeDefender(BuildContext context, int index, DefenderType type,
       OverlayProvider overlayProvider, DefenderStateProvider state) {
     state.setSelectedDefender(type);
+    state.setSelectedDefenderIndex(index);
   }
 
   Widget _buildUnitCard(BuildContext context,
-      {required DefenderType type, VoidCallback? onTap}) {
+      {required int index, required DefenderType type, VoidCallback? onTap}) {
     int cost = defenderCosts[type]!;
     GameStateProvider gameState = Provider.of<GameStateProvider>(context);
 
@@ -108,7 +110,8 @@ class UnitSelectionInterface extends StatelessWidget {
 
     bool canAfford = gameState.gold >= cost;
     double opacity = canAfford ? 1.0 : 0.5;
-    bool isSelected = defenderState.selectedDefender == type;
+    bool isSelected = defenderState.selectedDefender == type &&
+        defenderState.selectedDefenderIndex == index;
 
     String title;
     AssetImage image;
@@ -138,7 +141,7 @@ class UnitSelectionInterface extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: gameState.gold >= cost ? onTap : null,
+      onTap: canAfford ? onTap : null,
       child: Opacity(
         opacity: opacity,
         child: Card(

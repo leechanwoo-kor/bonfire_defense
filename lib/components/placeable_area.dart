@@ -20,15 +20,17 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final state = gameRef.context.read<DefenderStateProvider>();
     final gameState = gameRef.context.read<GameStateProvider>();
     final type = state.selectedDefender;
+    final index = state.selectedDefenderIndex;
 
-    if (type != null &&
+    if (index != null &&
+        type != null &&
         isPlaceable() &&
         gameState.gold >= defenderCosts[type]!) {
       controller.addDefender(type, position);
       state.addDefender(type);
       gameState.updateGold(-defenderCosts[type]!);
-      state.replaceDefenderAfterPlacement(type);
-      state.setSelectedDefender(null); // 유닛 배치 후 선택 해제
+      state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
+      state.setSelectedDefender(null);
     }
 
     if (isPlaceable()) {

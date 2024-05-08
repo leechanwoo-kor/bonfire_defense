@@ -124,13 +124,21 @@ class DefenderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void replaceDefenderAfterPlacement(DefenderType placedDefender) {
-    int index = availableDefenders.indexOf(placedDefender);
-    if (index != -1) {
+  void replaceDefenderAfterPlacement(int index) {
+    if (index < availableDefenders.length) {
       availableDefenders[index] = pickRandomDefender();
       notifyListeners();
     }
   }
+
+  int? _selectedDefenderIndex;
+
+  void setSelectedDefenderIndex(int index) {
+    _selectedDefenderIndex = index;
+    notifyListeners();
+  }
+
+  int? get selectedDefenderIndex => _selectedDefenderIndex;
 
   void init() {
     shuffleDefenders();
