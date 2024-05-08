@@ -71,8 +71,7 @@ class UnitSelectionInterface extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(selectedTypes.length, (index) {
-                return _buildUnitCard(
-                  context,
+                return UnitCard(
                   index: index,
                   type: selectedTypes[index],
                   onTap: () => placeDefender(
@@ -92,12 +91,24 @@ class UnitSelectionInterface extends StatelessWidget {
     state.setSelectedDefender(type);
     state.setSelectedDefenderIndex(index);
   }
+}
 
-  Widget _buildUnitCard(BuildContext context,
-      {required int index, required DefenderType type, VoidCallback? onTap}) {
+class UnitCard extends StatelessWidget {
+  final int index;
+  final DefenderType type;
+  final VoidCallback onTap;
+
+  const UnitCard({
+    super.key,
+    required this.index,
+    required this.type,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     int cost = defenderCosts[type]!;
     GameStateProvider gameState = Provider.of<GameStateProvider>(context);
-
     DefenderStateProvider defenderState =
         Provider.of<DefenderStateProvider>(context, listen: true);
 
