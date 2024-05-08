@@ -3,7 +3,7 @@ import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/routes.dart';
+import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -79,8 +79,10 @@ class GameController extends GameComponent {
             onPressed: () {
               Navigator.of(context).pop();
               if (isGameOver) {
-                Navigator.of(context).popUntil(
-                    (route) => route.settings.name == AppRoutes.homeRoute);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MenuPage()),
+                    (route) => false);
               } else {
                 nextStage();
               }

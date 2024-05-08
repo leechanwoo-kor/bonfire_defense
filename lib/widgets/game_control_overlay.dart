@@ -110,42 +110,14 @@ class UnitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     DefenderCard card =
         DefenderCard.getCards().firstWhere((c) => c.type == type);
-    int cost = card.cost;
     GameStateProvider gameState = Provider.of<GameStateProvider>(context);
     DefenderStateProvider defenderState =
         Provider.of<DefenderStateProvider>(context, listen: true);
 
-    bool canAfford = gameState.gold >= cost;
+    bool canAfford = gameState.gold >= card.cost;
     double opacity = canAfford ? 1.0 : 0.5;
     bool isSelected = defenderState.selectedDefender == type &&
         defenderState.selectedDefenderIndex == index;
-
-    String title;
-    AssetImage image;
-    switch (type) {
-      case DefenderType.arch:
-        title = 'Archer';
-        image = const AssetImage('assets/images/arch.png');
-        break;
-      case DefenderType.knight:
-        title = 'Knight';
-        image = const AssetImage('assets/images/knight.png');
-        break;
-      case DefenderType.lancer:
-        title = 'Lancer';
-        image = const AssetImage('assets/images/lancer.png');
-        break;
-      case DefenderType.orcArcher:
-        title = 'Orc Archer';
-        image = const AssetImage('assets/images/arch.png');
-        break;
-      case DefenderType.orcWarrior:
-        title = 'Orc Warrior';
-        image = const AssetImage('assets/images/knight.png');
-        break;
-      default:
-        throw UnimplementedError('Defender type $type not supported');
-    }
 
     return GestureDetector(
       onTap: canAfford ? onTap : null,
@@ -166,17 +138,17 @@ class UnitCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  title,
+                  card.name,
                   style: TextStyle(
                     color: canAfford ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Image(image: image, height: 80),
+                Image(image: AssetImage(card.imagePath), height: 80),
                 const SizedBox(height: 4),
                 Text(
-                  '${cost}G',
+                  '${card.cost}G',
                   style: TextStyle(
                     color: canAfford ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
