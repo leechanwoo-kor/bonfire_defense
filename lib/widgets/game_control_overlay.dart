@@ -1,8 +1,6 @@
 import 'dart:math';
 
-import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:bonfire_defense/util/game_config.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +8,8 @@ import 'package:provider/provider.dart';
 
 class GameControlOverlay extends StatelessWidget {
   static const String overlayName = 'gameControlOverlay';
-  final GameController controller;
 
-  const GameControlOverlay({super.key, required this.controller});
+  const GameControlOverlay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,7 @@ class GameControlOverlay extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                UnitSelectionInterface(controller: controller),
+                UnitSelectionInterface(),
                 const GameControlButtons(),
                 const GameStatusBar(),
               ],
@@ -55,15 +52,12 @@ class GameControlOverlay extends StatelessWidget {
 }
 
 class UnitSelectionInterface extends StatelessWidget {
-  final GameController controller;
   final Random random = Random();
 
-  UnitSelectionInterface({super.key, required this.controller});
+  UnitSelectionInterface({super.key});
 
   @override
   Widget build(BuildContext context) {
-    OverlayProvider overlayProvider = Provider.of<OverlayProvider>(context);
-
     return Consumer<DefenderStateProvider>(builder: (context, state, child) {
       List<DefenderType> selectedTypes = state.availableDefenders.toList();
 
@@ -81,8 +75,8 @@ class UnitSelectionInterface extends StatelessWidget {
                   context,
                   index: index,
                   type: selectedTypes[index],
-                  onTap: () => placeDefender(context, index,
-                      selectedTypes[index], overlayProvider, state),
+                  onTap: () => placeDefender(
+                      context, index, selectedTypes[index], state),
                 );
               }),
             ),
@@ -94,7 +88,7 @@ class UnitSelectionInterface extends StatelessWidget {
   }
 
   void placeDefender(BuildContext context, int index, DefenderType type,
-      OverlayProvider overlayProvider, DefenderStateProvider state) {
+      DefenderStateProvider state) {
     state.setSelectedDefender(type);
     state.setSelectedDefenderIndex(index);
   }

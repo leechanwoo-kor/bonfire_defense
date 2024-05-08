@@ -63,9 +63,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         controller,
       ],
       overlayBuilderMap: {
-        GameControlOverlay.overlayName: (context, game) => GameControlOverlay(
-              controller: controller,
-            ),
+        GameControlOverlay.overlayName: (context, game) =>
+            const GameControlOverlay(),
       },
       initialActiveOverlays: const [
         GameControlOverlay.overlayName,
