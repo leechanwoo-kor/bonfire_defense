@@ -1,9 +1,9 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/components/defenderCard.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
 import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
@@ -22,15 +22,16 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final type = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
-    if (index != null &&
-        type != null &&
-        isPlaceable() &&
-        gameState.gold >= defenderCosts[type]!) {
-      controller.addDefender(type, position);
-      state.addDefender(type);
-      gameState.updateGold(-defenderCosts[type]!);
-      state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
-      state.setSelectedDefender(null);
+    if (index != null && type != null && isPlaceable()) {
+      DefenderCard card =
+          DefenderCard.getCards().firstWhere((card) => card.type == type);
+      if (gameState.gold >= card.cost) {
+        controller.addDefender(type, position);
+        state.addDefender(type);
+        gameState.updateGold(-card.cost);
+        state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
+        state.setSelectedDefender(null);
+      }
     }
 
     if (isPlaceable()) {

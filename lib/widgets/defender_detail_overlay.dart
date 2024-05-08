@@ -1,6 +1,6 @@
-import 'package:bonfire_defense/util/game_config.dart';
-import 'package:flutter/material.dart';
 import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/components/defenderCard.dart';
+import 'package:flutter/material.dart';
 
 class DefenderInfoDialog extends StatelessWidget {
   final Defender defender;
@@ -18,6 +18,9 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DefenderCard card =
+        DefenderCard.getCards().firstWhere((c) => c.type == defender.type);
+
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -34,18 +37,17 @@ class DefenderInfoDialog extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset('assets/images/logo/bonfire.gif',
-                        width: 50.0, height: 50.0),
-                    const SizedBox(width: 10),
+                    Image.asset(card.imagePath, width: 50.0, height: 50.0),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("${defenderNames[defender.type]}",
+                          Text(card.name,
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                           Text("Attack Power: ${defender.attackDamage}"),
-                          Text("Attack Type: ${defenderType[defender.type]}"),
+                          Text("Attack Type: ${card.attackType}"),
                         ],
                       ),
                     ),

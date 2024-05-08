@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bonfire_defense/components/defenderCard.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:bonfire_defense/util/game_config.dart';
@@ -107,7 +108,9 @@ class UnitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int cost = defenderCosts[type]!;
+    DefenderCard card =
+        DefenderCard.getCards().firstWhere((c) => c.type == type);
+    int cost = card.cost;
     GameStateProvider gameState = Provider.of<GameStateProvider>(context);
     DefenderStateProvider defenderState =
         Provider.of<DefenderStateProvider>(context, listen: true);
