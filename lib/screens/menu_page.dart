@@ -1,3 +1,4 @@
+import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/about_page.dart';

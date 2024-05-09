@@ -82,16 +82,16 @@ class DefenderSelectionPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(selectedTypes.length, (index) {
               DefenderType type = selectedTypes[index];
-              DefenderInfo card =
+              DefenderInfo defenderInfo =
                   DefenderInfo.getInfos().firstWhere((c) => c.type == type);
-              bool canAfford = gold >= card.cost;
+              bool isActivated = gold >= defenderInfo.cost;
               bool isSelected =
                   selectedDefender == type && selectedDefenderIndex == index;
 
               return UnitCard(
                 index: index,
-                card: card,
-                canAfford: canAfford,
+                defenderInfo: defenderInfo,
+                isActivated: isActivated,
                 isSelected: isSelected,
                 onTap: () => placeDefender(context, index, type),
               );
@@ -106,16 +106,16 @@ class DefenderSelectionPanel extends StatelessWidget {
 
 class UnitCard extends StatelessWidget {
   final int index;
-  final DefenderInfo card;
-  final bool canAfford;
+  final DefenderInfo defenderInfo;
+  final bool isActivated;
   final bool isSelected;
   final VoidCallback onTap;
 
   const UnitCard({
     super.key,
     required this.index,
-    required this.card,
-    required this.canAfford,
+    required this.defenderInfo,
+    required this.isActivated,
     required this.isSelected,
     required this.onTap,
   });
@@ -123,9 +123,9 @@ class UnitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: canAfford ? onTap : null,
+      onTap: isActivated ? onTap : null,
       child: Opacity(
-        opacity: canAfford ? 1.0 : 0.5,
+        opacity: isActivated ? 1.0 : 0.5,
         child: Card(
           color: Colors.white,
           shadowColor: isSelected ? Colors.yellowAccent : Colors.black,
@@ -141,19 +141,19 @@ class UnitCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  card.name,
+                  defenderInfo.name,
                   style: TextStyle(
-                    color: canAfford ? Colors.black : Colors.grey,
+                    color: isActivated ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Image(image: AssetImage(card.imagePath), height: 80),
+                Image(image: AssetImage(defenderInfo.imagePath), height: 80),
                 const SizedBox(height: 4),
                 Text(
-                  '${card.cost}G',
+                  '${defenderInfo.cost}G',
                   style: TextStyle(
-                    color: canAfford ? Colors.black : Colors.grey,
+                    color: isActivated ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
