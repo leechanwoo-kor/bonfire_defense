@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/material.dart';
 
 enum GameState { idle, running, paused, ended, waving }

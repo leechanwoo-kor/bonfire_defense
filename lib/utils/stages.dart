@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 
 enum GameStageEnum { main }
 

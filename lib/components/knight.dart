@@ -1,8 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/character_spritesheet.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/character_spritesheet.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 
 class Knight extends Defender {
   Knight({required super.position})

@@ -7,7 +7,7 @@ import 'package:bonfire_defense/components/orc_warrior.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:provider/provider.dart';
 
 class DefenderManager {

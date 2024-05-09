@@ -1,9 +1,9 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/end_game_sensor.dart';
+import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/widgets/game_control_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

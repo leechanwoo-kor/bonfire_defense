@@ -3,7 +3,7 @@ import 'package:bonfire_defense/components/defenderCard.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/widgets/defender_detail_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

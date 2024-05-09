@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 
 class DefenderCard {
   final DefenderType type;

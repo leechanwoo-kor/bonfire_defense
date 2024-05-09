@@ -1,7 +1,7 @@
 import 'package:bonfire_defense/components/defenderCard.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

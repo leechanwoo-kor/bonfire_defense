@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/util/character_spritesheet.dart';
-import 'package:bonfire_defense/util/game_config.dart';
+import 'package:bonfire_defense/utils/character_spritesheet.dart';
+import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/widgets.dart';
 
 class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
