@@ -1,19 +1,21 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/orc.dart';
 import 'package:bonfire_defense/components/skeleton.dart';
-import 'package:bonfire_defense/game_managers/entity_manager.dart';
+import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:provider/provider.dart';
 
-class EnemyManager extends EntityManager {
+class EnemyManager {
+  final GameController gameController;
+
   final GameStateProvider state;
   final EnemyStateProvider enemyStateProvider;
   final GameConfig config;
 
-  EnemyManager(super.gameController)
+  EnemyManager(this.gameController)
       : state = Provider.of<GameStateProvider>(gameController.gameRef.context,
             listen: false),
         enemyStateProvider = Provider.of<EnemyStateProvider>(
@@ -32,12 +34,10 @@ class EnemyManager extends EntityManager {
     }
   }
 
-  @override
   bool canAddEntity() {
     return enemyStateProvider.enemyCount < config.enemies.length;
   }
 
-  @override
   void addEntity() {
     _createEnemy();
   }
