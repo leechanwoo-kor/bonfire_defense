@@ -3,7 +3,7 @@ import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/widgets/game_control_panel.dart';
 import 'package:bonfire_defense/widgets/game_stage_display.dart';
-import 'package:bonfire_defense/widgets/game_status_bar.dart';
+import 'package:bonfire_defense/widgets/game_state_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +42,7 @@ class GameOverlay extends StatelessWidget {
                     placeDefender: placeDefender,
                   ),
                   const GameControlPanel(),
-                  const GameStatusBar(),
+                  const GameStateBar(),
                 ],
               ),
             ),

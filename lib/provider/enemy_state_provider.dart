@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class EnemyStateProvider with ChangeNotifier {
   int _enemyCount = 0;
 
+  int get enemyCount => _enemyCount;
+
   void addEnemy() {
     _enemyCount++;
     notifyListeners();
   }
-
-  int get enemyCount => _enemyCount;
 
   void resetEnemyCount() {
     _enemyCount = 0;

@@ -2,8 +2,8 @@ import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GameStatusBar extends StatelessWidget {
-  const GameStatusBar({super.key});
+class GameStateBar extends StatelessWidget {
+  const GameStateBar({super.key});
 
   @override
   Widget build(BuildContext context) {
