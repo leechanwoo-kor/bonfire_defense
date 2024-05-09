@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/components/defenderCard.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
@@ -102,8 +102,8 @@ class UnitSelectionInterface extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(selectedTypes.length, (index) {
               DefenderType type = selectedTypes[index];
-              DefenderCard card =
-                  DefenderCard.getCards().firstWhere((c) => c.type == type);
+              DefenderInfo card =
+                  DefenderInfo.getInfos().firstWhere((c) => c.type == type);
               bool canAfford = gold >= card.cost;
               bool isSelected =
                   selectedDefender == type && selectedDefenderIndex == index;
@@ -126,7 +126,7 @@ class UnitSelectionInterface extends StatelessWidget {
 
 class UnitCard extends StatelessWidget {
   final int index;
-  final DefenderCard card;
+  final DefenderInfo card;
   final bool canAfford;
   final bool isSelected;
   final VoidCallback onTap;

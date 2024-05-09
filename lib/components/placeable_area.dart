@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/defender.dart';
-import 'package:bonfire_defense/components/defenderCard.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
@@ -23,8 +23,8 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final index = state.selectedDefenderIndex;
 
     if (index != null && type != null && isPlaceable()) {
-      DefenderCard card =
-          DefenderCard.getCards().firstWhere((card) => card.type == type);
+      DefenderInfo card =
+          DefenderInfo.getInfos().firstWhere((card) => card.type == type);
       if (gameState.gold >= card.cost) {
         controller.addDefender(type, position);
         state.addDefender(type);

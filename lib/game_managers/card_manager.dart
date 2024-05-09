@@ -1,9 +1,9 @@
-import 'package:bonfire_defense/components/defenderCard.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 
 class CardManager {
-  List<DefenderCard> availableCards = DefenderCard.getCards();
+  List<DefenderInfo> availableCards = DefenderInfo.getInfos();
 
   void selectCard(
-      DefenderCard card, DefenderStateProvider defenderStateProvider) {}
+      DefenderInfo card, DefenderStateProvider defenderStateProvider) {}
 }

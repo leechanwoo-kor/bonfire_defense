@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/defenderCard.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
@@ -63,7 +63,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
 
   void sellDefender(BuildContext context) {
     int refundAmount =
-        DefenderCard.getCards().firstWhere((card) => card.type == type).cost ~/
+        DefenderInfo.getInfos().firstWhere((card) => card.type == type).cost ~/
             2;
     gameRef.context.read<GameStateProvider>().updateGold(refundAmount);
     removeFromParent();
