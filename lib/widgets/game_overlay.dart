@@ -1,14 +1,16 @@
 import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
+import 'package:bonfire_defense/widgets/game_control_panel.dart';
+import 'package:bonfire_defense/widgets/game_stage_display.dart';
+import 'package:bonfire_defense/widgets/game_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GameControlOverlay extends StatelessWidget {
+class GameOverlay extends StatelessWidget {
   static const String overlayName = 'gameControlOverlay';
 
-  const GameControlOverlay({super.key});
+  const GameOverlay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +34,14 @@ class GameControlOverlay extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  UnitSelectionInterface(
+                  DefenderSelectionPanel(
                     selectedTypes: defenderState.availableDefenders.toList(),
                     gold: gameState.gold,
                     selectedDefender: defenderState.selectedDefender,
                     selectedDefenderIndex: defenderState.selectedDefenderIndex,
                     placeDefender: placeDefender,
                   ),
-                  const GameControlButtons(),
+                  const GameControlPanel(),
                   const GameStatusBar(),
                 ],
               ),
@@ -51,36 +53,14 @@ class GameControlOverlay extends StatelessWidget {
   }
 }
 
-class GameStageDisplay extends StatelessWidget {
-  const GameStageDisplay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Selector<GameStateProvider, int>(
-      selector: (_, state) => state.currentStage,
-      builder: (_, stage, __) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          'Stage: $stage',
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class UnitSelectionInterface extends StatelessWidget {
+class DefenderSelectionPanel extends StatelessWidget {
   final List<DefenderType> selectedTypes;
   final int gold;
   final DefenderType? selectedDefender;
   final int? selectedDefenderIndex;
   final Function(BuildContext, int, DefenderType) placeDefender;
 
-  const UnitSelectionInterface({
+  const DefenderSelectionPanel({
     super.key,
     required this.selectedTypes,
     required this.gold,
@@ -181,120 +161,6 @@ class UnitCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class GameControlButtons extends StatelessWidget {
-  const GameControlButtons({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      color: Colors.blueGrey.withOpacity(0.8),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MenuPage()),
-                    (route) => false);
-              },
-              child: const Text('Menu'),
-            ),
-            Selector<GameStateProvider, int>(
-              selector: (_, state) => state.gold,
-              builder: (context, gold, __) => ElevatedButton(
-                onPressed: gold >= 10
-                    ? () {
-                        Provider.of<GameStateProvider>(context, listen: false)
-                            .updateGold(-10);
-                        Provider.of<DefenderStateProvider>(context,
-                                listen: false)
-                            .shuffleDefenders();
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  disabledForegroundColor: Colors.grey.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.grey.withOpacity(0.12),
-                ),
-                child: const Text('Reroll(10G)'),
-              ),
-            ),
-            Selector<GameStateProvider, bool>(
-              selector: (_, state) => state.state == GameState.waving,
-              builder: (context, isWaving, __) => ElevatedButton(
-                onPressed: isWaving
-                    ? null
-                    : () {
-                        Provider.of<GameStateProvider>(context, listen: false)
-                            .startGame();
-                      },
-                style: ElevatedButton.styleFrom(
-                  disabledForegroundColor: Colors.grey.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.grey.withOpacity(0.12),
-                ),
-                child: const Text('Start'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class GameStatusBar extends StatelessWidget {
-  const GameStatusBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 70,
-      color: Colors.black.withOpacity(0.8),
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Selector<GameStateProvider, int>(
-            selector: (_, state) => state.count,
-            builder: (_, count, __) => Text(
-              'Count: $count',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
-            ),
-          ),
-          Selector<GameStateProvider, int>(
-            selector: (_, state) => state.life,
-            builder: (context, life, __) => Row(
-              children: [
-                Image.asset('assets/images/icons/HeartFull.png',
-                    width: 36.0, height: 36.0),
-                Text(
-                  ': $life',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          Selector<GameStateProvider, int>(
-            selector: (_, state) => state.gold,
-            builder: (context, gold, __) => Row(
-              children: [
-                Image.asset('assets/images/icons/Coin.png',
-                    width: 52.0, height: 52.0),
-                Text(
-                  ': $gold',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

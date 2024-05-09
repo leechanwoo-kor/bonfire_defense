@@ -4,7 +4,7 @@ import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
-import 'package:bonfire_defense/widgets/game_control_overlay.dart';
+import 'package:bonfire_defense/widgets/game_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,11 +63,10 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         controller,
       ],
       overlayBuilderMap: {
-        GameControlOverlay.overlayName: (context, game) =>
-            const GameControlOverlay(),
+        GameOverlay.overlayName: (context, game) => const GameOverlay(),
       },
       initialActiveOverlays: const [
-        GameControlOverlay.overlayName,
+        GameOverlay.overlayName,
       ],
     );
   }

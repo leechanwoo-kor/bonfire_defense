@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/material.dart';
 
@@ -74,17 +75,6 @@ class DefenderStateProvider with ChangeNotifier {
     init();
   }
 
-  final Map<DefenderType, int> _defenderCounts = {};
-
-  void addDefender(DefenderType type) {
-    _defenderCounts[type] = (_defenderCounts[type] ?? 0) + 1;
-    notifyListeners();
-  }
-
-  int getDefenderCount(DefenderType type) {
-    return _defenderCounts[type] ?? 0;
-  }
-
   Vector2? _placementPosition;
   Vector2? get placementPosition => _placementPosition;
 
@@ -142,9 +132,12 @@ class DefenderStateProvider with ChangeNotifier {
 
   void init() {
     shuffleDefenders();
-    _defenderCounts.clear();
     _placementPosition = null;
     notifyListeners();
+  }
+
+  DefenderInfo info(DefenderType type) {
+    return DefenderInfo.getInfos().firstWhere((card) => card.type == type);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/components/orc_archer.dart';
@@ -19,7 +20,7 @@ class DefenderManager {
             gameController.gameRef.context,
             listen: false);
 
-  void addDefender(DefenderType type, Vector2? tilePosition) {
+  void addDefender(DefenderInfo info, Vector2? tilePosition) {
     if (tilePosition == null) return;
 
     Vector2 unitSize = Vector2.all(32.0);
@@ -27,13 +28,12 @@ class DefenderManager {
       tilePosition.x + (BonfireDefense.tileSize - unitSize.x) / 2,
       tilePosition.y + (BonfireDefense.tileSize - unitSize.y) / 2,
     );
-    GameComponent defender = createDefender(type, unitPosition);
+    GameComponent defender = createDefender(info, unitPosition);
     gameController.gameRef.add(defender);
-    defenderStateProvider.addDefender(type);
   }
 
-  static GameComponent createDefender(DefenderType type, Vector2 position) {
-    switch (type) {
+  static GameComponent createDefender(DefenderInfo info, Vector2 position) {
+    switch (info.type) {
       case DefenderType.arch:
         return Archer(position: position);
       case DefenderType.knight:
@@ -45,7 +45,7 @@ class DefenderManager {
       case DefenderType.orcWarrior:
         return OrcWarrior(position: position);
       default:
-        throw UnimplementedError('Defender type $type not supported');
+        throw UnimplementedError('Defender type ${info.type} not supported');
     }
   }
 }

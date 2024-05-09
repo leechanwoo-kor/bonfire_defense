@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/defenderInfo.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
@@ -39,8 +40,8 @@ class GameController extends GameComponent {
     }
   }
 
-  void addDefender(DefenderType type, Vector2? tilePosition) {
-    _defenderManager.addDefender(type, tilePosition);
+  void addDefender(DefenderInfo info, Vector2? tilePosition) {
+    _defenderManager.addDefender(info, tilePosition);
   }
 
   void nextStage() {
