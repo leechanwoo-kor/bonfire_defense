@@ -4,6 +4,7 @@ import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/widgets/game_control_panel.dart';
 import 'package:bonfire_defense/widgets/game_stage_display.dart';
 import 'package:bonfire_defense/widgets/game_state_bar.dart';
+import 'package:bonfire_defense/widgets/unit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -89,7 +90,6 @@ class DefenderSelectionPanel extends StatelessWidget {
                   selectedDefender == type && selectedDefenderIndex == index;
 
               return UnitCard(
-                index: index,
                 defenderInfo: defenderInfo,
                 isActivated: isActivated,
                 isSelected: isSelected,
@@ -99,68 +99,6 @@ class DefenderSelectionPanel extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
-      ),
-    );
-  }
-}
-
-class UnitCard extends StatelessWidget {
-  final int index;
-  final DefenderInfo defenderInfo;
-  final bool isActivated;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const UnitCard({
-    super.key,
-    required this.index,
-    required this.defenderInfo,
-    required this.isActivated,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: isActivated ? onTap : null,
-      child: Opacity(
-        opacity: isActivated ? 1.0 : 0.5,
-        child: Card(
-          color: Colors.white,
-          shadowColor: isSelected ? Colors.yellowAccent : Colors.black,
-          elevation: isSelected ? 8.0 : 2.0,
-          shape: isSelected
-              ? RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.yellowAccent, width: 2))
-              : RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  defenderInfo.name,
-                  style: TextStyle(
-                    color: isActivated ? Colors.black : Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Image(image: AssetImage(defenderInfo.imagePath), height: 80),
-                const SizedBox(height: 4),
-                Text(
-                  '${defenderInfo.cost}G',
-                  style: TextStyle(
-                    color: isActivated ? Colors.black : Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
