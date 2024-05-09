@@ -54,19 +54,23 @@ class GameController extends GameComponent {
   Future<void> checkWave() async {
     while (_gameStateProvider.state == GameState.waving) {
       if (_enemyStateProvider.enemyCount == config.enemies.length) {
-        if (_gameStateProvider.count == 0) {
-          _gameStateProvider.stopGame();
-
-          if (_gameStateProvider.life <= 0) {
-            var msg = 'Game over!';
-            showDialogEndGame(msg, true);
-          } else {
-            var msg = 'Stage ${_gameStateProvider.currentStage} cleared!';
-            showFullOverlay(context, msg, false);
-          }
-        }
+        endWaveCheck();
       }
       await Future.delayed(const Duration(milliseconds: 1000));
+    }
+  }
+
+  void endWaveCheck() {
+    if (_gameStateProvider.count == 0) {
+      _gameStateProvider.stopGame();
+
+      if (_gameStateProvider.life <= 0) {
+        var msg = 'Game over!';
+        showDialogEndGame(msg, true);
+      } else {
+        var msg = 'Stage ${_gameStateProvider.currentStage} cleared!';
+        showFullOverlay(context, msg, false);
+      }
     }
   }
 

@@ -6,19 +6,13 @@ import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/components/orc_archer.dart';
 import 'package:bonfire_defense/components/orc_warrior.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
-import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
-import 'package:provider/provider.dart';
 
 class DefenderManager {
   final GameController gameController;
-  final DefenderStateProvider defenderStateProvider;
 
-  DefenderManager(this.gameController)
-      : defenderStateProvider = Provider.of<DefenderStateProvider>(
-            gameController.gameRef.context,
-            listen: false);
+  DefenderManager(this.gameController);
 
   void addDefender(DefenderInfo info, Vector2? tilePosition) {
     if (tilePosition == null) return;
