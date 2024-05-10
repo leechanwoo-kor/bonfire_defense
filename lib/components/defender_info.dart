@@ -51,6 +51,13 @@ class DefenderInfo {
       imagePath: 'assets/images/knight.png',
       cost: 30,
     ),
+    DefenderType.test: DefenderInfo(
+      name: '테스트\n용병',
+      type: DefenderType.test,
+      attackType: 'power',
+      imagePath: 'assets/images/lancer.png',
+      cost: 50,
+    ),
   };
 
   static DefenderInfo getInfo(DefenderType type) {

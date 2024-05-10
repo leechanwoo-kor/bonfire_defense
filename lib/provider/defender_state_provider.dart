@@ -67,10 +67,33 @@ class DefenderStateProvider with ChangeNotifier {
   void init() {
     shuffleDefenders();
     _placementPosition = null;
+    defenderCount.clear();
     notifyListeners();
   }
 
   DefenderInfo info(DefenderType type) {
     return DefenderInfo.getInfo(type);
+  }
+
+  Map<DefenderType, int> defenderCount = {};
+
+  void addDefender(DefenderType type) {
+    if (defenderCount.containsKey(type)) {
+      defenderCount[type] = defenderCount[type]! + 1;
+    } else {
+      defenderCount[type] = 1;
+    }
+    notifyListeners();
+  }
+
+  void decrementDefenderCount(DefenderType type) {
+    if (defenderCount[type] != null && defenderCount[type]! > 0) {
+      defenderCount[type] = defenderCount[type]! - 1;
+      notifyListeners();
+    }
+  }
+
+  bool canMerge(DefenderType type) {
+    return defenderCount[type] != null && defenderCount[type]! >= 2;
   }
 }

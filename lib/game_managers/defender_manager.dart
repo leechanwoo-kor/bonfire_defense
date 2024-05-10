@@ -4,10 +4,13 @@ import 'package:bonfire_defense/components/defender_info.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/components/orc_archer.dart';
+import 'package:bonfire_defense/components/orc_test.dart';
 import 'package:bonfire_defense/components/orc_warrior.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
+import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
+import 'package:provider/provider.dart';
 
 class DefenderManager {
   final GameController gameController;
@@ -23,6 +26,9 @@ class DefenderManager {
       tilePosition.y + (BonfireDefense.tileSize - unitSize.y) / 2,
     );
     GameComponent defender = createDefender(info, unitPosition);
+    gameController.gameRef.context
+        .read<DefenderStateProvider>()
+        .addDefender(info.type);
     gameController.gameRef.add(defender);
   }
 
@@ -38,6 +44,8 @@ class DefenderManager {
         return OrcArcher(position: position);
       case DefenderType.orcWarrior:
         return OrcWarrior(position: position);
+      case DefenderType.test:
+        return OrcTest(position: position);
       default:
         throw UnimplementedError('Defender type ${info.type} not supported');
     }

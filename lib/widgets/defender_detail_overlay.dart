@@ -7,7 +7,7 @@ class DefenderInfoDialog extends StatelessWidget {
   final DefenderInfo defenderInfo;
   final VoidCallback onClose;
   final VoidCallback onSell;
-  final VoidCallback onMerge;
+  final VoidCallback? onMerge;
 
   const DefenderInfoDialog({
     super.key,
@@ -61,7 +61,7 @@ class DefenderInfoDialog extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: onMerge,
+                      onPressed: onMerge ?? () {},
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green, elevation: 4.0),
                       child: const Text("Merge"),
