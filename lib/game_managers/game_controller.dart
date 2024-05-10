@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
@@ -16,6 +17,7 @@ class GameController extends GameComponent {
 
   late GameConfig config;
   late GameStateProvider _gameStateProvider;
+  late DefenderStateProvider _defenderStateProvider;
   late EnemyStateProvider _enemyStateProvider;
 
   @override
@@ -28,6 +30,8 @@ class GameController extends GameComponent {
         Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
 
     _gameStateProvider = Provider.of<GameStateProvider>(context, listen: false);
+    _defenderStateProvider =
+        Provider.of<DefenderStateProvider>(context, listen: false);
     _enemyStateProvider =
         Provider.of<EnemyStateProvider>(context, listen: false);
   }
@@ -49,6 +53,7 @@ class GameController extends GameComponent {
     _gameStateProvider.stopGame();
     _gameStateProvider.nextStage();
     _enemyStateProvider.resetEnemyCount();
+    _defenderStateProvider.shuffleDefenders();
   }
 
   Future<void> checkWave() async {
