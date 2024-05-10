@@ -88,24 +88,20 @@ abstract class Defender extends SimpleAlly with TapGesture {
         .toList();
 
     if (sameTypeDefenders.isNotEmpty) {
-      // 무작위로 하나를 선택하여 제거
+      // 머지 유닛 제거
       final randomDefender =
           sameTypeDefenders[Random().nextInt(sameTypeDefenders.length)];
       randomDefender.removeFromParent();
-      Vector2 mergePosition = this.position.clone(); // 현재 선택된 디펜더의 위치 사용
+      removeFromParent();
 
-      // 현재 선택된 디펜더도 제거
-      this.removeFromParent();
+      gameRef.context
+          .read<DefenderStateProvider>()
+          .decrementDefenderCount(type, 2);
 
-      // 업그레이드된 디펜더 생성 및 추가
+      // 머지 유닛 생성
+      Vector2 mergePosition = position.clone();
+      gameRef.context.read<GameStateProvider>().updateGold(-100);
       createUpgradedDefender(mergePosition, context);
-
-      gameRef.context
-          .read<DefenderStateProvider>()
-          .decrementDefenderCount(type);
-      gameRef.context
-          .read<DefenderStateProvider>()
-          .decrementDefenderCount(type);
     }
     Navigator.pop(context);
   }

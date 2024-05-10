@@ -89,9 +89,9 @@ class DefenderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void decrementDefenderCount(DefenderType type) {
+  void decrementDefenderCount(DefenderType type, int amount) {
     if (defenderCount[type] != null && defenderCount[type]! > 0) {
-      defenderCount[type] = defenderCount[type]! - 1;
+      defenderCount[type] = defenderCount[type]! - amount;
       notifyListeners();
     }
   }

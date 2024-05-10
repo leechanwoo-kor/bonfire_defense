@@ -22,8 +22,6 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool canAffordMerge = Provider.of<GameStateProvider>(context).gold >= 100;
-
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -47,6 +45,9 @@ class DefenderInfoDialog extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(defenderInfo.name.replaceAll("\n", ' '),
+                              style: const TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.bold)),
                           Text("Attack Power: ${defender.attackDamage}"),
                           Text("Attack Type: ${defenderInfo.attackType}"),
                         ],
@@ -64,13 +65,20 @@ class DefenderInfoDialog extends StatelessWidget {
                       child: const Text("Sell"),
                     ),
                     const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed:
-                          canAffordMerge && onMerge != null ? onMerge : null,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green, elevation: 4.0),
-                      child: const Text("Merge"),
-                    ),
+                    Consumer<GameStateProvider>(
+                      builder: (context, gameState, child) {
+                        bool isActivated = gameState.gold >= 100;
+                        return ElevatedButton(
+                          onPressed:
+                              isActivated && onMerge != null ? onMerge : null,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  isActivated ? Colors.green : Colors.grey,
+                              elevation: 4.0),
+                          child: const Text("Merge"),
+                        );
+                      },
+                    )
                   ],
                 ),
               ],
