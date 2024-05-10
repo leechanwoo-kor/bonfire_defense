@@ -120,6 +120,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
     GameComponent upgradedDefender =
         DefenderManager.createDefender(upgradedInfo, position);
     gameRef.add(upgradedDefender);
+    print("upgradedInfo.type: ${upgradedInfo.type}");
     gameRef.context
         .read<DefenderStateProvider>()
         .addDefender(upgradedInfo.type);

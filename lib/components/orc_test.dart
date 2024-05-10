@@ -7,7 +7,7 @@ import 'package:bonfire_defense/utils/game_config.dart';
 class OrcTest extends Defender {
   OrcTest({required super.position})
       : super(
-          type: DefenderType.orcWarrior,
+          type: DefenderType.test,
           attackDamage: 100,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 3,

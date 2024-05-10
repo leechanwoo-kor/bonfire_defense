@@ -1,6 +1,8 @@
 import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DefenderInfoDialog extends StatelessWidget {
   final Defender defender;
@@ -20,6 +22,8 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool canAffordMerge = Provider.of<GameStateProvider>(context).gold >= 100;
+
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -61,7 +65,8 @@ class DefenderInfoDialog extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: onMerge ?? () {},
+                      onPressed:
+                          canAffordMerge && onMerge != null ? onMerge : null,
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green, elevation: 4.0),
                       child: const Text("Merge"),
