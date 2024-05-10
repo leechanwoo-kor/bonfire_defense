@@ -11,8 +11,7 @@ class Archer extends Defender {
           attackDamage: 20,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 4,
-          animation:
-              CharacterSpritesheet(fileName: 'archer.png').getAnimation(),
+          animation: CharacterSpritesheet(fileName: 'human.png').getAnimation(),
           initDirection: Direction.down,
           attackInterval: 1000,
         );
