@@ -14,7 +14,7 @@ class Archer extends Defender {
           animation:
               CharacterSpritesheet(fileName: 'archer.png').getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 500,
+          attackInterval: 1000,
         );
 
   @override

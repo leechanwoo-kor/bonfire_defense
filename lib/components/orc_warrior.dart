@@ -13,7 +13,7 @@ class OrcWarrior extends Defender {
           visionRange: BonfireDefense.tileSize * 3,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 1000,
+          attackInterval: 1200,
         );
 
   @override

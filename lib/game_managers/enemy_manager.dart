@@ -53,8 +53,7 @@ class EnemyManager {
     Enemy enemy;
 
     double baseLife = 100;
-    double life = baseLife * (pow(1.2, state.currentStage - 1));
-    print("Life: $life");
+    double life = baseLife * (pow(1.5, state.currentStage - 1));
 
     switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
@@ -81,7 +80,6 @@ class EnemyManager {
     }
 
     gameController.gameRef.add(enemy);
-    print(enemy.life);
     enemyStateProvider.updateEnemyCount(1);
     state.updateCount(1);
   }

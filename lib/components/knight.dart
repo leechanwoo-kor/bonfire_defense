@@ -14,7 +14,7 @@ class Knight extends Defender {
           animation: CharacterSpritesheet(fileName: 'human-soldier-red.png')
               .getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 1000,
+          attackInterval: 1200,
         );
 
   @override

@@ -13,7 +13,7 @@ class OrcArcher extends Defender {
           visionRange: BonfireDefense.tileSize * 5,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 500,
+          attackInterval: 1000,
         );
 
   @override
