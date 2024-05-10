@@ -20,15 +20,15 @@ class PlaceableArea extends GameDecoration with TapGesture {
   void onTap() {
     final state = gameRef.context.read<DefenderStateProvider>();
     final gameState = gameRef.context.read<GameStateProvider>();
-    final type = state.selectedDefender;
+    final defender = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
-    DefenderInfo info =
-        DefenderInfo.getInfos().firstWhere((info) => info.type == type);
+    DefenderInfo info = DefenderInfo.getInfos()
+        .firstWhere((info) => info.type == defender?.type);
 
-    if (index != null && type != null && isPlaceable()) {
-      DefenderInfo card =
-          DefenderInfo.getInfos().firstWhere((card) => card.type == type);
+    if (index != null && defender != null && isPlaceable()) {
+      DefenderInfo card = DefenderInfo.getInfos()
+          .firstWhere((card) => card.type == defender.type);
       if (gameState.gold >= card.cost) {
         controller.addDefender(info, position);
         gameState.updateGold(-card.cost);

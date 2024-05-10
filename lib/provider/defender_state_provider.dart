@@ -18,28 +18,28 @@ class DefenderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  DefenderType? _selectedDefender;
+  DefenderInfo? _selectedDefender;
 
-  void setSelectedDefender(DefenderType? type) {
+  void setSelectedDefender(DefenderInfo? type) {
     _selectedDefender = type;
     notifyListeners();
   }
 
-  DefenderType? get selectedDefender => _selectedDefender;
+  DefenderInfo? get selectedDefender => _selectedDefender;
 
-  List<DefenderType> availableDefenders = [];
+  List<DefenderInfo> availableDefenders = [];
 
-  DefenderType pickRandomDefender() {
+  DefenderInfo pickRandomDefender() {
     Random random = Random();
-    return DefenderType.values[random.nextInt(DefenderType.values.length)];
+    return DefenderInfo.getInfos()[random.nextInt(DefenderType.values.length)];
   }
 
-  List<DefenderType> pickRandomDefenders(int count) {
+  List<DefenderInfo> pickRandomDefenders(int count) {
     Random random = Random();
     return List.generate(
         count,
-        (index) =>
-            DefenderType.values[random.nextInt(DefenderType.values.length)]);
+        (index) => DefenderInfo.getInfos()[
+            random.nextInt(DefenderType.values.length)]);
   }
 
   void shuffleDefenders() {

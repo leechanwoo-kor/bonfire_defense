@@ -78,7 +78,7 @@ class UnitCardDesign extends StatelessWidget {
               side: const BorderSide(color: Colors.yellowAccent, width: 2))
           : RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: UnitDisplay(
           defenderInfo: defenderInfo,
           isActivated: isActivated,
@@ -111,7 +111,7 @@ class UnitDisplay extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        Image(image: AssetImage(defenderInfo.imagePath), height: 50),
+        Image(image: AssetImage(defenderInfo.imagePath), height: 50, width: 50),
         const SizedBox(height: 4),
         Text(
           '${defenderInfo.cost}G',

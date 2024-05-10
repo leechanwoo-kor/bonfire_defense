@@ -20,12 +20,16 @@ class DefenderSelectionPanel extends StatelessWidget {
             children: <Widget>[
               const SizedBox(height: 10),
               Row(children: [
+                const SizedBox(width: 4),
                 RerollButton(
-                    gold: gameState.gold,
                     rerollDefenders: () => {
-                          defenderState.shuffleDefenders(),
-                          gameState.updateGold(-10)
+                          if (gameState.gold >= 10)
+                            {
+                              defenderState.shuffleDefenders(),
+                              gameState.updateGold(-10)
+                            }
                         }),
+                const SizedBox(width: 4),
                 DefenderCardsRow(
                     defenderState: defenderState, gold: gameState.gold),
               ]),
@@ -39,22 +43,35 @@ class DefenderSelectionPanel extends StatelessWidget {
 }
 
 class RerollButton extends StatelessWidget {
-  final int gold;
-  final Function rerollDefenders;
+  final VoidCallback rerollDefenders;
 
-  const RerollButton(
-      {super.key, required this.gold, required this.rerollDefenders});
+  const RerollButton({super.key, required this.rerollDefenders});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: gold >= 10 ? () => rerollDefenders() : null,
       style: ElevatedButton.styleFrom(
-        disabledForegroundColor: Colors.grey.withOpacity(0.38),
-        disabledBackgroundColor: Colors.grey.withOpacity(0.12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
-      child: const Text('Reroll (10G)',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      onPressed: rerollDefenders,
+      child: Ink(
+        decoration: BoxDecoration(
+          // gradient:
+          //     const LinearGradient(colors: [Colors.blue, Colors.blueAccent]),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Container(
+          width: 48,
+          height: 64,
+          alignment: Alignment.center,
+          child: Image.asset(
+            'assets/images/icons/reroll.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -71,11 +88,11 @@ class DefenderCardsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(defenderState.availableDefenders.length, (index) {
-        final type = defenderState.availableDefenders[index];
+        final defender = defenderState.availableDefenders[index];
         final defenderInfo =
-            DefenderInfo.getInfos().firstWhere((info) => info.type == type);
+            DefenderInfo.getInfos().firstWhere((i) => i.type == defender.type);
         final isActivated = gold >= defenderInfo.cost;
-        final isSelected = defenderState.selectedDefender == type &&
+        final isSelected = defenderState.selectedDefender == defender &&
             defenderState.selectedDefenderIndex == index;
 
         return UnitCard(
@@ -83,7 +100,7 @@ class DefenderCardsRow extends StatelessWidget {
           isActivated: isActivated,
           isSelected: isSelected,
           onTap: () {
-            defenderState.setSelectedDefender(type);
+            defenderState.setSelectedDefender(defender);
             defenderState.setSelectedDefenderIndex(index);
           },
         );
