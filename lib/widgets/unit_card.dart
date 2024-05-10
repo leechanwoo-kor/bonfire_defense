@@ -110,9 +110,7 @@ class UnitDisplay extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 4),
         Image(image: AssetImage(defenderInfo.imagePath), height: 50, width: 50),
-        const SizedBox(height: 4),
         Text(
           '${defenderInfo.cost}G',
           style: TextStyle(

@@ -18,7 +18,7 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DefenderInfo card =
+    DefenderInfo defenderInfo =
         DefenderInfo.getInfos().firstWhere((c) => c.type == defender.type);
 
     return Dialog(
@@ -37,17 +37,18 @@ class DefenderInfoDialog extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset(card.imagePath, width: 50.0, height: 50.0),
+                    Image.asset(defenderInfo.imagePath,
+                        width: 50.0, height: 50.0),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(card.name,
+                          Text(defenderInfo.name,
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                           Text("Attack Power: ${defender.attackDamage}"),
-                          Text("Attack Type: ${card.attackType}"),
+                          Text("Attack Type: ${defenderInfo.attackType}"),
                         ],
                       ),
                     ),

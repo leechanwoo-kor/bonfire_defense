@@ -60,9 +60,10 @@ abstract class Defender extends SimpleAlly with TapGesture {
   }
 
   void sellDefender(BuildContext context) {
-    int refundAmount =
-        DefenderInfo.getInfos().firstWhere((card) => card.type == type).cost ~/
-            2;
+    int refundAmount = DefenderInfo.getInfos()
+            .firstWhere((defender) => defender.type == type)
+            .cost ~/
+        2;
     gameRef.context.read<GameStateProvider>().updateGold(refundAmount);
     removeFromParent();
     Navigator.pop(context);
