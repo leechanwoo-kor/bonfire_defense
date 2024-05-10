@@ -67,13 +67,11 @@ class DefenderInfoDialog extends StatelessWidget {
                     const SizedBox(width: 10),
                     Consumer<GameStateProvider>(
                       builder: (context, gameState, child) {
-                        bool isActivated = gameState.gold >= 100;
                         return ElevatedButton(
-                          onPressed:
-                              isActivated && onMerge != null ? onMerge : null,
+                          onPressed: onMerge,
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  isActivated ? Colors.green : Colors.grey,
+                                  onMerge != null ? Colors.green : Colors.grey,
                               elevation: 4.0),
                           child: const Text("Merge"),
                         );
