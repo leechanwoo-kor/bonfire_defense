@@ -106,11 +106,6 @@ abstract class Defender extends SimpleAlly with TapGesture {
       gameRef.context
           .read<DefenderStateProvider>()
           .decrementDefenderCount(type);
-
-      print(
-          "Defenders merged and new upgraded defender created at $mergePosition.");
-    } else {
-      print("No other defenders of the same type were found to merge.");
     }
     Navigator.pop(context);
   }
@@ -120,7 +115,6 @@ abstract class Defender extends SimpleAlly with TapGesture {
     GameComponent upgradedDefender =
         DefenderManager.createDefender(upgradedInfo, position);
     gameRef.add(upgradedDefender);
-    print("upgradedInfo.type: ${upgradedInfo.type}");
     gameRef.context
         .read<DefenderStateProvider>()
         .addDefender(upgradedInfo.type);

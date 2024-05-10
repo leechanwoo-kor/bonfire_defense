@@ -36,8 +36,6 @@ class PlaceableArea extends GameDecoration with TapGesture {
         gameState.updateGold(-info.cost);
         state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
         state.setSelectedDefender(null);
-      } else {
-        print("Not enough gold.");
       }
     }
 

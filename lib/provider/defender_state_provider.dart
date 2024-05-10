@@ -97,7 +97,6 @@ class DefenderStateProvider with ChangeNotifier {
   }
 
   bool canMerge(DefenderType type) {
-    print("Defender count(${type}): ${defenderCount[type]}");
     return defenderCount[type] != null && defenderCount[type]! >= 2;
   }
 }
