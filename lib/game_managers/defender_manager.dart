@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/archer.dart';
-import 'package:bonfire_defense/components/defender_info.dart';
+import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/components/knight.dart';
 import 'package:bonfire_defense/components/lancer.dart';
 import 'package:bonfire_defense/components/orc_archer.dart';

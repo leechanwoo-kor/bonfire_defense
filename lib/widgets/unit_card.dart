@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/components/defender_info.dart';
+import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:flutter/material.dart';
 
 class UnitCard extends StatelessWidget {

@@ -1,13 +1,16 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/defender_info.dart';
+import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/material.dart';
 
 class DefenderStateProvider with ChangeNotifier {
   final Random _random = Random();
-  static final List<DefenderInfo> _defenderList = DefenderInfo.getInfos();
+  // static final List<DefenderInfo> _defenderList = DefenderInfo.getInfos();
+  static final List<DefenderInfo> _defenderList = DefenderInfo.getInfos()
+      .where((info) => info.type != DefenderType.test)
+      .toList();
 
   DefenderStateProvider() {
     init();
