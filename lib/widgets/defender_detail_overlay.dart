@@ -1,5 +1,5 @@
 import 'package:bonfire_defense/components/defender.dart';
-import 'package:bonfire_defense/components/defenderInfo.dart';
+import 'package:bonfire_defense/components/defender_info.dart';
 import 'package:flutter/material.dart';
 
 class DefenderInfoDialog extends StatelessWidget {

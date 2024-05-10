@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/components/defenderInfo.dart';
+import 'package:bonfire_defense/components/defender_info.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/widgets/unit_card.dart';

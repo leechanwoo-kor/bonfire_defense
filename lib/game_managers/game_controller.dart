@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/defenderInfo.dart';
+import 'package:bonfire_defense/components/defender_info.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
 import 'package:bonfire_defense/provider/enemy_state_provider.dart';
