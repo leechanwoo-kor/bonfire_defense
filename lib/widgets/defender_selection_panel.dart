@@ -1,4 +1,5 @@
 import 'package:bonfire_defense/components/defenderInfo.dart';
+import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/widgets/unit_card.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,16 @@ class DefenderSelectionPanel extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const SizedBox(height: 10),
-              RerollButton(
-                  gold: gameState.gold, rerollDefenders: gameState.updateGold),
-              DefenderCardsRow(
-                  defenderState: defenderState, gold: gameState.gold),
+              Row(children: [
+                RerollButton(
+                    gold: gameState.gold,
+                    rerollDefenders: () => {
+                          defenderState.shuffleDefenders(),
+                          gameState.updateGold(-10)
+                        }),
+                DefenderCardsRow(
+                    defenderState: defenderState, gold: gameState.gold),
+              ]),
               const SizedBox(height: 10),
             ],
           ),
@@ -41,7 +48,7 @@ class RerollButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: gold >= 10 ? () => rerollDefenders(-10) : null,
+      onPressed: gold >= 10 ? () => rerollDefenders() : null,
       style: ElevatedButton.styleFrom(
         disabledForegroundColor: Colors.grey.withOpacity(0.38),
         disabledBackgroundColor: Colors.grey.withOpacity(0.12),
