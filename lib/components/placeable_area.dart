@@ -23,17 +23,22 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final defender = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
-    DefenderInfo info = DefenderInfo.getInfos()
-        .firstWhere((info) => info.type == defender?.type);
+    if (defender == null) {
+      print("No defender selected");
+      return;
+    }
 
-    if (index != null && defender != null && isPlaceable()) {
-      DefenderInfo card = DefenderInfo.getInfos()
-          .firstWhere((card) => card.type == defender.type);
-      if (gameState.gold >= card.cost) {
+    final infos = DefenderInfo.getInfos();
+    final info = infos.firstWhere((info) => info.type == defender.type);
+
+    if (index != null && isPlaceable()) {
+      if (gameState.gold >= info.cost) {
         controller.addDefender(info, position);
-        gameState.updateGold(-card.cost);
+        gameState.updateGold(-info.cost);
         state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
         state.setSelectedDefender(null);
+      } else {
+        print("Not enough gold.");
       }
     }
 
@@ -42,7 +47,7 @@ class PlaceableArea extends GameDecoration with TapGesture {
     }
   }
 
-// 현재 위치에 Defender가 이미 배치되어 있는지 확인
+  // 현재 위치에 Defender가 이미 배치되어 있는지 확인
   bool isPlaceable() {
     // 게임에서 모든 Defender를 가져옴
     Iterable<GameComponent> defenders = gameRef.query<Defender>();

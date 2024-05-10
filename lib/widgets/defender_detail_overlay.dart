@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class DefenderInfoDialog extends StatelessWidget {
   final Defender defender;
+  final DefenderInfo defenderInfo;
   final VoidCallback onClose;
   final VoidCallback onSell;
   final VoidCallback onUpgrade;
@@ -11,6 +12,7 @@ class DefenderInfoDialog extends StatelessWidget {
   const DefenderInfoDialog({
     super.key,
     required this.defender,
+    required this.defenderInfo,
     required this.onClose,
     required this.onSell,
     required this.onUpgrade,
@@ -18,8 +20,6 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DefenderInfo defenderInfo = DefenderInfo.getInfo(defender.type);
-
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -43,9 +43,6 @@ class DefenderInfoDialog extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(defenderInfo.name,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           Text("Attack Power: ${defender.attackDamage}"),
                           Text("Attack Type: ${defenderInfo.attackType}"),
                         ],

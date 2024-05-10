@@ -48,15 +48,23 @@ abstract class Defender extends SimpleAlly with TapGesture {
 
   @override
   void onTap() {
-    showDialog(
-      context: gameRef.context,
-      builder: (context) => DefenderInfoDialog(
-        defender: this,
-        onClose: () => Navigator.pop(context),
-        onSell: () => sellDefender(context),
-        onUpgrade: () {},
-      ),
-    );
+    try {
+      showDialog(
+        context: gameRef.context,
+        builder: (context) {
+          final defenderInfo = DefenderInfo.getInfo(type);
+          return DefenderInfoDialog(
+            defender: this,
+            defenderInfo: defenderInfo,
+            onClose: () => Navigator.pop(context),
+            onSell: () => sellDefender(context),
+            onUpgrade: () {},
+          );
+        },
+      );
+    } catch (e) {
+      print('Failed to fetch defender info: $e');
+    }
   }
 
   void sellDefender(BuildContext context) {
