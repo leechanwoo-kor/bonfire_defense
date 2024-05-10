@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/orc.dart';
 import 'package:bonfire_defense/components/skeleton.dart';
@@ -50,7 +52,7 @@ class EnemyManager {
     if (enemyStateProvider.enemyCount >= config.enemies.length) return;
     Enemy enemy;
 
-    int baseLife = 100 + (state.currentStage * 10);
+    num baseLife = 50 * (pow(1.2, state.currentStage - 1));
 
     switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
@@ -88,6 +90,6 @@ class EnemyManager {
 
   void death(SimpleEnemy enemy) {
     state.updateCount(-1);
-    state.updateGold(10);
+    state.updateGold(5);
   }
 }

@@ -13,7 +13,7 @@ class Orc extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
     required this.onDeath,
     required super.position,
     required this.path,
-    required int life,
+    required num life,
   }) : super(
           size: Vector2.all(32),
           speed: _speedDefault,
