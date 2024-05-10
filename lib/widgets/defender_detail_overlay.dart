@@ -18,8 +18,7 @@ class DefenderInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DefenderInfo defenderInfo =
-        DefenderInfo.getInfos().firstWhere((c) => c.type == defender.type);
+    DefenderInfo defenderInfo = DefenderInfo.getInfo(defender.type);
 
     return Dialog(
       backgroundColor: Colors.white,

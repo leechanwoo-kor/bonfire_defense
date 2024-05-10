@@ -6,6 +6,9 @@ import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/material.dart';
 
 class DefenderStateProvider with ChangeNotifier {
+  final Random _random = Random();
+  static final List<DefenderInfo> _defenderList = DefenderInfo.getInfos();
+
   DefenderStateProvider() {
     init();
   }
@@ -30,16 +33,12 @@ class DefenderStateProvider with ChangeNotifier {
   List<DefenderInfo> availableDefenders = [];
 
   DefenderInfo pickRandomDefender() {
-    Random random = Random();
-    return DefenderInfo.getInfos()[random.nextInt(DefenderType.values.length)];
+    return _defenderList[_random.nextInt(_defenderList.length)];
   }
 
   List<DefenderInfo> pickRandomDefenders(int count) {
-    Random random = Random();
     return List.generate(
-        count,
-        (index) => DefenderInfo.getInfos()[
-            random.nextInt(DefenderType.values.length)]);
+        count, (index) => _defenderList[_random.nextInt(_defenderList.length)]);
   }
 
   void shuffleDefenders() {
@@ -72,6 +71,6 @@ class DefenderStateProvider with ChangeNotifier {
   }
 
   DefenderInfo info(DefenderType type) {
-    return DefenderInfo.getInfos().firstWhere((card) => card.type == type);
+    return DefenderInfo.getInfo(type);
   }
 }
