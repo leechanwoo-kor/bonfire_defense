@@ -8,12 +8,12 @@ class OrcArcher extends Defender {
   OrcArcher({required super.position})
       : super(
           type: DefenderType.orcArcher,
-          attackDamage: 20,
+          attackDamage: 30,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 5,
           animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 1000,
+          attackInterval: 500,
         );
 
   @override

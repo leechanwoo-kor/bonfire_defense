@@ -13,13 +13,13 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
     required this.onDeath,
     required super.position,
     required this.path,
-    required num life,
+    required double life,
   }) : super(
-          size: Vector2.all(24),
-          speed: _speedDefault,
-          animation:
-              CharacterSpritesheet(fileName: 'skeleton.png').getAnimation(),
-        ) {
+            size: Vector2.all(24),
+            speed: _speedDefault,
+            animation:
+                CharacterSpritesheet(fileName: 'skeleton.png').getAnimation(),
+            life: life) {
     setupPathFinding(
       linePathEnabled: false,
     );

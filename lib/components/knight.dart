@@ -8,13 +8,13 @@ class Knight extends Defender {
   Knight({required super.position})
       : super(
           type: DefenderType.knight,
-          attackDamage: 30,
+          attackDamage: 40,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 3,
           animation: CharacterSpritesheet(fileName: 'human-soldier-red.png')
               .getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 2000,
+          attackInterval: 1000,
         );
 
   @override

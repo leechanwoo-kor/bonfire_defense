@@ -127,7 +127,7 @@ class GameController extends GameComponent {
     Overlay.of(context).insert(overlayEntry);
 
     // 특정 시간 후에 오버레이 제거 및 다음 액션 수행
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       overlayEntry.remove();
       if (isGameOver) {
         Navigator.pushAndRemoveUntil(

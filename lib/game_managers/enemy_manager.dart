@@ -52,7 +52,9 @@ class EnemyManager {
     if (enemyStateProvider.enemyCount >= config.enemies.length) return;
     Enemy enemy;
 
-    num baseLife = 50 * (pow(1.2, state.currentStage - 1));
+    double baseLife = 100;
+    double life = baseLife * (pow(1.2, state.currentStage - 1));
+    print("Life: $life");
 
     switch (config.enemies[enemyStateProvider.enemyCount]) {
       case EnemyType.orc:
@@ -63,7 +65,7 @@ class EnemyManager {
             config.enemyInitialPosition.y - 8,
           ),
           path: List.of(config.enemyPath),
-          life: baseLife,
+          life: life,
         );
         break;
       case EnemyType.skeleton:
@@ -74,18 +76,14 @@ class EnemyManager {
             config.enemyInitialPosition.y - 8,
           ),
           path: List.of(config.enemyPath),
-          life: baseLife,
+          life: life,
         );
     }
-    if (!enemy.isMounted) {
-      try {
-        gameController.gameRef.add(enemy);
-        enemyStateProvider.updateEnemyCount(1);
-        state.updateCount(1);
-      } catch (e) {
-        print("Error adding enemy: $e");
-      }
-    }
+
+    gameController.gameRef.add(enemy);
+    print(enemy.life);
+    enemyStateProvider.updateEnemyCount(1);
+    state.updateCount(1);
   }
 
   void death(SimpleEnemy enemy) {

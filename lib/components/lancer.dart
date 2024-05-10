@@ -10,11 +10,11 @@ class Lancer extends Defender {
           type: DefenderType.lancer,
           attackDamage: 100,
           size: Vector2.all(32),
-          visionRange: BonfireDefense.tileSize * 4,
+          visionRange: BonfireDefense.tileSize * 3,
           animation: CharacterSpritesheet(fileName: 'human-soldier-red.png')
               .getAnimation(),
           initDirection: Direction.down,
-          attackInterval: 2500,
+          attackInterval: 1000,
         );
 
   @override
