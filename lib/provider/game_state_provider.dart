@@ -27,6 +27,9 @@ class GameStateProvider with ChangeNotifier {
 
   void updateLife(int change) {
     _life += change;
+    if (_life < 0) {
+      _life = 0;
+    }
     notifyListeners();
   }
 
