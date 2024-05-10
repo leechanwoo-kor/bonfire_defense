@@ -58,7 +58,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
             defenderInfo: defenderInfo,
             onClose: () => Navigator.pop(context),
             onSell: () => sellDefender(context),
-            onUpgrade: () {},
+            onMerge: () {},
           );
         },
       );
