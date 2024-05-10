@@ -9,7 +9,7 @@ class GameControlPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 50,
       color: Colors.blueGrey.withOpacity(0.8),
       child: Center(
         child: Row(
@@ -22,26 +22,9 @@ class GameControlPanel extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const MenuPage()),
                     (route) => false);
               },
-              child: const Text('Menu'),
-            ),
-            Selector<GameStateProvider, int>(
-              selector: (_, state) => state.gold,
-              builder: (context, gold, __) => ElevatedButton(
-                onPressed: gold >= 10
-                    ? () {
-                        Provider.of<GameStateProvider>(context, listen: false)
-                            .updateGold(-10);
-                        Provider.of<DefenderStateProvider>(context,
-                                listen: false)
-                            .shuffleDefenders();
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  disabledForegroundColor: Colors.grey.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.grey.withOpacity(0.12),
-                ),
-                child: const Text('Reroll(10G)'),
-              ),
+              child: const Text('Menu',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold)),
             ),
             Selector<GameStateProvider, bool>(
               selector: (_, state) => state.state == GameState.waving,
@@ -56,7 +39,9 @@ class GameControlPanel extends StatelessWidget {
                   disabledForegroundColor: Colors.grey.withOpacity(0.38),
                   disabledBackgroundColor: Colors.grey.withOpacity(0.12),
                 ),
-                child: const Text('Start'),
+                child: const Text('Start',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
