@@ -53,8 +53,8 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
   @override
   void die() {
     super.die();
-    onDeath(this);
     if (parent != null) {
+      onDeath(this);
       removeFromParent();
     }
   }
