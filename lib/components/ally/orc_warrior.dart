@@ -11,7 +11,8 @@ class OrcWarrior extends Defender {
           attackDamage: 40,
           size: Vector2.all(32),
           visionRange: BonfireDefense.tileSize * 3,
-          animation: CharacterSpritesheet(fileName: 'orc.png').getAnimation(),
+          animation:
+              CharacterSpritesheet(fileName: 'orc-red.png').getAnimation(),
           initDirection: Direction.down,
           attackInterval: 1200,
         );
