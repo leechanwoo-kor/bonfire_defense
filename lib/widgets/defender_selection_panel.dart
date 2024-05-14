@@ -12,6 +12,8 @@ class DefenderSelectionPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<GameStateProvider, DefenderStateProvider>(
       builder: (context, gameState, defenderState, child) {
+        final isActivated = gameState.gold >= 10;
+
         return Container(
           alignment: Alignment.center,
           color: Colors.black.withOpacity(0.8),
@@ -22,8 +24,9 @@ class DefenderSelectionPanel extends StatelessWidget {
               Row(children: [
                 const SizedBox(width: 4),
                 RerollButton(
+                    isActivated: isActivated,
                     rerollDefenders: () => {
-                          if (gameState.gold >= 10)
+                          if (isActivated)
                             {
                               defenderState.shuffleDefenders(),
                               gameState.updateGold(-10)
@@ -44,23 +47,24 @@ class DefenderSelectionPanel extends StatelessWidget {
 
 class RerollButton extends StatelessWidget {
   final VoidCallback rerollDefenders;
+  final bool isActivated;
 
-  const RerollButton({super.key, required this.rerollDefenders});
+  const RerollButton(
+      {super.key, required this.rerollDefenders, required this.isActivated});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<GameStateProvider>(
       builder: (context, gameState, child) {
-        final isDisabled = gameState.gold < 10;
-
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            backgroundColor: isDisabled ? Colors.grey : Colors.white,
+            backgroundColor:
+                !isActivated ? Colors.white.withOpacity(0.5) : Colors.white,
           ),
-          onPressed: isDisabled ? null : rerollDefenders,
+          onPressed: rerollDefenders,
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
