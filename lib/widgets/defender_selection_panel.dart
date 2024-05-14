@@ -49,29 +49,34 @@ class RerollButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      onPressed: rerollDefenders,
-      child: Ink(
-        decoration: BoxDecoration(
-          // gradient:
-          //     const LinearGradient(colors: [Colors.blue, Colors.blueAccent]),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Container(
-          width: 48,
-          height: 64,
-          alignment: Alignment.center,
-          child: Image.asset(
-            'assets/images/icons/reroll.png',
-            fit: BoxFit.cover,
+    return Consumer<GameStateProvider>(
+      builder: (context, gameState, child) {
+        final isDisabled = gameState.gold < 10;
+
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: isDisabled ? Colors.grey : Colors.white,
           ),
-        ),
-      ),
+          onPressed: isDisabled ? null : rerollDefenders,
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Container(
+              width: 48,
+              height: 64,
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/icons/reroll.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
