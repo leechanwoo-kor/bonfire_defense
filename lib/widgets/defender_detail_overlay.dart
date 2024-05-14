@@ -1,4 +1,4 @@
-import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/components/ally/defender.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:flutter/material.dart';

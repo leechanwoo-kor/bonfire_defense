@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/orc.dart';
-import 'package:bonfire_defense/components/skeleton.dart';
+import 'package:bonfire_defense/components/enemy/orc.dart';
+import 'package:bonfire_defense/components/enemy/skeleton.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';

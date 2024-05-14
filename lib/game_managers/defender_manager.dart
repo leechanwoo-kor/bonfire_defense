@@ -1,15 +1,15 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/archer.dart';
-import 'package:bonfire_defense/components/defender.dart';
+import 'package:bonfire_defense/components/ally/archer.dart';
+import 'package:bonfire_defense/components/ally/defender.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
-import 'package:bonfire_defense/components/knight.dart';
-import 'package:bonfire_defense/components/lancer.dart';
-import 'package:bonfire_defense/components/orc_archer.dart';
-import 'package:bonfire_defense/components/orc_test.dart';
-import 'package:bonfire_defense/components/orc_warrior.dart';
+import 'package:bonfire_defense/components/ally/knight.dart';
+import 'package:bonfire_defense/components/ally/lancer.dart';
+import 'package:bonfire_defense/components/ally/orc_archer.dart';
+import 'package:bonfire_defense/components/ally/orc_test.dart';
+import 'package:bonfire_defense/components/ally/orc_warrior.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
@@ -83,7 +83,7 @@ class DefenderManager {
 
       // 머지 유닛 생성
       Vector2 mergePosition = defender.position.clone();
-      defender.gameRef.context.read<GameStateProvider>().updateGold(-100);
+      defender.gameRef.context.read<GameStateProvider>().updateGold(-50);
       createUpgradedDefender(mergePosition, defender);
     }
     Navigator.pop(defender.gameRef.context);
