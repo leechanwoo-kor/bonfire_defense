@@ -22,4 +22,4 @@ class GameConfig {
 
 enum EnemyType { orc, skeleton }
 
-enum DefenderType { arch, knight, lancer, orcArcher, orcWarrior, test }
+enum DefenderType { arch, knight, lancer, orcArcher, orcWarrior, test, peon }

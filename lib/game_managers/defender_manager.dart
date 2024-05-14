@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/ally/archer.dart';
 import 'package:bonfire_defense/components/ally/defender.dart';
+import 'package:bonfire_defense/components/ally/peon.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/components/ally/knight.dart';
@@ -51,6 +52,8 @@ class DefenderManager {
         return OrcWarrior(position: position);
       case DefenderType.test:
         return OrcTest(position: position);
+      case DefenderType.peon:
+        return Peon(position: position);
       default:
         throw UnimplementedError('Defender type ${info.type} not supported');
     }

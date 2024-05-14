@@ -16,6 +16,7 @@ class CharacterSpritesheet {
       runUp: _getRunUp,
       runDown: _getRunDown,
       others: {
+        ..._getBasicAttack(),
         ..._getRangeAttack(),
         ..._getMeeleAttack(),
         ..._getHurt(),
@@ -28,6 +29,15 @@ class CharacterSpritesheet {
     Map<String, Future<SpriteAnimation>> animation = {};
     for (var direction in Direction.values) {
       animation['hurt-${direction.name}'] = hurt[direction]!;
+    }
+    return animation;
+  }
+
+  Map<String, Future<SpriteAnimation>> _getBasicAttack() {
+    final basic = _getAnimations(count: 4, startXPosition: 0);
+    Map<String, Future<SpriteAnimation>> animation = {};
+    for (var direction in Direction.values) {
+      animation['attack-basic-${direction.name}'] = basic[direction]!;
     }
     return animation;
   }

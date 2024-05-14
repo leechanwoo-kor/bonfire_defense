@@ -73,7 +73,7 @@ class DefenderInfoDialog extends StatelessWidget {
                               backgroundColor:
                                   onMerge != null ? Colors.green : Colors.grey,
                               elevation: 4.0),
-                          child: const Text("Merge"),
+                          child: const Text("Merge(50G)"),
                         );
                       },
                     )

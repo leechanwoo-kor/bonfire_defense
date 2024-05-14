@@ -16,6 +16,13 @@ class DefenderInfo {
   });
 
   static final Map<DefenderType, DefenderInfo> _infoMap = {
+    DefenderType.peon: DefenderInfo(
+      name: '[오크]\n일꾼',
+      type: DefenderType.peon,
+      attackType: 'splash',
+      imagePath: 'assets/images/peon.png',
+      cost: 25,
+    ),
     DefenderType.arch: DefenderInfo(
       name: '[인간]\n궁수',
       type: DefenderType.arch,

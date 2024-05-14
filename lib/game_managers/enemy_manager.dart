@@ -86,6 +86,7 @@ class EnemyManager {
 
   void death(SimpleEnemy enemy) {
     state.updateCount(-1);
-    state.updateGold(5);
+    //TODO 돈 타워로 대체
+    // state.updateGold(5);
   }
 }

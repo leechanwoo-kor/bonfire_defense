@@ -61,6 +61,9 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   @override
   void receiveDamage(AttackFromEnum attacker, double damage, identify) {
+    if (life <= 0) {
+      die();
+    }
     // timeScale = 0.5;
     // animation?.playOnceOther(
     //   'hurt-${lastDirection.name}',
