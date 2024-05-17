@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/projectile.dart';
 import 'package:bonfire_defense/utils/character_spritesheet.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +8,6 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   static const _speedDefault = GameConfig.defaultSpeed;
   final List<Vector2> path;
-
-  final List<Projectile> targetedProjectiles = [];
 
   Skeleton({
     required this.onDeath,
@@ -55,22 +52,10 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   @override
   void die() {
-    for (var projectile in targetedProjectiles) {
-      projectile.onTargetRemoved();
-    }
-    targetedProjectiles.clear();
     if (!isRemoved) {
       super.die();
       onDeath(this);
       removeFromParent();
     }
-  }
-
-  void registerProjectile(Projectile projectile) {
-    targetedProjectiles.add(projectile);
-  }
-
-  void unregisterProjectile(Projectile projectile) {
-    targetedProjectiles.remove(projectile);
   }
 }

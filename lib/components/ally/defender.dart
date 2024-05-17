@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/enemy/skeleton.dart';
 import 'package:bonfire_defense/components/projectile.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
@@ -82,9 +81,6 @@ abstract class Defender extends SimpleAlly with TapGesture {
           executeDamage(enemy);
         },
       );
-      if (enemy is Skeleton) {
-        enemy.registerProjectile(projectile);
-      }
       gameRef.add(projectile);
     }
   }
