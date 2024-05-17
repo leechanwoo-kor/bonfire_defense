@@ -8,6 +8,8 @@ class Projectile extends GameDecoration with Movement {
   @override
   final double speed;
 
+  bool targetRemoved = false;
+
   Projectile({
     required super.position,
     required this.target,
@@ -22,12 +24,16 @@ class Projectile extends GameDecoration with Movement {
   void update(double dt) {
     super.update(dt);
 
-    Vector2 direction = (target - position).normalized();
-    position.add(direction * speed * dt);
+    if (!targetRemoved) {
+      Vector2 direction = (target - position).normalized();
+      position.add(direction * speed * dt);
 
-    if (position.distanceTo(target) < 2) {
-      onHit();
-      removeFromParent();
+      if (position.distanceTo(target) < 2) {
+        if (!isRemoved) {
+          removeFromParent();
+          onHit();
+        }
+      }
     }
   }
 
@@ -35,10 +41,21 @@ class Projectile extends GameDecoration with Movement {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Enemy) {
       other.receiveDamage(AttackFromEnum.PLAYER_OR_ALLY, damage, null);
+      targetRemoved = true;
+      if (!isRemoved) {
+        removeFromParent();
+      }
       onHit();
-      removeFromParent();
+      return;
     }
     super.onCollision(intersectionPoints, other);
+  }
+
+  void onTargetRemoved() {
+    targetRemoved = true;
+    if (!isRemoved) {
+      removeFromParent();
+    }
   }
 
   @override

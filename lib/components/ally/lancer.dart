@@ -17,30 +17,11 @@ class Lancer extends Defender {
         );
 
   @override
-  void performAttack() {
-    seeComponentType<Enemy>(
-      radiusVision: visionRange,
-      observed: (enemies) {
-        if (enemies.isNotEmpty) {
-          _executeAttack(enemies);
-        }
-      },
-    );
-  }
-
-  void _executeAttack(List<Enemy> enemies) {
+  void executeAttack(List<Enemy> enemies) {
     final enemyDirection = getComponentDirectionFromMe(enemies.first);
     animation?.playOnceOther(
       'attack-range-${enemyDirection.name}',
-      onStart: () => _executeDamage(enemies.first),
-    );
-  }
-
-  void _executeDamage(Enemy enemy) {
-    enemy.receiveDamage(
-      AttackFromEnum.PLAYER_OR_ALLY,
-      attackDamage,
-      null,
+      onStart: () => launchProjectile([enemies.first]),
     );
   }
 }

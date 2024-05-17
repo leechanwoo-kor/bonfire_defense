@@ -1,4 +1,6 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/enemy/skeleton.dart';
+import 'package:bonfire_defense/components/projectile.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
@@ -46,7 +48,46 @@ abstract class Defender extends SimpleAlly with TapGesture {
     return false;
   }
 
-  void performAttack();
+  void performAttack() {
+    seeComponentType<Enemy>(
+      radiusVision: visionRange,
+      observed: (enemies) {
+        if (enemies.isNotEmpty) {
+          executeAttack(enemies);
+        }
+      },
+    );
+  }
+
+  void executeAttack(List<Enemy> enemies);
+
+  void executeDamage(Enemy enemy) {
+    if (enemy.life > 0 && !enemy.isRemoved) {
+      enemy.receiveDamage(
+        AttackFromEnum.PLAYER_OR_ALLY,
+        attackDamage,
+        null,
+      );
+    }
+  }
+
+  void launchProjectile(List<Enemy> enemies) {
+    for (var enemy in enemies) {
+      final projectile = Projectile(
+        position: position.clone(),
+        target: enemy.position,
+        damage: attackDamage,
+        speed: 150,
+        onHit: () {
+          executeDamage(enemy);
+        },
+      );
+      if (enemy is Skeleton) {
+        enemy.registerProjectile(projectile);
+      }
+      gameRef.add(projectile);
+    }
+  }
 
   @override
   void onTap() {

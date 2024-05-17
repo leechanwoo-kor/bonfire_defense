@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/projectile.dart';
 import 'package:bonfire_defense/utils/character_spritesheet.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +9,8 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   static const _speedDefault = GameConfig.defaultSpeed;
   final List<Vector2> path;
+
+  final List<Projectile> targetedProjectiles = [];
 
   Skeleton({
     required this.onDeath,
@@ -52,26 +55,22 @@ class Skeleton extends SimpleEnemy with PathFinding, UseLifeBar, HasTimeScale {
 
   @override
   void die() {
-    super.die();
-    if (parent != null) {
+    for (var projectile in targetedProjectiles) {
+      projectile.onTargetRemoved();
+    }
+    targetedProjectiles.clear();
+    if (!isRemoved) {
+      super.die();
       onDeath(this);
       removeFromParent();
     }
   }
 
-  @override
-  void receiveDamage(AttackFromEnum attacker, double damage, identify) {
-    if (life <= 0) {
-      die();
-    }
-    // timeScale = 0.5;
-    // animation?.playOnceOther(
-    //   'hurt-${lastDirection.name}',
-    //   runToTheEnd: true,
-    //   onFinish: () {
-    //     timeScale = 1.0;
-    //   },
-    // );
-    super.receiveDamage(attacker, damage, identify);
+  void registerProjectile(Projectile projectile) {
+    targetedProjectiles.add(projectile);
+  }
+
+  void unregisterProjectile(Projectile projectile) {
+    targetedProjectiles.remove(projectile);
   }
 }
