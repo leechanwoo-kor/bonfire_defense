@@ -7,6 +7,9 @@ class Projectile extends GameDecoration with Movement {
   final VoidCallback onHit;
   @override
   final double speed;
+  SpriteAnimation? projectileAnimation;
+
+  static const double targetThreshold = 0.1;
 
   Projectile({
     required super.position,
@@ -25,7 +28,7 @@ class Projectile extends GameDecoration with Movement {
     Vector2 direction = (target - position).normalized();
     position.add(direction * speed * dt);
 
-    if (position.distanceTo(target) < 0) {
+    if (position.distanceTo(target) < targetThreshold) {
       hit();
     }
   }
@@ -51,7 +54,23 @@ class Projectile extends GameDecoration with Movement {
   Future<void> onLoad() async {
     await super.onLoad();
     add(RectangleHitbox(size: size));
-    sprite = await Sprite.load('peon.png');
+
+    // Load the animation for the projectile
+    projectileAnimation = await SpriteAnimation.load(
+      'projectile.png', // Path to the projectile sprite sheet
+      SpriteAnimationData.sequenced(
+        amount: 5, // Number of frames in the projectile sprite sheet
+        stepTime: 0.1, // Duration of each frame
+        textureSize: Vector2(32, 32), // Size of each frame
+      ),
+    );
+
+    if (projectileAnimation != null) {
+      add(SpriteAnimationComponent(
+        animation: projectileAnimation!,
+        size: size,
+      ));
+    }
   }
 }
 
