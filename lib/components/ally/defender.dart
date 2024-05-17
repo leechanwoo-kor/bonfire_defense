@@ -73,7 +73,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
   void launchProjectile(List<Enemy> enemies) {
     for (var enemy in enemies) {
       final projectile = Projectile(
-        position: position.clone(),
+        position: position.clone() + Vector2(16, 16),
         target: enemy.position,
         damage: attackDamage,
         speed: 200,
