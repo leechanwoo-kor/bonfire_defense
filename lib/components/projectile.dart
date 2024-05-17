@@ -8,8 +8,6 @@ class Projectile extends GameDecoration with Movement {
   @override
   final double speed;
 
-  static const double targetThreshold = 2.0;
-
   Projectile({
     required super.position,
     required this.target,
@@ -27,7 +25,7 @@ class Projectile extends GameDecoration with Movement {
     Vector2 direction = (target - position).normalized();
     position.add(direction * speed * dt);
 
-    if (position.distanceTo(target) < targetThreshold) {
+    if (position.distanceTo(target) < 0) {
       hit();
     }
   }
@@ -45,6 +43,7 @@ class Projectile extends GameDecoration with Movement {
     if (!isRemoved) {
       removeFromParent();
     }
+    gameRef.add(ExplosionEffect(target.clone()));
     onHit();
   }
 
@@ -53,5 +52,30 @@ class Projectile extends GameDecoration with Movement {
     await super.onLoad();
     add(RectangleHitbox(size: size));
     sprite = await Sprite.load('peon.png');
+  }
+}
+
+class ExplosionEffect extends GameDecoration {
+  ExplosionEffect(Vector2 position)
+      : super(
+          position: position,
+          size: Vector2.all(32),
+        );
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    final explosionAnimation = await SpriteAnimation.load(
+      'effect/explosion.png',
+      SpriteAnimationData.sequenced(
+        amount: 14,
+        stepTime: 0.1,
+        textureSize: Vector2(64, 64),
+      ),
+    );
+
+    await playSpriteAnimationOnce(explosionAnimation, onFinish: () {
+      removeFromParent();
+    });
   }
 }

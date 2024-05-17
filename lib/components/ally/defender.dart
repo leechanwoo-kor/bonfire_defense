@@ -76,7 +76,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
         position: position.clone(),
         target: enemy.position,
         damage: attackDamage,
-        speed: 150,
+        speed: 200,
         onHit: () {
           executeDamage(enemy);
         },
