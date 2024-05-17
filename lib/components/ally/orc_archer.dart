@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/projectile.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/utils/character_spritesheet.dart';
 import 'package:bonfire_defense/components/ally/defender.dart';
@@ -33,8 +34,21 @@ class OrcArcher extends Defender {
     final enemyDirection = getComponentDirectionFromMe(enemy);
     animation?.playOnceOther(
       'attack-range-${enemyDirection.name}',
-      onStart: () => _executeDamage(enemy),
+      onStart: () => _launchProjectile(enemy),
     );
+  }
+
+  void _launchProjectile(Enemy enemy) {
+    final projectile = Projectile(
+      position: position.clone(),
+      target: enemy.position,
+      damage: attackDamage,
+      speed: 150,
+      onHit: () {
+        _executeDamage(enemy);
+      },
+    );
+    gameRef.add(projectile);
   }
 
   void _executeDamage(Enemy enemy) {
