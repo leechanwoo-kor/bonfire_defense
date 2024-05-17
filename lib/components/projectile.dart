@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,7 +11,7 @@ class Projectile extends GameDecoration with Movement {
   final double speed;
   SpriteAnimation? projectileAnimation;
 
-  static const double targetThreshold = 0.1;
+  static const double targetThreshold = 0.5;
 
   Projectile({
     required super.position,
@@ -20,6 +22,31 @@ class Projectile extends GameDecoration with Movement {
   }) : super(
           size: Vector2.all(16),
         );
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    add(RectangleHitbox(size: size));
+
+    double angle = atan2(target.y - position.y, target.x - position.x);
+
+    projectileAnimation = await SpriteAnimation.load(
+      'projectile.png',
+      SpriteAnimationData.sequenced(
+        amount: 5,
+        stepTime: 0.1,
+        textureSize: Vector2(32, 32),
+      ),
+    );
+
+    if (projectileAnimation != null) {
+      add(SpriteAnimationComponent(
+        animation: projectileAnimation!,
+        size: size,
+        angle: angle,
+      ));
+    }
+  }
 
   @override
   void update(double dt) {
@@ -43,34 +70,9 @@ class Projectile extends GameDecoration with Movement {
   }
 
   void hit() {
-    if (!isRemoved) {
-      removeFromParent();
-    }
+    removeFromParent();
     gameRef.add(ExplosionEffect(target.clone()));
     onHit();
-  }
-
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    add(RectangleHitbox(size: size));
-
-    // Load the animation for the projectile
-    projectileAnimation = await SpriteAnimation.load(
-      'projectile.png', // Path to the projectile sprite sheet
-      SpriteAnimationData.sequenced(
-        amount: 5, // Number of frames in the projectile sprite sheet
-        stepTime: 0.1, // Duration of each frame
-        textureSize: Vector2(32, 32), // Size of each frame
-      ),
-    );
-
-    if (projectileAnimation != null) {
-      add(SpriteAnimationComponent(
-        animation: projectileAnimation!,
-        size: size,
-      ));
-    }
   }
 }
 
