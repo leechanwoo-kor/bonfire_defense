@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
@@ -10,6 +11,7 @@ class Projectile extends GameDecoration with Movement {
   @override
   final double speed;
   SpriteAnimation? projectileAnimation;
+  StreamSubscription? moveSubscription;
 
   static const double targetThreshold = 0.5;
 
@@ -46,18 +48,20 @@ class Projectile extends GameDecoration with Movement {
         angle: angle,
       ));
     }
+
+    moveToTarget();
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
+  void moveToTarget() {
+    moveSubscription =
+        Stream.periodic(const Duration(milliseconds: 16)).listen((_) {
+      Vector2 direction = (target - position).normalized();
+      position.add(direction * speed * 0.016);
 
-    Vector2 direction = (target - position).normalized();
-    position.add(direction * speed * dt);
-
-    if (position.distanceTo(target) < targetThreshold) {
-      hit();
-    }
+      if (position.distanceTo(target) < targetThreshold) {
+        hit();
+      }
+    });
   }
 
   @override
@@ -70,6 +74,7 @@ class Projectile extends GameDecoration with Movement {
   }
 
   void hit() {
+    moveSubscription?.cancel();
     removeFromParent();
     gameRef.add(ExplosionEffect(target.clone()));
     onHit();
