@@ -25,8 +25,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
 
   Offset? _lastOffset;
   Offset _startOffset = Offset.zero;
-
   double _currentZoom = 1.5;
+  double _baseZoom = 1.5;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   void _handleScaleUpdate(ScaleUpdateDetails details) {
     if (details.scale != 1.0) {
       setState(() {
-        _currentZoom *= details.scale;
+        _currentZoom = (_baseZoom * details.scale).clamp(1.0, 3.0);
         gameController.cameraController.setZoom(_currentZoom);
       });
     }
