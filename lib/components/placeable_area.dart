@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/ally/defender.dart';
+import 'package:bonfire_defense/provider/test_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
@@ -20,10 +21,14 @@ class PlaceableArea extends GameDecoration with TapGesture {
   void onTap() {
     final state = gameRef.context.read<DefenderStateProvider>();
     final gameState = gameRef.context.read<GameStateProvider>();
+    final testState = gameRef.context.read<TestStateProvider>();
     final defender = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
     if (defender == null) {
+      if (!testState.isVisible) {
+        testState.setVisible(true);
+      }
       return;
     }
 

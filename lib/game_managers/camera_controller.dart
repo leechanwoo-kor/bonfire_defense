@@ -7,8 +7,8 @@ class CameraController {
 
   static const double minZoom = 1.5;
   static const double maxZoom = 3.0;
-  static const double zoomSensitivity = 0.2;
-  static const double panSensitivity = 0.2;
+  static const double zoomSensitivity = 0.4;
+  static const double panSensitivity = 0.4;
 
   CameraController(this.gameRef, this.mapWidth, this.mapHeight);
 
