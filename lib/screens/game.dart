@@ -26,6 +26,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   Offset? _lastOffset;
   Offset _startOffset = Offset.zero;
 
+  double _currentZoom = 1.5;
+
   @override
   void initState() {
     super.initState();
@@ -38,8 +40,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
     final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
     final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
-
-    double currentZoom = 1.5;
 
     _game = BonfireGame(
       context: context,
@@ -59,7 +59,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         },
       ),
       cameraConfig: CameraConfig(
-        zoom: currentZoom,
+        zoom: _currentZoom,
         initPosition: Vector2(mapWidth * 0.425, mapHeight),
       ),
       components: [gameController],
@@ -72,6 +72,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         onPanStart: (details) => _startOffset = details.localPosition,
         onPanUpdate: (details) => _handlePanUpdate(details),
         onPanEnd: (_) => _lastOffset = null,
+        onScaleUpdate: (details) => _handleScaleUpdate(details),
         child: Listener(
           onPointerSignal: (pointerSignal) =>
               _handlePointerSignal(pointerSignal),
@@ -106,6 +107,15 @@ class _BonfireDefenseState extends State<BonfireDefense> {
       } else {
         gameController.cameraController.zoomIn();
       }
+    }
+  }
+
+  void _handleScaleUpdate(ScaleUpdateDetails details) {
+    if (details.scale != 1.0) {
+      setState(() {
+        _currentZoom *= details.scale;
+        gameController.cameraController.setZoom(_currentZoom);
+      });
     }
   }
 }

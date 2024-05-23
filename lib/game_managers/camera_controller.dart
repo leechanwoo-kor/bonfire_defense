@@ -15,6 +15,10 @@ class CameraController {
     _animateZoom(gameRef.camera.zoom / 1.1);
   }
 
+  void setZoom(double newZoom) {
+    _animateZoom(newZoom);
+  }
+
   void _animateZoom(double newZoom) {
     final clampedZoom = newZoom.clamp(1.5, 3.0);
     gameRef.camera.animateZoom(
