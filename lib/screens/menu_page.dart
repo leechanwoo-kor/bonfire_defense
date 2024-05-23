@@ -13,7 +13,7 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff85a643),
+      backgroundColor: const Color(0xff3b3a36),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -27,7 +27,6 @@ class MenuPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => const AboutPage()),
                     (route) => false)),
-            // () => Navigator.of(context).pushNamed('/about')),
           ],
         ),
       ),
@@ -40,6 +39,10 @@ class MenuPage extends StatelessWidget {
       width: 200,
       child: ElevatedButton(
         onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: const Color(0xff6d4c41),
+          backgroundColor: Colors.white,
+        ),
         child: Text(label),
       ),
     );
@@ -51,7 +54,6 @@ class MenuPage extends StatelessWidget {
         context,
         MaterialPageRoute(builder: (context) => const BonfireDefense()),
         (route) => false);
-    // Navigator.of(context).pushNamed('/game', arguments: GameStageEnum.main);
   }
 
   void initializeProviders(BuildContext context) {
