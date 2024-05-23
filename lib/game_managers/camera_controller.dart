@@ -63,8 +63,21 @@ class CameraController {
   }
 
   Vector2 _clampPosition(Vector2 position) {
-    final clampedX = position.x.clamp(mapWidth * 0.4, mapWidth * 0.45);
-    final clampedY = position.y.clamp(mapHeight * 0.5, mapHeight);
+    final zoomLevel = gameRef.camera.zoom;
+    final zoomFactorX = (1 / zoomLevel) * 0.5;
+    final zoomFactorY = (1 / zoomLevel) * 0.5;
+
+    final minX = mapWidth * (0.4 - zoomFactorX);
+    final maxX = mapWidth * (0.45 + zoomFactorX);
+    final minY = mapHeight * (0.5 - zoomFactorY);
+    final maxY = mapHeight * (1.0 + zoomFactorY);
+
+    final clampedX = position.x.clamp(minX, maxX);
+    final clampedY = position.y.clamp(minY, maxY);
+
+    // final clampedX = position.x.clamp(mapWidth * 0.4, mapWidth * 0.45);
+    // final clampedY = position.y.clamp(mapHeight * 0.5, mapHeight);
+
     return Vector2(clampedX, clampedY);
   }
 }
