@@ -23,6 +23,9 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   late GameConfig config;
   late BonfireGame _game;
 
+  Offset? _lastOffset;
+  Offset _startOffset = Offset.zero;
+
   @override
   void initState() {
     super.initState();
@@ -69,27 +72,43 @@ class _BonfireDefenseState extends State<BonfireDefense> {
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerSignal: (pointerSignal) {
-        if (pointerSignal is PointerScrollEvent) {
-          if (pointerSignal.scrollDelta.dy > 0) {
-            gameController.zoomOut();
-          } else {
-            gameController.zoomIn();
-          }
-        }
-      },
-      child: BonfireWidget(
-        map: _game.map,
-        cameraConfig: _game.camera.config,
-        components: _game.world.children.whereType<GameComponent>().toList(),
-        overlayBuilderMap: {
-          GameOverlay.overlayName: (context, game) => const GameOverlay(),
+    return GestureDetector(
+        onPanStart: (details) {
+          _startOffset = details.localPosition;
         },
-        initialActiveOverlays: const [
-          GameOverlay.overlayName,
-        ],
-      ),
-    );
+        onPanUpdate: (details) {
+          if (_lastOffset != null) {
+            final dx = (_startOffset.dx - details.localPosition.dx);
+            final dy = (_startOffset.dy - details.localPosition.dy);
+            gameController.moveCameraByOffset(Vector2(dx, dy));
+          }
+          _lastOffset = details.localPosition;
+        },
+        onPanEnd: (details) {
+          _lastOffset = null;
+        },
+        child: Listener(
+          onPointerSignal: (pointerSignal) {
+            if (pointerSignal is PointerScrollEvent) {
+              if (pointerSignal.scrollDelta.dy > 0) {
+                gameController.zoomOut();
+              } else {
+                gameController.zoomIn();
+              }
+            }
+          },
+          child: BonfireWidget(
+            map: _game.map,
+            cameraConfig: _game.camera.config,
+            components:
+                _game.world.children.whereType<GameComponent>().toList(),
+            overlayBuilderMap: {
+              GameOverlay.overlayName: (context, game) => const GameOverlay(),
+            },
+            initialActiveOverlays: const [
+              GameOverlay.overlayName,
+            ],
+          ),
+        ));
   }
 }

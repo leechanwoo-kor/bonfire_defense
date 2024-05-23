@@ -182,4 +182,13 @@ class GameController extends GameComponent {
       duration: Duration(seconds: 1),
     );
   }
+
+  void moveCameraByOffset(Vector2 offset) {
+    final adjustedOffset = offset * 0.2;
+    final newPosition = gameRef.camera.position - adjustedOffset;
+    gameRef.camera.moveToPositionAnimated(
+      position: newPosition,
+      effectController: EffectController(duration: 0.1),
+    );
+  }
 }
