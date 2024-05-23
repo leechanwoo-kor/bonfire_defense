@@ -72,6 +72,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         onPanStart: (details) => _startOffset = details.localPosition,
         onPanUpdate: (details) => _handlePanUpdate(details),
         onPanEnd: (_) => _lastOffset = null,
+        onScaleStart: (details) => _baseZoom = _currentZoom,
         onScaleUpdate: (details) => _handleScaleUpdate(details),
         child: Listener(
           onPointerSignal: (pointerSignal) =>
