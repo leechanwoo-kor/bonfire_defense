@@ -5,8 +5,21 @@ import 'package:bonfire_defense/widgets/unit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DefenderSelectionPanel extends StatelessWidget {
+class DefenderSelectionPanel extends StatefulWidget {
   const DefenderSelectionPanel({super.key});
+
+  @override
+  _DefenderSelectionPanelState createState() => _DefenderSelectionPanelState();
+}
+
+class _DefenderSelectionPanelState extends State<DefenderSelectionPanel> {
+  bool _isVisible = false;
+
+  void _toggleVisibility() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,31 +27,49 @@ class DefenderSelectionPanel extends StatelessWidget {
       builder: (context, gameState, defenderState, child) {
         final isActivated = gameState.gold >= 10;
 
-        return Container(
-          alignment: Alignment.center,
-          color: Colors.black.withOpacity(0.8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Row(children: [
-                const SizedBox(width: 4),
-                RerollButton(
-                    isActivated: isActivated,
-                    rerollDefenders: () => {
-                          if (isActivated)
-                            {
-                              defenderState.shuffleDefenders(),
-                              gameState.updateGold(-10)
-                            }
-                        }),
-                const SizedBox(width: 4),
-                DefenderCardsRow(
-                    defenderState: defenderState, gold: gameState.gold),
-              ]),
-              const SizedBox(height: 10),
-            ],
-          ),
+        return Column(
+          children: [
+            GestureDetector(
+              onTap: _toggleVisibility,
+              child: Container(
+                color: Colors.black.withOpacity(0.8),
+                alignment: Alignment.center,
+                child: Icon(
+                  _isVisible ? Icons.arrow_downward : Icons.arrow_upward,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: _isVisible ? 200 : 0, // Adjust height as needed
+              color: Colors.black.withOpacity(0.8),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 10),
+                    Row(children: [
+                      const SizedBox(width: 4),
+                      RerollButton(
+                          isActivated: isActivated,
+                          rerollDefenders: () => {
+                                if (isActivated)
+                                  {
+                                    defenderState.shuffleDefenders(),
+                                    gameState.updateGold(-10)
+                                  }
+                              }),
+                      const SizedBox(width: 4),
+                      DefenderCardsRow(
+                          defenderState: defenderState, gold: gameState.gold),
+                    ]),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
