@@ -7,7 +7,7 @@ class CameraController {
 
   static const double minZoom = 1.5;
   static const double maxZoom = 3.0;
-  static const double zoomSensitivity = 0.2;
+  static const double zoomSensitivity = 0.5;
   static const double panSensitivity = 1.0;
 
   CameraController(this.gameRef, this.mapWidth, this.mapHeight);
@@ -26,10 +26,11 @@ class CameraController {
 
   void _animateZoom(double newZoom) {
     final clampedZoom = newZoom.clamp(minZoom, maxZoom);
-    gameRef.camera.animateZoom(
-      zoom: Vector2(clampedZoom, clampedZoom),
-      effectController: EffectController(duration: 0.1),
-    );
+    gameRef.camera.zoom = clampedZoom;
+    // gameRef.camera.animateZoom(
+    //   zoom: Vector2(clampedZoom, clampedZoom),
+    //   effectController: EffectController(duration: 0.1),
+    // );
   }
 
   void moveCameraToPosition(Vector2 position) {
