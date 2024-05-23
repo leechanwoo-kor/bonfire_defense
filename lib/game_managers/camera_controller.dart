@@ -7,8 +7,8 @@ class CameraController {
 
   static const double minZoom = 1.5;
   static const double maxZoom = 3.0;
-  static const double zoomSensitivity = 0.4;
-  static const double panSensitivity = 0.4;
+  static const double zoomSensitivity = 0.2;
+  static const double panSensitivity = 1.0;
 
   CameraController(this.gameRef, this.mapWidth, this.mapHeight);
 
@@ -28,7 +28,7 @@ class CameraController {
     final clampedZoom = newZoom.clamp(minZoom, maxZoom);
     gameRef.camera.animateZoom(
       zoom: Vector2(clampedZoom, clampedZoom),
-      effectController: EffectController(duration: 0.2),
+      effectController: EffectController(duration: 0.1),
     );
   }
 
@@ -63,7 +63,7 @@ class CameraController {
 
   Vector2 _clampPosition(Vector2 position) {
     final clampedX = position.x.clamp(mapWidth * 0.4, mapWidth * 0.45);
-    final clampedY = position.y.clamp(mapHeight * 0.85, mapHeight);
+    final clampedY = position.y.clamp(mapHeight * 0.5, mapHeight);
     return Vector2(clampedX, clampedY);
   }
 }
