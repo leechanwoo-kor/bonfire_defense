@@ -97,7 +97,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
     setState(() {
       // Handle zoom
       if (details.scale != 1.0) {
-        double zoomDelta = (details.scale - 1) * 0.5;
+        double zoomDelta = (details.scale - 1);
         _currentZoom = (_baseZoom + zoomDelta).clamp(1.0, 3.0);
         gameController.cameraController.setZoom(_currentZoom);
       }

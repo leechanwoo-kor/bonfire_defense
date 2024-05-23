@@ -18,7 +18,7 @@ class GameController extends GameComponent {
   late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
 
-  late GameConfig config;
+  late GameConfig? config;
 
   bool get _isGameRunning => _gameStateProvider.state == GameState.running;
   bool get _isGameWaving => _gameStateProvider.state == GameState.waving;
@@ -51,9 +51,9 @@ class GameController extends GameComponent {
   }
 
   void _initializeCameraController() {
-    final config = _gameConfigProvider.currentConfig;
-    final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
-    final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
+    config = _gameConfigProvider.currentConfig;
+    final double mapWidth = config!.tilesInWidth * BonfireDefense.tileSize;
+    final double mapHeight = config!.tilesInHeight * BonfireDefense.tileSize;
     cameraController = CameraController(gameRef, mapWidth, mapHeight);
   }
 
@@ -71,7 +71,8 @@ class GameController extends GameComponent {
 
   Future<void> checkWave() async {
     while (_isGameWaving) {
-      if (_enemyStateProvider.enemyCount == config.enemies.length) {
+      print("Enemy count: ${_enemyStateProvider.enemyCount}");
+      if (_enemyStateProvider.enemyCount == config!.enemies.length) {
         endWaveCheck();
       }
       await Future.delayed(const Duration(milliseconds: 1000));

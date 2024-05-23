@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TestStateProvider with ChangeNotifier {
-  bool _isVisible = false;
+  bool _isVisible = true;
 
   bool get isVisible => _isVisible;
 
