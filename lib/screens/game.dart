@@ -69,11 +69,25 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onPanStart: (details) => _startOffset = details.localPosition,
-        onPanUpdate: (details) => _handlePanUpdate(details),
-        onPanEnd: (_) => _lastOffset = null,
-        onScaleStart: (details) => _baseZoom = _currentZoom,
-        onScaleUpdate: (details) => _handleScaleUpdate(details),
+        onScaleStart: (details) {
+          _startOffset = details.focalPoint;
+          _baseZoom = _currentZoom;
+        },
+        onScaleUpdate: (details) {
+          // Handle zoom
+          if (details.scale != 1.0) {
+            setState(() {
+              _currentZoom = (_baseZoom * details.scale).clamp(1.0, 3.0);
+              gameController.cameraController.setZoom(_currentZoom);
+            });
+          }
+
+          // Handle pan
+          final dx = _startOffset.dx - details.focalPoint.dx;
+          final dy = _startOffset.dy - details.focalPoint.dy;
+          gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
+          _startOffset = details.focalPoint;
+        },
         child: Listener(
           onPointerSignal: (pointerSignal) =>
               _handlePointerSignal(pointerSignal),
@@ -92,15 +106,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         ));
   }
 
-  void _handlePanUpdate(DragUpdateDetails details) {
-    if (_lastOffset != null) {
-      final dx = (_startOffset.dx - details.localPosition.dx);
-      final dy = (_startOffset.dy - details.localPosition.dy);
-      gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
-    }
-    _lastOffset = details.localPosition;
-  }
-
   void _handlePointerSignal(PointerSignalEvent pointerSignal) {
     if (pointerSignal is PointerScrollEvent) {
       if (pointerSignal.scrollDelta.dy > 0) {
@@ -108,15 +113,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
       } else {
         gameController.cameraController.zoomIn();
       }
-    }
-  }
-
-  void _handleScaleUpdate(ScaleUpdateDetails details) {
-    if (details.scale != 1.0) {
-      setState(() {
-        _currentZoom = (_baseZoom * details.scale).clamp(1.0, 3.0);
-        gameController.cameraController.setZoom(_currentZoom);
-      });
     }
   }
 }
