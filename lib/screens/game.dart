@@ -30,31 +30,27 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   void initState() {
     super.initState();
     gameController = GameController();
-
-    config =
-        Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
-
-    _buildGame();
+    _initializeGame();
   }
 
-  void _buildGame() {
+  void _initializeGame() {
+    final config =
+        Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
     final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
     final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
 
-    double currentZoom = 1.1;
+    double currentZoom = 1.5;
 
     _game = BonfireGame(
       context: context,
       map: WorldMapByTiled(
         TiledReader.asset(config.tiledMapPath),
         objectsBuilder: {
-          'endGame': (properties) {
-            return EndGameSensor(
-              gameController,
-              position: properties.position,
-              size: properties.size,
-            );
-          },
+          'endGame': (properties) => EndGameSensor(
+                gameController,
+                position: properties.position,
+                size: properties.size,
+              ),
           'place': (properties) => PlaceableArea(
                 controller: gameController,
                 position: properties.position,
@@ -64,7 +60,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
       ),
       cameraConfig: CameraConfig(
         zoom: currentZoom,
-        initPosition: Vector2(mapWidth / 2, mapHeight),
+        initPosition: Vector2(mapWidth * 0.425, mapHeight),
       ),
       components: [gameController],
     );
@@ -73,30 +69,12 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onPanStart: (details) {
-          _startOffset = details.localPosition;
-        },
-        onPanUpdate: (details) {
-          if (_lastOffset != null) {
-            final dx = (_startOffset.dx - details.localPosition.dx);
-            final dy = (_startOffset.dy - details.localPosition.dy);
-            gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
-          }
-          _lastOffset = details.localPosition;
-        },
-        onPanEnd: (details) {
-          _lastOffset = null;
-        },
+        onPanStart: (details) => _startOffset = details.localPosition,
+        onPanUpdate: (details) => _handlePanUpdate(details),
+        onPanEnd: (_) => _lastOffset = null,
         child: Listener(
-          onPointerSignal: (pointerSignal) {
-            if (pointerSignal is PointerScrollEvent) {
-              if (pointerSignal.scrollDelta.dy > 0) {
-                gameController.cameraController.zoomOut();
-              } else {
-                gameController.cameraController.zoomIn();
-              }
-            }
-          },
+          onPointerSignal: (pointerSignal) =>
+              _handlePointerSignal(pointerSignal),
           child: BonfireWidget(
             map: _game.map,
             cameraConfig: _game.camera.config,
@@ -110,5 +88,24 @@ class _BonfireDefenseState extends State<BonfireDefense> {
             ],
           ),
         ));
+  }
+
+  void _handlePanUpdate(DragUpdateDetails details) {
+    if (_lastOffset != null) {
+      final dx = (_startOffset.dx - details.localPosition.dx);
+      final dy = (_startOffset.dy - details.localPosition.dy);
+      gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
+    }
+    _lastOffset = details.localPosition;
+  }
+
+  void _handlePointerSignal(PointerSignalEvent pointerSignal) {
+    if (pointerSignal is PointerScrollEvent) {
+      if (pointerSignal.scrollDelta.dy > 0) {
+        gameController.cameraController.zoomOut();
+      } else {
+        gameController.cameraController.zoomIn();
+      }
+    }
   }
 }

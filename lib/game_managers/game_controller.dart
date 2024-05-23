@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/game_managers/camera_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
+import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
 import 'package:bonfire_defense/game_managers/enemy_manager.dart';
@@ -13,15 +14,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GameController extends GameComponent {
+  late CameraController cameraController;
   late DefenderManager _defenderManager;
   late EnemyManager _enemyManager;
 
   late GameConfig config;
-  late GameStateProvider _gameStateProvider;
-  late DefenderStateProvider _defenderStateProvider;
-  late EnemyStateProvider _enemyStateProvider;
 
-  late CameraController cameraController;
+  bool get _isGameRunning => _gameStateProvider.state == GameState.running;
+  bool get _isGameWaving => _gameStateProvider.state == GameState.waving;
+
+  GameConfigProvider get _gameConfigProvider =>
+      Provider.of<GameConfigProvider>(context, listen: false);
+  GameStateProvider get _gameStateProvider =>
+      Provider.of<GameStateProvider>(context, listen: false);
+  DefenderStateProvider get _defenderStateProvider =>
+      Provider.of<DefenderStateProvider>(context, listen: false);
+  EnemyStateProvider get _enemyStateProvider =>
+      Provider.of<EnemyStateProvider>(context, listen: false);
 
   @override
   Future<void> onLoad() async {
@@ -29,25 +38,23 @@ class GameController extends GameComponent {
     _defenderManager = DefenderManager(this);
     _enemyManager = EnemyManager(this);
 
-    config =
-        Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
-
-    _gameStateProvider = Provider.of<GameStateProvider>(context, listen: false);
-    _defenderStateProvider =
-        Provider.of<DefenderStateProvider>(context, listen: false);
-    _enemyStateProvider =
-        Provider.of<EnemyStateProvider>(context, listen: false);
-
-    cameraController = CameraController(gameRef);
+    _initializeCameraController();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    if (_gameStateProvider.state == GameState.running) {
+    if (_isGameRunning) {
       _enemyManager.startWave();
       checkWave();
     }
+  }
+
+  void _initializeCameraController() {
+    final config = _gameConfigProvider.currentConfig;
+    final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
+    final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
+    cameraController = CameraController(gameRef, mapWidth, mapHeight);
   }
 
   void addDefender(DefenderInfo info, Vector2? tilePosition) {
@@ -55,14 +62,15 @@ class GameController extends GameComponent {
   }
 
   void nextStage() {
-    _gameStateProvider.stopGame();
-    _gameStateProvider.nextStage();
+    final gameStateProvider = _gameStateProvider;
+    gameStateProvider.stopGame();
+    gameStateProvider.nextStage();
     _enemyStateProvider.resetEnemyCount();
     _defenderStateProvider.shuffleDefenders();
   }
 
   Future<void> checkWave() async {
-    while (_gameStateProvider.state == GameState.waving) {
+    while (_isGameWaving) {
       if (_enemyStateProvider.enemyCount == config.enemies.length) {
         endWaveCheck();
       }
@@ -75,11 +83,10 @@ class GameController extends GameComponent {
       _gameStateProvider.stopGame();
 
       if (_gameStateProvider.life <= 0) {
-        var msg = 'Game over!';
-        showDialogEndGame(msg, true);
+        showDialogEndGame('Game over!', true);
       } else {
-        var msg = 'Stage ${_gameStateProvider.currentStage} cleared!';
-        showFullOverlay(context, msg, false);
+        showFullOverlay(context,
+            'Stage ${_gameStateProvider.currentStage} cleared!', false);
       }
     }
   }
@@ -140,14 +147,18 @@ class GameController extends GameComponent {
     Future.delayed(const Duration(milliseconds: 500), () {
       overlayEntry.remove();
       if (isGameOver) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const MenuPage()),
-          (route) => false,
-        );
+        _navigateToMenuPage();
       } else {
         nextStage();
       }
     });
+  }
+
+  void _navigateToMenuPage() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MenuPage()),
+      (route) => false,
+    );
   }
 }
