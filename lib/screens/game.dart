@@ -68,26 +68,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onScaleStart: (details) {
-          _startOffset = details.focalPoint;
-          _baseZoom = _currentZoom;
-        },
-        onScaleUpdate: (details) {
-          // Handle zoom
-          if (details.scale != 1.0) {
-            setState(() {
-              _currentZoom =
-                  (_baseZoom * (details.scale - 1) * 0.2).clamp(1.0, 3.0);
-              gameController.cameraController.setZoom(_currentZoom);
-            });
-          }
-
-          // Handle pan
-          final dx = _startOffset.dx - details.focalPoint.dx;
-          final dy = _startOffset.dy - details.focalPoint.dy;
-          gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
-          _startOffset = details.focalPoint;
-        },
+        onScaleStart: _onScaleStart,
+        onScaleUpdate: _onScaleUpdate,
         child: Listener(
           onPointerSignal: (pointerSignal) =>
               _handlePointerSignal(pointerSignal),
@@ -104,6 +86,27 @@ class _BonfireDefenseState extends State<BonfireDefense> {
             ],
           ),
         ));
+  }
+
+  void _onScaleStart(ScaleStartDetails details) {
+    _startOffset = details.focalPoint;
+    _baseZoom = _currentZoom;
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    setState(() {
+      // Handle zoom
+      if (details.scale != 1.0) {
+        _currentZoom = (_baseZoom * details.scale * 0.2).clamp(1.0, 3.0);
+        gameController.cameraController.setZoom(_currentZoom);
+      }
+
+      // Handle pan
+      final dx = (_startOffset.dx - details.focalPoint.dx);
+      final dy = (_startOffset.dy - details.focalPoint.dy);
+      gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
+      _startOffset = details.focalPoint;
+    });
   }
 
   void _handlePointerSignal(PointerSignalEvent pointerSignal) {
