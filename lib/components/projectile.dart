@@ -13,8 +13,6 @@ class Projectile extends GameDecoration with Movement {
   SpriteAnimation? projectileAnimation;
   StreamSubscription? moveSubscription;
 
-  static const double targetThreshold = 0.5;
-
   Projectile({
     required super.position,
     required this.target,
@@ -53,15 +51,21 @@ class Projectile extends GameDecoration with Movement {
   }
 
   void moveToTarget() {
-    moveSubscription =
-        Stream.periodic(const Duration(milliseconds: 16)).listen((_) {
-      Vector2 direction = (target - position).normalized();
-      position.add(direction * speed * 0.016);
+    final startPosition = position.clone();
+    final duration = (target - startPosition).length / speed;
 
-      if (position.distanceTo(target) < targetThreshold) {
+    var elapsed = 0.0;
+    moveSubscription =
+        Stream.periodic(const Duration(milliseconds: 16), (count) {
+      elapsed += 0.016;
+      final t = elapsed / duration;
+      if (t >= 1.0) {
+        position = target.clone();
         hit();
+      } else {
+        position = startPosition + (target - startPosition) * t;
       }
-    });
+    }).listen((_) {});
   }
 
   @override
@@ -74,7 +78,10 @@ class Projectile extends GameDecoration with Movement {
   }
 
   void hit() {
-    moveSubscription?.cancel();
+    if (moveSubscription != null) {
+      moveSubscription!.cancel();
+      moveSubscription = null;
+    }
     removeFromParent();
     gameRef.add(ExplosionEffect(target.clone()));
     onHit();
