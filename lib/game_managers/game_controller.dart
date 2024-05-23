@@ -71,7 +71,6 @@ class GameController extends GameComponent {
 
   Future<void> checkWave() async {
     while (_isGameWaving) {
-      print("Enemy count: ${_enemyStateProvider.enemyCount}");
       if (_enemyStateProvider.enemyCount == config!.enemies.length) {
         endWaveCheck();
       }

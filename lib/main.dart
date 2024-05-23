@@ -11,12 +11,16 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'package:bonfire_defense/utils/sounds.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
-    Flame.device.fullScreen();
-    Flame.device.setPortrait();
+    await Flame.device.fullScreen();
+    await Flame.device.setPortrait();
   }
+  await Sounds.initialize();
+  Sounds.playBackgroundSound();
 
   runApp(
     MultiProvider(
