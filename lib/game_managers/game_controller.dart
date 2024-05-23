@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/game_managers/camera_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/game_managers/defender_manager.dart';
@@ -20,6 +21,8 @@ class GameController extends GameComponent {
   late DefenderStateProvider _defenderStateProvider;
   late EnemyStateProvider _enemyStateProvider;
 
+  late CameraController cameraController;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -34,6 +37,8 @@ class GameController extends GameComponent {
         Provider.of<DefenderStateProvider>(context, listen: false);
     _enemyStateProvider =
         Provider.of<EnemyStateProvider>(context, listen: false);
+
+    cameraController = CameraController(gameRef);
   }
 
   @override
@@ -144,51 +149,5 @@ class GameController extends GameComponent {
         nextStage();
       }
     });
-  }
-
-  // 카메라 기능 구현
-  void zoomIn() {
-    final newZoom = (gameRef.camera.zoom * 1.1).clamp(1.0, 3.0);
-    gameRef.camera.animateZoom(
-      zoom: Vector2(newZoom, newZoom),
-      effectController: EffectController(duration: 0.2),
-    );
-  }
-
-  void zoomOut() {
-    final newZoom = (gameRef.camera.zoom / 1.1).clamp(1.0, 3.0);
-    gameRef.camera.animateZoom(
-      zoom: Vector2(newZoom, newZoom),
-      effectController: EffectController(duration: 0.2),
-    );
-  }
-
-  void moveCameraToPosition(Vector2 position) {
-    gameRef.camera.moveToPositionAnimated(
-      position: position,
-      effectController: EffectController(duration: 1.0),
-    );
-  }
-
-  void followPlayer() {
-    gameRef.camera.moveToPlayerAnimated(
-      effectController: EffectController(duration: 1.0),
-    );
-  }
-
-  void shakeCamera() {
-    gameRef.camera.shake(
-      intensity: 20.0,
-      duration: Duration(seconds: 1),
-    );
-  }
-
-  void moveCameraByOffset(Vector2 offset) {
-    final adjustedOffset = offset * 0.2;
-    final newPosition = gameRef.camera.position - adjustedOffset;
-    gameRef.camera.moveToPositionAnimated(
-      position: newPosition,
-      effectController: EffectController(duration: 0.1),
-    );
   }
 }

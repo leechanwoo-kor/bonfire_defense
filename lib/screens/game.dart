@@ -80,7 +80,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
           if (_lastOffset != null) {
             final dx = (_startOffset.dx - details.localPosition.dx);
             final dy = (_startOffset.dy - details.localPosition.dy);
-            gameController.moveCameraByOffset(Vector2(dx, dy));
+            gameController.cameraController.moveCameraByOffset(Vector2(dx, dy));
           }
           _lastOffset = details.localPosition;
         },
@@ -91,9 +91,9 @@ class _BonfireDefenseState extends State<BonfireDefense> {
           onPointerSignal: (pointerSignal) {
             if (pointerSignal is PointerScrollEvent) {
               if (pointerSignal.scrollDelta.dy > 0) {
-                gameController.zoomOut();
+                gameController.cameraController.zoomOut();
               } else {
-                gameController.zoomIn();
+                gameController.cameraController.zoomIn();
               }
             }
           },
