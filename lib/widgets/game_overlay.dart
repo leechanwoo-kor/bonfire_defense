@@ -1,7 +1,7 @@
 import 'package:bonfire_defense/widgets/defender_selection_panel.dart';
-import 'package:bonfire_defense/widgets/game_control_panel.dart';
 import 'package:bonfire_defense/widgets/game_menu.dart';
 import 'package:bonfire_defense/widgets/game_state_panel.dart';
+import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/material.dart';
 
 class GameOverlay extends StatelessWidget {
@@ -28,7 +28,6 @@ class GameOverlay extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     DefenderSelectionPanel(),
-                    GameControlPanel(),
                   ],
                 ),
               ),
@@ -44,6 +43,9 @@ class GameOverlay extends StatelessWidget {
               showGameMenu(context);
             },
           ),
+        ),
+        const StartButton(
+          position: Offset(135, 80),
         ),
       ],
     );
