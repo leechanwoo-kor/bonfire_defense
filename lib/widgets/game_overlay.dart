@@ -1,8 +1,7 @@
 import 'package:bonfire_defense/widgets/defender_selection_panel.dart';
 import 'package:bonfire_defense/widgets/game_control_panel.dart';
 import 'package:bonfire_defense/widgets/game_menu.dart';
-import 'package:bonfire_defense/widgets/game_stage_display.dart';
-import 'package:bonfire_defense/widgets/game_state_bar.dart';
+import 'package:bonfire_defense/widgets/game_state_panel.dart';
 import 'package:flutter/material.dart';
 
 class GameOverlay extends StatelessWidget {
@@ -14,12 +13,13 @@ class GameOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        const Positioned(
+          top: 20,
+          left: 20,
+          child: GameStatePanel(),
+        ),
         const Column(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: GameStageDisplay(),
-            ),
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -29,7 +29,6 @@ class GameOverlay extends StatelessWidget {
                   children: [
                     DefenderSelectionPanel(),
                     GameControlPanel(),
-                    GameStateBar(),
                   ],
                 ),
               ),
