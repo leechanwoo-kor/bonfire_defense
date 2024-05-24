@@ -6,12 +6,11 @@ import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/provider/test_state_provider.dart';
 import 'package:bonfire_defense/routes.dart';
+import 'package:bonfire_defense/utils/sounds.dart';
 import 'package:bonfire_defense/utils/stages.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:bonfire_defense/utils/sounds.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +54,7 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
+      initialRoute: '/',
       routes: AppRoutes.defineRoutes(),
       builder: (context, child) {
         return LayoutBuilder(

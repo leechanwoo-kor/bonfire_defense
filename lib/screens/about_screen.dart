@@ -1,14 +1,14 @@
-import 'package:bonfire_defense/screens/menu_page.dart';
+import 'package:bonfire_defense/screens/menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({super.key});
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({super.key});
 
   void _back(BuildContext context) {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const MenuPage()),
+        MaterialPageRoute(builder: (context) => const MenuScreen()),
         (route) => false);
   }
 

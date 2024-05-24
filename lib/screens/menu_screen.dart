@@ -2,13 +2,13 @@ import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/screens/about_page.dart';
-import 'package:bonfire_defense/screens/loading_page.dart';
+import 'package:bonfire_defense/screens/about_screen.dart';
+import 'package:bonfire_defense/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({super.key});
+class MenuScreen extends StatelessWidget {
+  const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +18,32 @@ class MenuPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+              'Bonfire Defense',
+              style: TextStyle(
+                fontFamily: 'MedievalSharp',
+                fontSize: 48,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black,
+                    offset: Offset(5.0, 5.0),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 50),
             buildMenuButton(context, 'Play', () => startGame(context)),
             const SizedBox(height: 16),
-            buildMenuButton(
+            buildMenuButton(context, 'About', () {
+              Navigator.push(
                 context,
-                'About',
-                () => Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AboutPage()),
-                    (route) => false)),
+                MaterialPageRoute(
+                  builder: (context) => const AboutScreen(),
+                ),
+              );
+            }),
           ],
         ),
       ),
@@ -40,8 +57,19 @@ class MenuPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          foregroundColor: const Color(0xff6d4c41),
-          backgroundColor: Colors.white,
+          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xff6d4c41),
+          textStyle: const TextStyle(
+            fontFamily: 'MedievalSharp',
+            fontSize: 24,
+            shadows: [
+              Shadow(
+                blurRadius: 5.0,
+                color: Colors.black,
+                offset: Offset(2.0, 2.0),
+              ),
+            ],
+          ),
         ),
         child: Text(label),
       ),
@@ -55,8 +83,7 @@ class MenuPage extends StatelessWidget {
         builder: (context) => LoadingScreen(
           onLoadComplete: () async {
             initializeProviders(context);
-            await Future.delayed(
-                const Duration(milliseconds: 500)); // 데이터 로딩 시뮬레이션
+            await Future.delayed(const Duration(milliseconds: 500));
           },
         ),
       ),

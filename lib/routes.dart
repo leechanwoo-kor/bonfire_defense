@@ -1,6 +1,6 @@
-import 'package:bonfire_defense/screens/about_page.dart';
+import 'package:bonfire_defense/screens/about_screen.dart';
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/screens/menu_page.dart';
+import 'package:bonfire_defense/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -11,8 +11,8 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> defineRoutes() {
     return {
-      homeRoute: (_) => const MenuPage(),
-      aboutRoute: (_) => const AboutPage(),
+      homeRoute: (_) => const SplashScreen(),
+      aboutRoute: (_) => const AboutScreen(),
       gameRoute: (context) => const BonfireDefense(),
     };
   }

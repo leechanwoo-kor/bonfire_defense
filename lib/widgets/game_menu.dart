@@ -1,5 +1,5 @@
 import 'package:bonfire_defense/screens/game.dart';
-import 'package:bonfire_defense/screens/menu_page.dart';
+import 'package:bonfire_defense/screens/menu_screen.dart';
 import 'package:flutter/material.dart';
 
 class GameMenu extends StatefulWidget {
@@ -120,7 +120,8 @@ class _GameMenuState extends State<GameMenu> {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const MenuPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const MenuScreen()),
                       (route) => false,
                     );
                   },

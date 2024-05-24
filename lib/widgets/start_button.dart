@@ -12,8 +12,8 @@ class StartButton extends GameDecoration with TapGesture {
 
   StartButton({required Vector2 position})
       : super(
-          position: Vector2(position.x - 4, position.y + 8),
-          size: Vector2.all(24),
+          position: Vector2(position.x - 2, position.y + 8),
+          size: Vector2.all(18),
         ) {
     _scale = minScale;
   }
@@ -31,7 +31,7 @@ class StartButton extends GameDecoration with TapGesture {
       textDirection: TextDirection.ltr,
     );
 
-    const iconSize = 18.0;
+    const iconSize = 12.0;
     final textSpan = TextSpan(
       text: String.fromCharCode(icon.codePoint),
       style: TextStyle(
