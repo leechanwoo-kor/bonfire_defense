@@ -7,10 +7,10 @@ class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key, required this.onLoadComplete});
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  LoadingScreenState createState() => LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen>
+class LoadingScreenState extends State<LoadingScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -24,14 +24,10 @@ class _LoadingScreenState extends State<LoadingScreen>
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
-    // 문이 닫히는 애니메이션 시작
     _controller.forward().then((_) async {
-      // 데이터 초기화
       await widget.onLoadComplete();
 
-      // 로딩 완료 후 문이 열리는 애니메이션
       _controller.reverse().then((_) {
-        // 문이 열리는 애니메이션이 끝난 후 게임 화면으로 전환
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const BonfireDefense()),
@@ -56,7 +52,6 @@ class _LoadingScreenState extends State<LoadingScreen>
           builder: (context, child) {
             return Stack(
               children: [
-                // 문 왼쪽
                 Align(
                   alignment: Alignment.centerLeft,
                   child: FractionallySizedBox(
@@ -65,7 +60,6 @@ class _LoadingScreenState extends State<LoadingScreen>
                     child: Container(color: const Color(0xff4e342e)),
                   ),
                 ),
-                // 문 오른쪽
                 Align(
                   alignment: Alignment.centerRight,
                   child: FractionallySizedBox(
@@ -74,8 +68,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                     child: Container(color: const Color(0xff4e342e)),
                   ),
                 ),
-                // 중세 판타지 느낌의 텍스트 추가
-                Center(
+                const Center(
                   child: Text(
                     'Loading...',
                     style: TextStyle(

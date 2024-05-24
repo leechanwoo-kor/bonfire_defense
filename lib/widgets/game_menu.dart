@@ -6,10 +6,10 @@ class GameMenu extends StatefulWidget {
   const GameMenu({super.key});
 
   @override
-  _GameMenuState createState() => _GameMenuState();
+  GameMenuState createState() => GameMenuState();
 }
 
-class _GameMenuState extends State<GameMenu> {
+class GameMenuState extends State<GameMenu> {
   bool isBgmOn = true;
   bool isSoundOn = true;
   bool isVibrationOn = true;

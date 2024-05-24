@@ -2,10 +2,12 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
+import 'package:bonfire_defense/widgets/buttons/option_button.dart';
 import 'package:bonfire_defense/widgets/game_overlay.dart';
-import 'package:bonfire_defense/widgets/start_button.dart';
+import 'package:bonfire_defense/widgets/buttons/start_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,25 +73,49 @@ class _BonfireDefenseState extends State<BonfireDefense> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onScaleStart: _onScaleStart,
-        onScaleUpdate: _onScaleUpdate,
-        child: Listener(
-          onPointerSignal: (pointerSignal) =>
-              _handlePointerSignal(pointerSignal),
-          child: BonfireWidget(
-            map: _game.map,
-            cameraConfig: _game.camera.config,
-            components:
-                _game.world.children.whereType<GameComponent>().toList(),
-            overlayBuilderMap: {
-              GameOverlay.overlayName: (context, game) => const GameOverlay(),
-            },
-            initialActiveOverlays: const [
-              GameOverlay.overlayName,
-            ],
-          ),
-        ));
+    return Scaffold(
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapUp: (details) {
+          final gameState = context.read<GameStateProvider>();
+          if (gameState.showOptions) {
+            final tapPosition = details.localPosition;
+            final optionsPosition = gameState.optionsPosition;
+            const double radius = 70.0;
+
+            if ((tapPosition - optionsPosition).distance > radius) {
+              gameState.setShowOptions(false, Offset.zero);
+            }
+          }
+        },
+        child: Stack(
+          children: [
+            GestureDetector(
+              onScaleStart: _onScaleStart,
+              onScaleUpdate: _onScaleUpdate,
+              child: Listener(
+                onPointerSignal: (pointerSignal) =>
+                    _handlePointerSignal(pointerSignal),
+                child: BonfireWidget(
+                  map: _game.map,
+                  cameraConfig: _game.camera.config,
+                  components:
+                      _game.world.children.whereType<GameComponent>().toList(),
+                  overlayBuilderMap: {
+                    GameOverlay.overlayName: (context, game) =>
+                        const GameOverlay(),
+                  },
+                  initialActiveOverlays: const [
+                    GameOverlay.overlayName,
+                  ],
+                ),
+              ),
+            ),
+            const OptionButtons(),
+          ],
+        ),
+      ),
+    );
   }
 
   void _onScaleStart(ScaleStartDetails details) {
