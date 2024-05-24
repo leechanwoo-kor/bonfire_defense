@@ -1,9 +1,8 @@
-import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/widgets/defender_selection_panel.dart';
 import 'package:bonfire_defense/widgets/game_control_panel.dart';
+import 'package:bonfire_defense/widgets/game_menu.dart';
 import 'package:bonfire_defense/widgets/game_stage_display.dart';
 import 'package:bonfire_defense/widgets/game_state_bar.dart';
-import 'package:bonfire_defense/widgets/game_menu.dart';
 import 'package:flutter/material.dart';
 
 class GameOverlay extends StatelessWidget {
@@ -43,16 +42,7 @@ class GameOverlay extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return GameMenu(
-                    onRestart: () {
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-              );
+              showGameMenu(context);
             },
           ),
         ),

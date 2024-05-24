@@ -1,10 +1,9 @@
+import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:flutter/material.dart';
 
 class GameMenu extends StatefulWidget {
-  final VoidCallback? onRestart;
-
-  const GameMenu({super.key, required this.onRestart});
+  const GameMenu({super.key});
 
   @override
   _GameMenuState createState() => _GameMenuState();
@@ -86,7 +85,7 @@ class _GameMenuState extends State<GameMenu> {
                 ),
               ],
             ),
-            const SizedBox(height: 20), // 여백 추가
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -97,8 +96,12 @@ class _GameMenuState extends State<GameMenu> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   ),
                   onPressed: () {
-                    widget.onRestart!();
-                    Navigator.of(context).pop();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BonfireDefense()),
+                      (route) => false,
+                    );
                   },
                   child: const Text(
                     '재시작',
@@ -116,10 +119,10 @@ class _GameMenuState extends State<GameMenu> {
                   ),
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MenuPage()),
-                        (route) => false);
+                      context,
+                      MaterialPageRoute(builder: (context) => const MenuPage()),
+                      (route) => false,
+                    );
                   },
                   child: const Text(
                     '나가기',
@@ -136,4 +139,31 @@ class _GameMenuState extends State<GameMenu> {
       ),
     );
   }
+}
+
+void showGameMenu(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierColor: Colors.black54,
+    transitionDuration: const Duration(milliseconds: 300),
+    pageBuilder: (BuildContext buildContext, Animation<double> animation,
+        Animation<double> secondaryAnimation) {
+      return const GameMenu();
+    },
+    transitionBuilder: (BuildContext context, Animation<double> animation,
+        Animation<double> secondaryAnimation, Widget child) {
+      return SlideTransition(
+        position: CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOut,
+        ).drive(Tween<Offset>(
+          begin: const Offset(0.0, -1.0),
+          end: Offset.zero,
+        )),
+        child: child,
+      );
+    },
+  );
 }
