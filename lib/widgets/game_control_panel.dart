@@ -1,5 +1,4 @@
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/screens/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,17 +14,6 @@ class GameControlPanel extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MenuPage()),
-                    (route) => false);
-              },
-              child: const Text('Menu',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
-            ),
             Selector<GameStateProvider, bool>(
               selector: (_, state) => state.state == GameState.waving,
               builder: (context, isWaving, __) => ElevatedButton(
