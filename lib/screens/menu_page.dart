@@ -3,7 +3,7 @@ import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
 import 'package:bonfire_defense/screens/about_page.dart';
-import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/screens/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,11 +49,18 @@ class MenuPage extends StatelessWidget {
   }
 
   void startGame(BuildContext context) {
-    initializeProviders(context);
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const BonfireDefense()),
-        (route) => false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoadingScreen(
+          onLoadComplete: () async {
+            initializeProviders(context);
+            await Future.delayed(
+                const Duration(milliseconds: 500)); // 데이터 로딩 시뮬레이션
+          },
+        ),
+      ),
+    );
   }
 
   void initializeProviders(BuildContext context) {
