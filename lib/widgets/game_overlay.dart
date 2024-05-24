@@ -1,7 +1,6 @@
 import 'package:bonfire_defense/widgets/defender_selection_panel.dart';
 import 'package:bonfire_defense/widgets/game_menu.dart';
 import 'package:bonfire_defense/widgets/game_state_panel.dart';
-import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/material.dart';
 
 class GameOverlay extends StatelessWidget {
@@ -37,15 +36,18 @@ class GameOverlay extends StatelessWidget {
         Positioned(
           top: 20,
           right: 20,
-          child: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              showGameMenu(context);
-            },
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.menu, color: Colors.white),
+              onPressed: () {
+                showGameMenu(context);
+              },
+            ),
           ),
-        ),
-        const StartButton(
-          position: Offset(135, 80),
         ),
       ],
     );

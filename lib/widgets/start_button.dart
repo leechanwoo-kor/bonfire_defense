@@ -1,79 +1,90 @@
+import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 
-class StartButton extends StatefulWidget {
-  final Offset position;
+class StartButton extends GameDecoration with TapGesture {
+  late double _scale;
+  bool scalingUp = true;
+  final double minScale = 0.9;
+  final double maxScale = 1.0;
+  final double scaleStep = 0.002;
 
-  const StartButton({required this.position, super.key});
-
-  @override
-  _StartButtonState createState() => _StartButtonState();
-}
-
-class _StartButtonState extends State<StartButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500), // 애니메이션 주기를 0.5초로 설정
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _animation = Tween<double>(begin: 0.9, end: 1.1).animate(_controller);
+  StartButton({required Vector2 position})
+      : super(
+          position: Vector2(position.x - 4, position.y + 8),
+          size: Vector2.all(24),
+        ) {
+    _scale = minScale;
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  void render(Canvas canvas) {
+    final gameStateProvider = gameRef.context.read<GameStateProvider>();
+    if (gameStateProvider.state == GameState.waving) {
+      return;
+    }
+    super.render(canvas);
 
-  @override
-  Widget build(BuildContext context) {
-    return Selector<GameStateProvider, bool>(
-      selector: (_, state) => state.state == GameState.waving,
-      builder: (context, isWaving, __) {
-        if (isWaving) {
-          _controller.stop();
-          return const SizedBox.shrink();
-        } else {
-          _controller.repeat(reverse: true);
-          return Positioned(
-            top: widget.position.dy,
-            left: widget.position.dx,
-            child: AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _animation.value,
-                  child: RawMaterialButton(
-                    onPressed: () {
-                      Provider.of<GameStateProvider>(context, listen: false)
-                          .startGame();
-                    },
-                    fillColor: Colors.black,
-                    shape: const CircleBorder(),
-                    constraints: const BoxConstraints.tightFor(
-                      width: 30.0,
-                      height: 30.0,
-                    ),
-                    child: const Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 18.0,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        }
-      },
+    const icon = Icons.play_arrow;
+    final textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
     );
+
+    const iconSize = 18.0;
+    final textSpan = TextSpan(
+      text: String.fromCharCode(icon.codePoint),
+      style: TextStyle(
+        fontSize: iconSize,
+        fontFamily: icon.fontFamily,
+        color: Colors.black,
+      ),
+    );
+
+    final paint = Paint()..color = Colors.white;
+    double radius = (size.x / 2) * _scale;
+
+    canvas.save();
+    canvas.translate((size.x * (1 - _scale)) / 2, (size.y * (1 - _scale)) / 2);
+    canvas.scale(_scale);
+
+    canvas.drawCircle(Offset(size.x / 2, size.y / 2), radius, paint);
+
+    textPainter.text = textSpan;
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        (size.x - iconSize) / 2,
+        (size.y - iconSize) / 2,
+      ),
+    );
+
+    canvas.restore();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    if (scalingUp) {
+      _scale += scaleStep;
+      if (_scale >= maxScale) {
+        scalingUp = false;
+      }
+    } else {
+      _scale -= scaleStep;
+      if (_scale <= minScale) {
+        scalingUp = true;
+      }
+    }
+  }
+
+  @override
+  void onTap() {
+    final gameStateProvider = gameRef.context.read<GameStateProvider>();
+    if (gameStateProvider.state != GameState.waving) {
+      gameStateProvider.startGame();
+    }
   }
 }

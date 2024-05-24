@@ -5,6 +5,7 @@ import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
 import 'package:bonfire_defense/widgets/game_overlay.dart';
+import 'package:bonfire_defense/widgets/start_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +62,10 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         zoom: _currentZoom,
         initPosition: Vector2(mapWidth * 0.425, mapHeight),
       ),
-      components: [gameController],
+      components: [
+        gameController,
+        StartButton(position: config.enemyInitialPosition)
+      ],
     );
   }
 
