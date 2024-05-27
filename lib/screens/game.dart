@@ -111,12 +111,19 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   void _onBackgroundTap() {
     // 게임 내 활성화된 DefenseTowerButtons 인스턴스를 제거, 버튼을 클릭한 경우는 예외
     if (_activeTowerButtons != null) {
-      final tappedButtons =
+      // 클릭된 버튼이 있는지 확인
+      final bool anyButtonTapped =
           _activeTowerButtons!.buttons.any((button) => button.isTapped);
-      if (!tappedButtons) {
+      // 클릭된 버튼이 없다면 버튼 그룹 제거
+      if (!anyButtonTapped) {
         _activeTowerButtons?.removeButtons();
         _activeTowerButtons?.removeFromParent();
         _activeTowerButtons = null;
+      } else {
+        // 모든 버튼의 클릭 상태 초기화
+        for (var button in _activeTowerButtons!.buttons) {
+          button.isTapped = false;
+        }
       }
     }
   }
