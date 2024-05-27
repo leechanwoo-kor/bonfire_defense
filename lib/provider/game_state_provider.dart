@@ -9,23 +9,11 @@ class GameStateProvider with ChangeNotifier {
   int _gold = 50;
   int _life = 10;
 
-  bool _showOptions = false;
-  Offset _optionsPosition = Offset.zero;
-
   GameState get state => _state;
   int get currentStage => _currentStage;
   int get count => _count;
   int get gold => _gold;
   int get life => _life;
-
-  bool get showOptions => _showOptions;
-  Offset get optionsPosition => _optionsPosition;
-
-  void setShowOptions(bool show, Offset position) {
-    _showOptions = show;
-    _optionsPosition = position;
-    notifyListeners();
-  }
 
   void updateCount(int change) {
     _count += change;
