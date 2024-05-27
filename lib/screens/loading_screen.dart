@@ -72,7 +72,7 @@ class LoadingScreenState extends State<LoadingScreen>
                   child: Text(
                     'Loading...',
                     style: TextStyle(
-                      fontFamily: 'MedievalSharp',
+                      fontFamily: 'Catholicon',
                       fontSize: 24,
                       color: Colors.white,
                     ),

@@ -21,7 +21,7 @@ class MenuScreen extends StatelessWidget {
             const Text(
               'Bonfire Defense',
               style: TextStyle(
-                fontFamily: 'MedievalSharp',
+                fontFamily: 'Catholicon',
                 fontSize: 48,
                 color: Colors.white,
                 shadows: [
@@ -60,7 +60,7 @@ class MenuScreen extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: const Color(0xff6d4c41),
           textStyle: const TextStyle(
-            fontFamily: 'MedievalSharp',
+            fontFamily: 'Catholicon',
             fontSize: 24,
             shadows: [
               Shadow(

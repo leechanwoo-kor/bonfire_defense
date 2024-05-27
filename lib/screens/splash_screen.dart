@@ -62,7 +62,7 @@ class SplashScreenState extends State<SplashScreen>
                       child: Text(
                         fullText[index],
                         style: const TextStyle(
-                          fontFamily: 'MedievalSharp',
+                          fontFamily: 'Catholicon',
                           fontSize: 48,
                           color: Colors.white,
                           shadows: [
@@ -83,7 +83,7 @@ class SplashScreenState extends State<SplashScreen>
             const Text(
               'Loading...',
               style: TextStyle(
-                fontFamily: 'MedievalSharp',
+                fontFamily: 'Catholicon',
                 fontSize: 24,
                 color: Colors.grey,
                 shadows: [
