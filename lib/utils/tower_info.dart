@@ -6,6 +6,7 @@ class TowerInfo {
   final String attackType;
   final String attackDamage;
   final int cost;
+  final String imagePath;
 
   TowerInfo({
     required this.type,
@@ -13,6 +14,7 @@ class TowerInfo {
     required this.attackType,
     required this.attackDamage,
     required this.cost,
+    this.imagePath = 'tower/tile000.png',
   });
 
   static final Map<TowerType, TowerInfo> _infoMap = {
@@ -22,6 +24,7 @@ class TowerInfo {
       attackType: '빠름',
       attackDamage: '5',
       cost: 70,
+      imagePath: 'tower/tile000.png',
     ),
     TowerType.barrack: TowerInfo(
       name: 'Barrack',
@@ -29,6 +32,7 @@ class TowerInfo {
       attackType: '보통',
       attackDamage: '2',
       cost: 70,
+      imagePath: 'tower/tile000.png',
     ),
     TowerType.dwarf: TowerInfo(
       name: 'Dwarf Tower',
@@ -36,6 +40,7 @@ class TowerInfo {
       attackType: '매우 느림',
       attackDamage: '12',
       cost: 125,
+      imagePath: 'tower/tile000.png',
     ),
     TowerType.mage: TowerInfo(
       name: 'Mage Tower',
@@ -43,6 +48,7 @@ class TowerInfo {
       attackType: '느림',
       attackDamage: '13',
       cost: 100,
+      imagePath: 'tower/tile000.png',
     ),
   };
 

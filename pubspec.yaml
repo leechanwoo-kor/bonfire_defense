@@ -64,6 +64,7 @@ flutter:
     - assets/images/logo/
     - assets/images/map/
     - assets/images/character/
+    - assets/images/tower/
     - assets/images/effect/
     - assets/images/icons/
     - assets/audio/

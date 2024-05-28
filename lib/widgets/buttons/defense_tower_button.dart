@@ -7,6 +7,7 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
   late List<DefenseTowerButton> buttons;
   DefenseTowerButton? _selectedButton;
   TowerInfoWidget? _selectedInfoWidget;
+  TransparentTower? _transparentTower;
 
   DefenseTowerButtons({required super.position})
       : super(
@@ -21,30 +22,26 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
 
   void _initializeButtons() {
     buttons = [
-      DefenseTowerButton(
-        position: Vector2(position.x - 20, position.y),
+      _createButton(
+        offset: Vector2(0, 20),
         icon: Icons.ac_unit,
-        onTapCallback: (tappedButton) => _onButtonTap(tappedButton),
-        towerInfo: TowerInfo.getInfo(TowerType.barrack),
+        towerType: TowerType.barrack,
       ),
-      DefenseTowerButton(
-        position: Vector2(position.x + 20, position.y),
+      _createButton(
+        offset: Vector2(20, 0),
         icon: Icons.arrow_forward,
-        onTapCallback: (tappedButton) => _onButtonTap(tappedButton),
-        towerInfo: TowerInfo.getInfo(TowerType.archer),
+        towerType: TowerType.archer,
       ),
-      DefenseTowerButton(
-        position: Vector2(position.x, position.y - 20),
-        icon: Icons.accessibility,
-        onTapCallback: (tappedButton) => _onButtonTap(tappedButton),
-        towerInfo: TowerInfo.getInfo(TowerType.mage),
-      ),
-      DefenseTowerButton(
-        position: Vector2(position.x, position.y + 20),
+      _createButton(
+        offset: Vector2(0, -20),
         icon: Icons.account_balance,
-        onTapCallback: (tappedButton) => _onButtonTap(tappedButton),
-        towerInfo: TowerInfo.getInfo(TowerType.dwarf),
+        towerType: TowerType.dwarf,
       ),
+      _createButton(
+        offset: Vector2(-20, 0),
+        icon: Icons.accessibility,
+        towerType: TowerType.mage,
+      )
     ];
 
     for (var button in buttons) {
@@ -52,36 +49,73 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
     }
   }
 
+  DefenseTowerButton _createButton({
+    required Vector2 offset,
+    required IconData icon,
+    required TowerType towerType,
+  }) {
+    return DefenseTowerButton(
+      position: position + offset,
+      icon: icon,
+      onTapCallback: _onButtonTap,
+      towerInfo: TowerInfo.getInfo(towerType),
+    );
+  }
+
   void _onButtonTap(DefenseTowerButton tappedButton) {
-    if (_selectedButton != null && _selectedButton != tappedButton) {
-      _selectedButton!.isSelected = false;
+    if (_selectedButton != null) {
+      if (_selectedButton == tappedButton) {
+        _handleSameButtonTap(tappedButton);
+        return;
+      } else {
+        _selectedButton!.isSelected = false;
+        _transparentTower?.removeFromParent();
+        _transparentTower = null;
+      }
     }
 
-    // 이전에 선택된 DefenderInfoWidget 제거
-    _selectedInfoWidget?.removeFromParent();
+    _handleNewButtonTap(tappedButton);
+  }
 
+  void _handleSameButtonTap(DefenseTowerButton tappedButton) {
+    print('타워를 추가하기 위해 버튼을 다시 클릭했습니다.');
+    // _addTower(tappedButton.towerInfo);
+    _transparentTower?.removeFromParent();
+    _transparentTower = null;
+    _selectedButton!.isSelected = false;
+    _selectedButton = null;
+    _selectedInfoWidget?.removeFromParent();
+    _selectedInfoWidget = null;
+    removeButtons();
+  }
+
+  void _handleNewButtonTap(DefenseTowerButton tappedButton) {
     _selectedButton = tappedButton;
     tappedButton.isSelected = true;
+    _updateInfoWidget(tappedButton.towerInfo);
+    _addTransparentTower(tappedButton.towerInfo);
+  }
 
-    // 맵의 중앙 좌표 계산
+  void _updateInfoWidget(TowerInfo towerInfo) {
     final mapCenterX = gameRef.map.size.x / 2;
+    final infoPosition = position.x > mapCenterX
+        ? position + Vector2(-140, -20)
+        : position + Vector2(40, -20);
 
-    // 위젯의 위치 계산
-    Vector2 infoPosition;
-    if (position.x > mapCenterX) {
-      // 오른쪽에 있을 때 정보창을 왼쪽에 표시
-      infoPosition = position + Vector2(-140, -20);
-    } else {
-      // 왼쪽에 있을 때 정보창을 오른쪽에 표시
-      infoPosition = position + Vector2(40, -20);
-    }
-
-    // 새로운 DefenderInfoWidget 추가
+    _selectedInfoWidget?.removeFromParent();
     _selectedInfoWidget = TowerInfoWidget(
-      towerInfo: tappedButton.towerInfo,
+      towerInfo: towerInfo,
       position: infoPosition,
     );
     gameRef.add(_selectedInfoWidget!);
+  }
+
+  void _addTransparentTower(TowerInfo towerInfo) {
+    _transparentTower = TransparentTower(
+      position: position,
+      towerInfo: towerInfo,
+    );
+    gameRef.add(_transparentTower!);
   }
 
   void removeButtons() {
@@ -92,6 +126,8 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
     _selectedButton = null;
     _selectedInfoWidget?.removeFromParent();
     _selectedInfoWidget = null;
+    _transparentTower?.removeFromParent();
+    _transparentTower = null;
   }
 
   @override
@@ -125,56 +161,54 @@ class DefenseTowerButton extends GameDecoration with TapGesture {
   void render(Canvas canvas) {
     super.render(canvas);
 
+    _drawButtonBackground(canvas);
+    _drawIcon(canvas);
+    _drawCost(canvas);
+  }
+
+  void _drawButtonBackground(Canvas canvas) {
+    final paint = Paint()..color = isSelected ? Colors.green : Colors.white;
+    final radius = size.x / 2;
+    canvas.drawCircle(Offset(size.x / 2, size.y / 2), radius, paint);
+  }
+
+  void _drawIcon(Canvas canvas) {
+    final iconSize = 12.0;
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
-    );
-
-    final iconSize = 12.0;
-    final textSpan = TextSpan(
-      text: String.fromCharCode(icon.codePoint),
-      style: TextStyle(
-        fontSize: iconSize,
-        fontFamily: icon.fontFamily,
-        color: Colors.black,
+      text: TextSpan(
+        text: String.fromCharCode(icon.codePoint),
+        style: TextStyle(
+          fontSize: iconSize,
+          fontFamily: icon.fontFamily,
+          color: Colors.black,
+        ),
       ),
     );
 
-    // 클릭 여부에 따라 색상 변경
-    final paint = Paint()
-      ..color =
-          isSelected ? Colors.green : (isTapped ? Colors.white : Colors.white);
-    double radius = size.x / 2;
-
-    canvas.drawCircle(Offset(size.x / 2, size.y / 2), radius, paint);
-
-    textPainter.text = textSpan;
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(
-        (size.x - iconSize) / 2,
-        (size.y - iconSize) / 2,
-      ),
+      Offset((size.x - iconSize) / 2, (size.y - iconSize) / 2),
     );
+  }
 
-    // 비용 텍스트
+  void _drawCost(Canvas canvas) {
     final costPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: '${towerInfo.cost}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 10,
           color: Colors.black,
         ),
       ),
     );
+
     costPainter.layout();
     costPainter.paint(
       canvas,
-      Offset(
-        (size.x - costPainter.width) / 2,
-        size.y + 2,
-      ),
+      Offset((size.x - costPainter.width) / 2, size.y + 2),
     );
   }
 
@@ -190,52 +224,58 @@ class TowerInfoWidget extends GameDecoration {
 
   TowerInfoWidget({
     required this.towerInfo,
-    required Vector2 position,
-  }) : super(position: position, size: Vector2(120, 60));
+    required super.position,
+  }) : super(size: Vector2(120, 60));
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
+    _drawBackground(canvas);
+    _drawText(canvas);
+  }
 
+  void _drawBackground(Canvas canvas) {
     final paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     canvas.drawRect(rect, paint);
+  }
 
-    // Tower 이름
+  void _drawText(Canvas canvas) {
+    _drawName(canvas);
+    _drawIconAndText(
+      canvas,
+      Icons.bolt,
+      ' ${towerInfo.attackType}',
+      const Offset(10, 30),
+      Colors.black,
+    );
+    _drawIconAndText(
+      canvas,
+      Icons.whatshot,
+      ' ${towerInfo.attackDamage}',
+      const Offset(70, 30),
+      Colors.black,
+    );
+  }
+
+  void _drawName(Canvas canvas) {
     final namePainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: towerInfo.name,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 12,
           color: Colors.black,
         ),
       ),
     );
+
     namePainter.layout();
-    namePainter.paint(canvas, Offset(10, 10));
-
-    // Attack Type 아이콘과 텍스트
-    _drawIconAndText(
-      canvas,
-      Icons.bolt,
-      ' ${towerInfo.attackType}',
-      Offset(10, 30),
-      Colors.black,
-    );
-
-    // Attack Damage 아이콘과 텍스트
-    _drawIconAndText(
-      canvas,
-      Icons.whatshot,
-      ' ${towerInfo.attackDamage}',
-      Offset(70, 30), // 같은 줄에 배치하기 위해 x좌표 조정
-      Colors.black,
-    );
+    namePainter.paint(canvas, const Offset(10, 10));
   }
 
   void _drawIconAndText(
@@ -245,8 +285,7 @@ class TowerInfoWidget extends GameDecoration {
     Offset offset,
     Color color,
   ) {
-    // Draw icon
-    TextPainter iconPainter = TextPainter(
+    final iconPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: String.fromCharCode(icon.codePoint),
@@ -257,11 +296,11 @@ class TowerInfoWidget extends GameDecoration {
         ),
       ),
     );
+
     iconPainter.layout();
     iconPainter.paint(canvas, offset);
 
-    // Draw text next to icon
-    TextPainter textPainter = TextPainter(
+    final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: text,
@@ -271,7 +310,33 @@ class TowerInfoWidget extends GameDecoration {
         ),
       ),
     );
+
     textPainter.layout();
-    textPainter.paint(canvas, offset + Offset(14, 0));
+    textPainter.paint(canvas, offset + const Offset(14, 0));
+  }
+}
+
+class TransparentTower extends GameDecoration {
+  final TowerInfo towerInfo;
+
+  TransparentTower({
+    required super.position,
+    required this.towerInfo,
+  }) : super(size: Vector2.all(16));
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    add(RectangleHitbox(size: size));
+    _loadTransparentSprite();
+  }
+
+  Future<void> _loadTransparentSprite() async {
+    final towerSprite = await Sprite.load(towerInfo.imagePath);
+    add(SpriteComponent(
+      sprite: towerSprite,
+      size: size,
+      paint: Paint()..color = Colors.white.withOpacity(0.5),
+    ));
   }
 }
