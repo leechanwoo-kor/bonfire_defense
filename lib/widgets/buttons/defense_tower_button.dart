@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 class DefenseTowerButtons extends GameDecoration with TapGesture {
   late List<DefenseTowerButton> buttons;
-  DefenseTowerButton? _selectedButton;
-  TowerInfoWidget? _selectedInfoWidget;
-  TransparentTower? _transparentTower;
+  DefenseTowerButton? selectedButton;
+  TowerInfoWidget? selectedInfoWidget;
+  TransparentTower? transparentTower;
 
   DefenseTowerButtons({required super.position})
       : super(
@@ -17,27 +17,27 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
   @override
   void onMount() {
     super.onMount();
-    _initializeButtons();
+    initializeButtons();
   }
 
-  void _initializeButtons() {
+  void initializeButtons() {
     buttons = [
-      _createButton(
+      createButton(
         offset: Vector2(0, 20),
         icon: Icons.ac_unit,
         towerType: TowerType.barrack,
       ),
-      _createButton(
+      createButton(
         offset: Vector2(20, 0),
         icon: Icons.arrow_forward,
         towerType: TowerType.archer,
       ),
-      _createButton(
+      createButton(
         offset: Vector2(0, -20),
         icon: Icons.account_balance,
         towerType: TowerType.dwarf,
       ),
-      _createButton(
+      createButton(
         offset: Vector2(-20, 0),
         icon: Icons.accessibility,
         towerType: TowerType.mage,
@@ -49,7 +49,7 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
     }
   }
 
-  DefenseTowerButton _createButton({
+  DefenseTowerButton createButton({
     required Vector2 offset,
     required IconData icon,
     required TowerType towerType,
@@ -57,65 +57,65 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
     return DefenseTowerButton(
       position: position + offset,
       icon: icon,
-      onTapCallback: _onButtonTap,
+      onTapCallback: onButtonTap,
       towerInfo: TowerInfo.getInfo(towerType),
     );
   }
 
-  void _onButtonTap(DefenseTowerButton tappedButton) {
-    if (_selectedButton != null) {
-      if (_selectedButton == tappedButton) {
-        _handleSameButtonTap(tappedButton);
+  void onButtonTap(DefenseTowerButton tappedButton) {
+    if (selectedButton != null) {
+      if (selectedButton == tappedButton) {
+        handleSameButtonTap(tappedButton);
         return;
       } else {
-        _selectedButton!.isSelected = false;
-        _transparentTower?.removeFromParent();
-        _transparentTower = null;
+        selectedButton!.isSelected = false;
+        transparentTower?.removeFromParent();
+        transparentTower = null;
       }
     }
 
-    _handleNewButtonTap(tappedButton);
+    handleNewButtonTap(tappedButton);
   }
 
-  void _handleSameButtonTap(DefenseTowerButton tappedButton) {
+  void handleSameButtonTap(DefenseTowerButton tappedButton) {
     print('타워를 추가하기 위해 버튼을 다시 클릭했습니다.');
-    // _addTower(tappedButton.towerInfo);
-    _transparentTower?.removeFromParent();
-    _transparentTower = null;
-    _selectedButton!.isSelected = false;
-    _selectedButton = null;
-    _selectedInfoWidget?.removeFromParent();
-    _selectedInfoWidget = null;
+    // addTower(tappedButton.towerInfo);
+    transparentTower?.removeFromParent();
+    transparentTower = null;
+    selectedButton!.isSelected = false;
+    selectedButton = null;
+    selectedInfoWidget?.removeFromParent();
+    selectedInfoWidget = null;
     removeButtons();
   }
 
-  void _handleNewButtonTap(DefenseTowerButton tappedButton) {
-    _selectedButton = tappedButton;
+  void handleNewButtonTap(DefenseTowerButton tappedButton) {
+    selectedButton = tappedButton;
     tappedButton.isSelected = true;
-    _updateInfoWidget(tappedButton.towerInfo);
-    _addTransparentTower(tappedButton.towerInfo);
+    updateInfoWidget(tappedButton.towerInfo);
+    addTransparentTower(tappedButton.towerInfo);
   }
 
-  void _updateInfoWidget(TowerInfo towerInfo) {
+  void updateInfoWidget(TowerInfo towerInfo) {
     final mapCenterX = gameRef.map.size.x / 2;
     final infoPosition = position.x > mapCenterX
         ? position + Vector2(-140, -20)
         : position + Vector2(40, -20);
 
-    _selectedInfoWidget?.removeFromParent();
-    _selectedInfoWidget = TowerInfoWidget(
+    selectedInfoWidget?.removeFromParent();
+    selectedInfoWidget = TowerInfoWidget(
       towerInfo: towerInfo,
       position: infoPosition,
     );
-    gameRef.add(_selectedInfoWidget!);
+    gameRef.add(selectedInfoWidget!);
   }
 
-  void _addTransparentTower(TowerInfo towerInfo) {
-    _transparentTower = TransparentTower(
-      position: position,
+  void addTransparentTower(TowerInfo towerInfo) {
+    transparentTower = TransparentTower(
+      position: position - Vector2(0, 16),
       towerInfo: towerInfo,
     );
-    gameRef.add(_transparentTower!);
+    gameRef.add(transparentTower!);
   }
 
   void removeButtons() {
@@ -123,11 +123,11 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
       button.removeFromParent();
     }
     buttons.clear();
-    _selectedButton = null;
-    _selectedInfoWidget?.removeFromParent();
-    _selectedInfoWidget = null;
-    _transparentTower?.removeFromParent();
-    _transparentTower = null;
+    selectedButton = null;
+    selectedInfoWidget?.removeFromParent();
+    selectedInfoWidget = null;
+    transparentTower?.removeFromParent();
+    transparentTower = null;
   }
 
   @override
@@ -161,19 +161,19 @@ class DefenseTowerButton extends GameDecoration with TapGesture {
   void render(Canvas canvas) {
     super.render(canvas);
 
-    _drawButtonBackground(canvas);
-    _drawIcon(canvas);
-    _drawCost(canvas);
+    drawButtonBackground(canvas);
+    drawIcon(canvas);
+    drawCost(canvas);
   }
 
-  void _drawButtonBackground(Canvas canvas) {
+  void drawButtonBackground(Canvas canvas) {
     final paint = Paint()..color = isSelected ? Colors.green : Colors.white;
     final radius = size.x / 2;
     canvas.drawCircle(Offset(size.x / 2, size.y / 2), radius, paint);
   }
 
-  void _drawIcon(Canvas canvas) {
-    final iconSize = 12.0;
+  void drawIcon(Canvas canvas) {
+    const iconSize = 12.0;
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
@@ -193,7 +193,7 @@ class DefenseTowerButton extends GameDecoration with TapGesture {
     );
   }
 
-  void _drawCost(Canvas canvas) {
+  void drawCost(Canvas canvas) {
     final costPainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
@@ -230,11 +230,11 @@ class TowerInfoWidget extends GameDecoration {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    _drawBackground(canvas);
-    _drawText(canvas);
+    drawBackground(canvas);
+    drawText(canvas);
   }
 
-  void _drawBackground(Canvas canvas) {
+  void drawBackground(Canvas canvas) {
     final paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
@@ -243,16 +243,16 @@ class TowerInfoWidget extends GameDecoration {
     canvas.drawRect(rect, paint);
   }
 
-  void _drawText(Canvas canvas) {
-    _drawName(canvas);
-    _drawIconAndText(
+  void drawText(Canvas canvas) {
+    drawName(canvas);
+    drawIconAndText(
       canvas,
       Icons.bolt,
       ' ${towerInfo.attackType}',
       const Offset(10, 30),
       Colors.black,
     );
-    _drawIconAndText(
+    drawIconAndText(
       canvas,
       Icons.whatshot,
       ' ${towerInfo.attackDamage}',
@@ -261,7 +261,7 @@ class TowerInfoWidget extends GameDecoration {
     );
   }
 
-  void _drawName(Canvas canvas) {
+  void drawName(Canvas canvas) {
     final namePainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
@@ -278,7 +278,7 @@ class TowerInfoWidget extends GameDecoration {
     namePainter.paint(canvas, const Offset(10, 10));
   }
 
-  void _drawIconAndText(
+  void drawIconAndText(
     Canvas canvas,
     IconData icon,
     String text,
@@ -322,16 +322,16 @@ class TransparentTower extends GameDecoration {
   TransparentTower({
     required super.position,
     required this.towerInfo,
-  }) : super(size: Vector2.all(16));
+  }) : super(size: Vector2(16, 32));
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     add(RectangleHitbox(size: size));
-    _loadTransparentSprite();
+    loadTowerSprite();
   }
 
-  Future<void> _loadTransparentSprite() async {
+  Future<void> loadTowerSprite() async {
     final towerSprite = await Sprite.load(towerInfo.imagePath);
     add(SpriteComponent(
       sprite: towerSprite,

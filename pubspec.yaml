@@ -63,6 +63,26 @@ flutter:
     - assets/images/
     - assets/images/logo/
     - assets/images/map/
+    - assets/images/map/Art/
+    - assets/images/map/Art/Buildings/
+    - assets/images/map/Art/Buildings/Animations/
+    - assets/images/map/Art/Buildings/Atlas/
+    - assets/images/map/Art/Characters/
+    - assets/images/map/Art/Characters/Character/
+    - assets/images/map/Art/Characters/Slime/
+    - assets/images/map/Art/Ground Tileset/
+    - assets/images/map/Art/Props/
+    - assets/images/map/Art/Props/Animation/
+    - assets/images/map/Art/Props/Atlas/
+    - assets/images/map/Art/Rock Slopes/
+    - assets/images/map/Art/Rocks/
+    - assets/images/map/Art/Rocks/Atlas/
+    - assets/images/map/Art/Trees and Bushes/
+    - assets/images/map/Art/Trees and Bushes/Atlas/
+    - assets/images/map/Art/Water and Sand/
+    - assets/images/map/Tiled/
+    - assets/images/map/Tiled/Tilemaps/
+    - assets/images/map/Tiled/Tilesets/
     - assets/images/character/
     - assets/images/tower/
     - assets/images/effect/
