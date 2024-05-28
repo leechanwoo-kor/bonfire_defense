@@ -6,6 +6,7 @@ import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
 import 'package:bonfire_defense/widgets/buttons/defense_tower_button.dart';
 import 'package:bonfire_defense/widgets/buttons/start_button.dart';
+import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
 import 'package:bonfire_defense/widgets/game_overlay.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   Offset _startOffset = Offset.zero;
   double _currentZoom = 1.5;
   double _baseZoom = 1.5;
+  TowerInfoButtons? _activeTowerInfoButtons;
   DefenseTowerButtons? _activeTowerButtons;
 
   @override
@@ -58,6 +60,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
                 position: properties.position,
                 size: properties.size,
                 onTowerButtonsDisplayed: _onTowerButtonsDisplayed,
+                onTowerInfoButtonsDisplayed: onTowerInfoButtonsDisplayed,
               ),
         },
       ),
@@ -70,6 +73,12 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         StartButton(position: config.enemyInitialPosition)
       ],
     );
+  }
+
+  void onTowerInfoButtonsDisplayed(TowerInfoButtons towerInfoButtons) {
+    _activeTowerInfoButtons?.removeButtons();
+    _activeTowerInfoButtons?.removeFromParent();
+    _activeTowerInfoButtons = towerInfoButtons;
   }
 
   void _onTowerButtonsDisplayed(DefenseTowerButtons towerButtons) {
@@ -109,6 +118,19 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   }
 
   void _onBackgroundTap() {
+    if (_activeTowerInfoButtons != null) {
+      final bool anyButtonTapped =
+          _activeTowerInfoButtons!.buttons.any((button) => button.isTapped);
+      if (!anyButtonTapped) {
+        _activeTowerInfoButtons?.removeButtons();
+        _activeTowerInfoButtons?.removeFromParent();
+        _activeTowerInfoButtons = null;
+      } else {
+        for (var button in _activeTowerInfoButtons!.buttons) {
+          button.isTapped = false;
+        }
+      }
+    }
     // 게임 내 활성화된 DefenseTowerButtons 인스턴스를 제거, 버튼을 클릭한 경우는 예외
     if (_activeTowerButtons != null) {
       // 클릭된 버튼이 있는지 확인

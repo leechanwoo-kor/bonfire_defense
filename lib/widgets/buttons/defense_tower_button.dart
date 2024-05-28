@@ -1,4 +1,6 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/ally/archer_tower.dart';
+import 'package:bonfire_defense/components/ally/tower.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +81,7 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
 
   void handleSameButtonTap(DefenseTowerButton tappedButton) {
     print('타워를 추가하기 위해 버튼을 다시 클릭했습니다.');
-    // addTower(tappedButton.towerInfo);
+    addTower(tappedButton.towerInfo);
     transparentTower?.removeFromParent();
     transparentTower = null;
     selectedButton!.isSelected = false;
@@ -87,6 +89,27 @@ class DefenseTowerButtons extends GameDecoration with TapGesture {
     selectedInfoWidget?.removeFromParent();
     selectedInfoWidget = null;
     removeButtons();
+  }
+
+  void addTower(TowerInfo towerInfo) {
+    Tower tower;
+    switch (towerInfo.type) {
+      // case TowerType.barrack:
+      //   tower = BarrackTower(position.clone());
+      //   break;
+      case TowerType.archer:
+        tower = ArcherTower(position.clone());
+        break;
+      // case TowerType.dwarf:
+      //   tower = DwarfTower(position.clone());
+      //   break;
+      // case TowerType.mage:
+      //   tower = MageTower(position.clone());
+      //   break;
+      default:
+        throw Exception('Invalid TowerType');
+    }
+    gameRef.add(tower);
   }
 
   void handleNewButtonTap(DefenseTowerButton tappedButton) {
