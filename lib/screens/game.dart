@@ -1,12 +1,11 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
+import 'package:bonfire_defense/game_managers/button_manager.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
-import 'package:bonfire_defense/widgets/buttons/defense_tower_button.dart';
 import 'package:bonfire_defense/widgets/buttons/start_button.dart';
-import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
 import 'package:bonfire_defense/widgets/game_overlay.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +24,17 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   late GameController gameController;
   late GameConfig config;
   late BonfireGame _game;
+  late ButtonsManager buttonsManager;
 
   Offset _startOffset = Offset.zero;
   double _currentZoom = 1.5;
   double _baseZoom = 1.5;
-  TowerInfoButtons? _activeTowerInfoButtons;
-  DefenseTowerButtons? _activeTowerButtons;
 
   @override
   void initState() {
     super.initState();
     gameController = GameController();
+    buttonsManager = ButtonsManager();
     _initializeGame();
   }
 
@@ -59,8 +58,9 @@ class _BonfireDefenseState extends State<BonfireDefense> {
                 controller: gameController,
                 position: properties.position,
                 size: properties.size,
-                onTowerButtonsDisplayed: _onTowerButtonsDisplayed,
-                onTowerInfoButtonsDisplayed: onTowerInfoButtonsDisplayed,
+                onTowerButtonsDisplayed: buttonsManager.displayTowerButtons,
+                onTowerInfoButtonsDisplayed:
+                    buttonsManager.displayTowerInfoButtons,
               ),
         },
       ),
@@ -75,26 +75,11 @@ class _BonfireDefenseState extends State<BonfireDefense> {
     );
   }
 
-  void onTowerInfoButtonsDisplayed(TowerInfoButtons towerInfoButtons) {
-    _activeTowerInfoButtons?.removeButtons();
-    _activeTowerInfoButtons?.removeFromParent();
-    _activeTowerInfoButtons = towerInfoButtons;
-  }
-
-  void _onTowerButtonsDisplayed(DefenseTowerButtons towerButtons) {
-    // 이전에 활성화된 버튼 그룹을 제거
-    _activeTowerButtons?.removeButtons();
-    _activeTowerButtons?.removeFromParent();
-
-    // 새로 활성화된 버튼 그룹을 추적
-    _activeTowerButtons = towerButtons;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
       GestureDetector(
-        onTap: _onBackgroundTap,
+        onTap: buttonsManager.handleBackgroundTap,
         onScaleStart: _onScaleStart,
         onScaleUpdate: _onScaleUpdate,
         child: Listener(
@@ -115,39 +100,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         ),
       ),
     ]);
-  }
-
-  void _onBackgroundTap() {
-    if (_activeTowerInfoButtons != null) {
-      final bool anyButtonTapped =
-          _activeTowerInfoButtons!.buttons.any((button) => button.isTapped);
-      if (!anyButtonTapped) {
-        _activeTowerInfoButtons?.removeButtons();
-        _activeTowerInfoButtons?.removeFromParent();
-        _activeTowerInfoButtons = null;
-      } else {
-        for (var button in _activeTowerInfoButtons!.buttons) {
-          button.isTapped = false;
-        }
-      }
-    }
-    // 게임 내 활성화된 DefenseTowerButtons 인스턴스를 제거, 버튼을 클릭한 경우는 예외
-    if (_activeTowerButtons != null) {
-      // 클릭된 버튼이 있는지 확인
-      final bool anyButtonTapped =
-          _activeTowerButtons!.buttons.any((button) => button.isTapped);
-      // 클릭된 버튼이 없다면 버튼 그룹 제거
-      if (!anyButtonTapped) {
-        _activeTowerButtons?.removeButtons();
-        _activeTowerButtons?.removeFromParent();
-        _activeTowerButtons = null;
-      } else {
-        // 모든 버튼의 클릭 상태 초기화
-        for (var button in _activeTowerButtons!.buttons) {
-          button.isTapped = false;
-        }
-      }
-    }
   }
 
   void _onScaleStart(ScaleStartDetails details) {
