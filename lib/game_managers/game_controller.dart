@@ -1,4 +1,6 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire_defense/components/ally/tower.dart';
+import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/camera_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
@@ -160,5 +162,14 @@ class GameController extends GameComponent {
       MaterialPageRoute(builder: (context) => const MenuScreen()),
       (route) => false,
     );
+  }
+
+  void handleBackgroundTap() {
+    for (var component in gameRef.query<Tower>()) {
+      component.handleBackgroundTap();
+    }
+    for (var component in gameRef.query<PlaceableArea>()) {
+      component.handleBackgroundTap();
+    }
   }
 }

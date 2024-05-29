@@ -1,6 +1,5 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
-import 'package:bonfire_defense/game_managers/button_manager.dart';
 import 'package:bonfire_defense/game_managers/game_controller.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
@@ -24,7 +23,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   late GameController gameController;
   late GameConfig config;
   late BonfireGame _game;
-  late ButtonsManager buttonsManager;
 
   Offset _startOffset = Offset.zero;
   double _currentZoom = 1.5;
@@ -34,7 +32,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   void initState() {
     super.initState();
     gameController = GameController();
-    buttonsManager = ButtonsManager();
     _initializeGame();
   }
 
@@ -58,9 +55,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
                 controller: gameController,
                 position: properties.position,
                 size: properties.size,
-                onTowerButtonsDisplayed: buttonsManager.displayTowerButtons,
-                onTowerInfoButtonsDisplayed:
-                    buttonsManager.displayTowerInfoButtons,
               ),
         },
       ),
@@ -79,7 +73,10 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   Widget build(BuildContext context) {
     return Stack(children: [
       GestureDetector(
-        onTap: buttonsManager.handleBackgroundTap,
+        onTap: () {
+          print("Background tapped");
+          gameController.handleBackgroundTap();
+        },
         onScaleStart: _onScaleStart,
         onScaleUpdate: _onScaleUpdate,
         child: Listener(

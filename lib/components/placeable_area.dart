@@ -6,21 +6,18 @@ import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/screens/game.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
-import 'package:bonfire_defense/widgets/buttons/defense_tower_button.dart';
-import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
+import 'package:bonfire_defense/widgets/buttons/tower_select_button.dart';
 import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
   GameController controller;
-  final void Function(TowerSelectButtons) onTowerButtonsDisplayed;
-  final void Function(TowerInfoButtons) onTowerInfoButtonsDisplayed;
+
+  TowerSelectButtons? towerSelectButtons;
 
   PlaceableArea({
     required super.position,
     required super.size,
     required this.controller,
-    required this.onTowerButtonsDisplayed,
-    required this.onTowerInfoButtonsDisplayed,
   });
 
   @override
@@ -30,23 +27,16 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final defender = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
-    // Tower? existingTower = _getTowerAtPosition();
-
-    // if (existingTower != null) {
-    //   // 이미 타워가 배치된 경우: 타워 정보 버튼 그룹을 표시
-    //   final towerIfnoButton =
-    //       TowerInfoButtons(tower: existingTower, position: position);
-    //   gameRef.add(towerIfnoButton);
-    //   onTowerInfoButtonsDisplayed(towerIfnoButton);
-    //   return;
-    // }
-
     if (defender == null) {
-      // 선택된 Defender가 없을 때 DefenseTower 추가
-      if (isPlaceable()) {
-        final tower = TowerSelectButtons(position: position);
-        gameRef.add(tower);
-        onTowerButtonsDisplayed(tower);
+      if (isPlaceable() && _getTowerAtPosition() == null) {
+        if (towerSelectButtons == null) {
+          towerSelectButtons = TowerSelectButtons(position: position);
+          gameRef.add(towerSelectButtons!);
+        } else {
+          towerSelectButtons?.removeButtons();
+          towerSelectButtons?.removeFromParent();
+          towerSelectButtons = null;
+        }
       }
       return;
     }
@@ -115,5 +105,23 @@ class PlaceableArea extends GameDecoration with TapGesture {
       }
     }
     return null; // 타워가 배치되어 있지 않음
+  }
+
+  // 배경을 클릭했을 때 버튼 제거
+  void handleBackgroundTap() {
+    print("handleBackgroundTap2");
+    print("towerSelectButtons: $towerSelectButtons");
+    if (towerSelectButtons != null) {
+      if (!towerSelectButtons!.anyButtonTapped()) {
+        towerSelectButtons?.removeButtons();
+        towerSelectButtons?.removeFromParent();
+        towerSelectButtons = null;
+        print("handleBackgroundTap2 - towerSelectButtons removed");
+      } else {
+        for (var button in towerSelectButtons!.buttons) {
+          button.isTapped = false;
+        }
+      }
+    }
   }
 }

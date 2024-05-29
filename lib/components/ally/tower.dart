@@ -1,10 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/projectile.dart';
-import 'package:bonfire_defense/game_managers/button_manager.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 abstract class Tower extends SimpleAlly with TapGesture {
   final String imagePath;
@@ -110,11 +107,32 @@ abstract class Tower extends SimpleAlly with TapGesture {
     // 타워 정보 버튼 표시
     if (towerInfoButtons == null) {
       towerInfoButtons =
-          TowerInfoButtons(tower: this, position: position + Vector2(0, -16));
+          TowerInfoButtons(tower: this, position: position + Vector2(0, 16));
       gameRef.add(towerInfoButtons!);
-      // ButtonsManager를 통해 버튼을 관리
-      final buttonsManager = gameRef.context.read<ButtonsManager>();
-      buttonsManager.displayTowerInfoButtons(towerInfoButtons!);
+      print("onTap - towerInfoButtons added: $towerInfoButtons");
+    } else {
+      // 이미 활성화된 경우 제거
+      towerInfoButtons?.removeButtons();
+      towerInfoButtons?.removeFromParent();
+      towerInfoButtons = null;
+      print("onTap - towerInfoButtons removed");
+    }
+  }
+
+  // 배경을 클릭했을 때 버튼 제거
+  void handleBackgroundTap() {
+    print("handleBackgroundTap");
+    if (towerInfoButtons != null) {
+      if (!towerInfoButtons!.anyButtonTapped()) {
+        towerInfoButtons?.removeButtons();
+        towerInfoButtons?.removeFromParent();
+        towerInfoButtons = null;
+        print("handleBackgroundTap - towerInfoButtons removed");
+      } else {
+        for (var button in towerInfoButtons!.buttons) {
+          button.isTapped = false;
+        }
+      }
     }
   }
 }

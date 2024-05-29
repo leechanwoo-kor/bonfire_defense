@@ -85,6 +85,10 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
     selectedButton = null;
   }
 
+  bool anyButtonTapped() {
+    return buttons.any((button) => button.isTapped);
+  }
+
   @override
   void render(Canvas canvas) {
     super.render(canvas);
