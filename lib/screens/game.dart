@@ -6,6 +6,7 @@ import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/sensors/end_game_sensor.dart';
 import 'package:bonfire_defense/widgets/buttons/start_button.dart';
 import 'package:bonfire_defense/widgets/overlays/game_overlay.dart';
+import 'package:bonfire_defense/widgets/overlays/loading_overlay.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   double _currentZoom = 1.4;
   double _baseZoom = 1.4;
 
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -35,11 +38,15 @@ class _BonfireDefenseState extends State<BonfireDefense> {
     _initializeGame();
   }
 
-  void _initializeGame() {
+  void _initializeGame() async {
     final config =
         Provider.of<GameConfigProvider>(context, listen: false).currentConfig;
     final double mapWidth = config.tilesInWidth * BonfireDefense.tileSize;
     final double mapHeight = config.tilesInHeight * BonfireDefense.tileSize;
+
+    setState(() {
+      _isLoading = true;
+    });
 
     _game = BonfireGame(
       context: context,
@@ -66,36 +73,49 @@ class _BonfireDefenseState extends State<BonfireDefense> {
         gameController,
         StartButton(position: config.enemyInitialPosition)
       ],
+      onReady: (BonfireGameInterface game) {
+        setState(() {
+          _isLoading = false;
+        });
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      GestureDetector(
-        onTap: () {
-          gameController.handleBackgroundTap();
-        },
-        onScaleStart: _onScaleStart,
-        onScaleUpdate: _onScaleUpdate,
-        child: Listener(
-          onPointerSignal: (pointerSignal) =>
-              _handlePointerSignal(pointerSignal),
-          child: BonfireWidget(
-            map: _game.map,
-            cameraConfig: _game.camera.config,
-            components:
-                _game.world.children.whereType<GameComponent>().toList(),
-            overlayBuilderMap: {
-              GameOverlay.overlayName: (context, game) => const GameOverlay(),
-            },
-            initialActiveOverlays: const [
-              GameOverlay.overlayName,
-            ],
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            gameController.handleBackgroundTap();
+          },
+          onScaleStart: _onScaleStart,
+          onScaleUpdate: _onScaleUpdate,
+          child: Listener(
+            onPointerSignal: (pointerSignal) =>
+                _handlePointerSignal(pointerSignal),
+            child: BonfireWidget(
+              map: _game.map,
+              cameraConfig: _game.camera.config,
+              components:
+                  _game.world.children.whereType<GameComponent>().toList(),
+              overlayBuilderMap: {
+                GameOverlay.overlayName: (context, game) => const GameOverlay(),
+              },
+              initialActiveOverlays: const [
+                GameOverlay.overlayName,
+              ],
+              onReady: (BonfireGameInterface game) {
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+            ),
           ),
         ),
-      ),
-    ]);
+        if (_isLoading) const LoadingOverlay(),
+      ],
+    );
   }
 
   void _onScaleStart(ScaleStartDetails details) {
