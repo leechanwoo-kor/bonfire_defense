@@ -109,7 +109,8 @@ abstract class Tower extends SimpleAlly with TapGesture {
 
     // 타워 정보 버튼 표시
     if (towerInfoButtons == null) {
-      towerInfoButtons = TowerInfoButtons(tower: this, position: position);
+      towerInfoButtons =
+          TowerInfoButtons(tower: this, position: position + Vector2(0, -16));
       gameRef.add(towerInfoButtons!);
       // ButtonsManager를 통해 버튼을 관리
       final buttonsManager = gameRef.context.read<ButtonsManager>();

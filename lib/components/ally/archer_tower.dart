@@ -10,17 +10,18 @@ class ArcherTower extends Tower {
           type: TowerType.archer,
           attackDamage: 20,
           size: Vector2(16, 32),
-          visionRange: BonfireDefense.tileSize * 4,
+          visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1000,
           imagePath: 'tower/tower.png',
         );
 
   @override
   void executeAttack(List<Enemy> enemies) {
-    final enemyDirection = getComponentDirectionFromMe(enemies.first);
-    animation?.playOnceOther(
-      'attack-range-${enemyDirection.name}',
-      onStart: () => launchProjectile([enemies.first]),
-    );
+    launchProjectile([enemies.first]);
+    // final enemyDirection = getComponentDirectionFromMe(enemies.first);
+    // animation?.playOnceOther(
+    //   'attack-range-${enemyDirection.name}',
+    //   onStart: () => launchProjectile([enemies.first]),
+    // );
   }
 }
