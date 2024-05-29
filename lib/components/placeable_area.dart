@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class PlaceableArea extends GameDecoration with TapGesture {
   GameController controller;
 
-  TowerSelectButtons? towerSelectButtons;
+  TowerSelectionPanel? towerSelectionPanel;
 
   PlaceableArea({
     required super.position,
@@ -29,13 +29,13 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
     if (defender == null) {
       if (isPlaceable() && _getTowerAtPosition() == null) {
-        if (towerSelectButtons == null) {
-          towerSelectButtons = TowerSelectButtons(position: position);
-          gameRef.add(towerSelectButtons!);
+        if (towerSelectionPanel == null) {
+          towerSelectionPanel = TowerSelectionPanel(position: position);
+          gameRef.add(towerSelectionPanel!);
         } else {
-          towerSelectButtons?.removeButtons();
-          towerSelectButtons?.removeFromParent();
-          towerSelectButtons = null;
+          towerSelectionPanel?.removeButtons();
+          towerSelectionPanel?.removeFromParent();
+          towerSelectionPanel = null;
         }
       }
       return;
@@ -109,13 +109,13 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
   // 배경을 클릭했을 때 버튼 제거
   void handleBackgroundTap() {
-    if (towerSelectButtons != null) {
-      if (!towerSelectButtons!.anyButtonTapped()) {
-        towerSelectButtons?.removeButtons();
-        towerSelectButtons?.removeFromParent();
-        towerSelectButtons = null;
+    if (towerSelectionPanel != null) {
+      if (!towerSelectionPanel!.anyButtonTapped()) {
+        towerSelectionPanel?.removeButtons();
+        towerSelectionPanel?.removeFromParent();
+        towerSelectionPanel = null;
       } else {
-        for (var button in towerSelectButtons!.buttons) {
+        for (var button in towerSelectionPanel!.buttons) {
           button.isTapped = false;
         }
       }

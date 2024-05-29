@@ -4,12 +4,12 @@ import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
 import 'package:flutter/material.dart';
 
-class TowerInfoButtons extends GameDecoration with TapGesture {
+class TowerInfoPanel extends GameDecoration with TapGesture {
   final Tower tower;
-  late List<TowerInfoButton> buttons;
-  TowerInfoButton? selectedButton;
+  late List<TowerActionButton> buttons;
+  TowerActionButton? selectedButton;
 
-  TowerInfoButtons({required super.position, required this.tower})
+  TowerInfoPanel({required super.position, required this.tower})
       : super(
           size: Vector2.all(18),
         );
@@ -39,12 +39,12 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
     }
   }
 
-  TowerInfoButton createButton({
+  TowerActionButton createButton({
     required Vector2 offset,
     required IconData icon,
     required TowerType towerType,
   }) {
-    return TowerInfoButton(
+    return TowerActionButton(
       position: position + offset,
       icon: icon,
       onTapCallback: onButtonTap,
@@ -52,7 +52,7 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
     );
   }
 
-  void onButtonTap(TowerInfoButton tappedButton) {
+  void onButtonTap(TowerActionButton tappedButton) {
     if (selectedButton != null) {
       if (selectedButton == tappedButton) {
         handleSameButtonTap(tappedButton);
@@ -65,14 +65,14 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
     handleNewButtonTap(tappedButton);
   }
 
-  void handleSameButtonTap(TowerInfoButton tappedButton) {
+  void handleSameButtonTap(TowerActionButton tappedButton) {
     print('기능 구현');
     selectedButton!.isSelected = false;
     selectedButton = null;
     removeButtons();
   }
 
-  void handleNewButtonTap(TowerInfoButton tappedButton) {
+  void handleNewButtonTap(TowerActionButton tappedButton) {
     selectedButton = tappedButton;
     tappedButton.isSelected = true;
   }
@@ -100,14 +100,14 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
   }
 }
 
-class TowerInfoButton extends GameDecoration with TapGesture {
+class TowerActionButton extends GameDecoration with TapGesture {
   final IconData icon;
-  final void Function(TowerInfoButton) onTapCallback;
+  final void Function(TowerActionButton) onTapCallback;
   final TowerInfo towerInfo;
   bool isTapped = false;
   bool isSelected = false;
 
-  TowerInfoButton({
+  TowerActionButton({
     required super.position,
     required this.icon,
     required this.onTapCallback,

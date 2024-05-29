@@ -12,7 +12,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
   final double attackDamage;
   double lastAttackTime = 0;
 
-  TowerInfoButtons? towerInfoButtons;
+  TowerInfoPanel? towerInfoPanel;
 
   Tower({
     required this.type,
@@ -102,27 +102,27 @@ abstract class Tower extends SimpleAlly with TapGesture {
 
   @override
   void onTap() {
-    if (towerInfoButtons == null) {
-      towerInfoButtons =
-          TowerInfoButtons(tower: this, position: position + Vector2(0, 16));
-      gameRef.add(towerInfoButtons!);
+    if (towerInfoPanel == null) {
+      towerInfoPanel =
+          TowerInfoPanel(tower: this, position: position + Vector2(0, 16));
+      gameRef.add(towerInfoPanel!);
     } else {
       // 이미 활성화된 경우 제거
-      towerInfoButtons?.removeButtons();
-      towerInfoButtons?.removeFromParent();
-      towerInfoButtons = null;
+      towerInfoPanel?.removeButtons();
+      towerInfoPanel?.removeFromParent();
+      towerInfoPanel = null;
     }
   }
 
   // 배경을 클릭했을 때 버튼 제거
   void handleBackgroundTap() {
-    if (towerInfoButtons != null) {
-      if (!towerInfoButtons!.anyButtonTapped()) {
-        towerInfoButtons?.removeButtons();
-        towerInfoButtons?.removeFromParent();
-        towerInfoButtons = null;
+    if (towerInfoPanel != null) {
+      if (!towerInfoPanel!.anyButtonTapped()) {
+        towerInfoPanel?.removeButtons();
+        towerInfoPanel?.removeFromParent();
+        towerInfoPanel = null;
       } else {
-        for (var button in towerInfoButtons!.buttons) {
+        for (var button in towerInfoPanel!.buttons) {
           button.isTapped = false;
         }
       }
