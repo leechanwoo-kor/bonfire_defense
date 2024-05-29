@@ -6,10 +6,10 @@ import 'package:bonfire_defense/utils/game_config.dart';
 class TowerDwarf extends Tower {
   TowerDwarf(Vector2 position)
       : super(
-          position: position + Vector2(0, -16),
+          position: position - Vector2(4, 30),
           type: TowerType.archer,
           attackDamage: 12,
-          size: Vector2(16, 32),
+          size: Vector2(24, 48),
           visionRange: BonfireDefense.tileSize * 10,
           attackInterval: 1750,
           imagePath: 'tower/tower_dwarf.png',

@@ -1,62 +1,68 @@
 import 'package:bonfire_defense/utils/game_config.dart';
 
 class TowerInfo {
-  final TowerType type;
   final String name;
-  final String attackType;
-  final String attackDamage;
-  final int cost;
   final String imagePath;
+  final double attackDamage;
+  final double visionRange;
+  final int cost;
+  final TowerType type;
+  final String attackType;
 
   TowerInfo({
-    required this.type,
     required this.name,
-    required this.attackType,
+    required this.imagePath,
     required this.attackDamage,
+    required this.visionRange,
     required this.cost,
-    this.imagePath = 'tower/tower.png',
+    required this.type,
+    required this.attackType,
   });
 
-  static final Map<TowerType, TowerInfo> _infoMap = {
-    TowerType.archer: TowerInfo(
-      name: 'Archer Tower',
-      type: TowerType.archer,
-      attackType: '빠름',
-      attackDamage: '5',
-      cost: 70,
-      imagePath: 'tower/tower_archer.png',
-    ),
-    TowerType.barrack: TowerInfo(
-      name: 'Barrack',
-      type: TowerType.barrack,
-      attackType: '보통',
-      attackDamage: '2',
-      cost: 70,
-      imagePath: 'tower/tower_barrack.png',
-    ),
-    TowerType.dwarf: TowerInfo(
-      name: 'Dwarf Tower',
-      type: TowerType.dwarf,
-      attackType: '매우 느림',
-      attackDamage: '12',
-      cost: 125,
-      imagePath: 'tower/tower_dwarf.png',
-    ),
-    TowerType.mage: TowerInfo(
-      name: 'Mage Tower',
-      type: TowerType.mage,
-      attackType: '느림',
-      attackDamage: '13',
-      cost: 100,
-      imagePath: 'tower/tower_mage.png',
-    ),
-  };
-
   static TowerInfo getInfo(TowerType type) {
-    return _infoMap[type]!;
-  }
-
-  static List<TowerInfo> getInfos() {
-    return _infoMap.values.toList();
+    switch (type) {
+      case TowerType.barrack:
+        return TowerInfo(
+          name: 'Barrack Tower',
+          imagePath: 'tower/tower_barrack.png',
+          attackDamage: 2,
+          visionRange: 16.0 * 10,
+          cost: 70,
+          type: TowerType.barrack,
+          attackType: 'Melee',
+        );
+      case TowerType.archer:
+        return TowerInfo(
+          name: 'Archer Tower',
+          imagePath: 'tower/tower_archer.png',
+          attackDamage: 5,
+          visionRange: 16.0 * 10,
+          cost: 70,
+          type: TowerType.archer,
+          attackType: 'Ranged',
+        );
+      case TowerType.dwarf:
+        return TowerInfo(
+          name: 'Dwarf Tower',
+          imagePath: 'tower/tower_dwarf.png',
+          attackDamage: 12,
+          visionRange: 16.0 * 10,
+          cost: 125,
+          type: TowerType.dwarf,
+          attackType: 'Explosive',
+        );
+      case TowerType.mage:
+        return TowerInfo(
+          name: 'Mage Tower',
+          imagePath: 'tower/tower_mage.png',
+          attackDamage: 13,
+          visionRange: 16.0 * 10,
+          cost: 100,
+          type: TowerType.mage,
+          attackType: 'Magic',
+        );
+      default:
+        throw Exception('Invalid TowerType');
+    }
   }
 }

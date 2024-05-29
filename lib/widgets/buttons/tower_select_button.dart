@@ -23,20 +23,20 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     await super.onLoad();
     initializeButtons([
       createButton(
-          offset: Vector2(0, 20),
-          icon: Icons.ac_unit,
+          offset: Vector2(0, -20),
+          icon: Icons.account_balance,
           towerType: TowerType.barrack),
       createButton(
           offset: Vector2(20, 0),
           icon: Icons.arrow_forward,
           towerType: TowerType.archer),
       createButton(
-          offset: Vector2(0, -20),
-          icon: Icons.account_balance,
+          offset: Vector2(0, 20),
+          icon: Icons.sports,
           towerType: TowerType.dwarf),
       createButton(
           offset: Vector2(-20, 0),
-          icon: Icons.accessibility,
+          icon: Icons.auto_fix_high,
           towerType: TowerType.mage),
     ]);
   }
@@ -119,7 +119,7 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     transparentTower?.removeFromParent();
 
     transparentTower = TransparentTower(
-      position: position - Vector2(0, 16),
+      position: position - Vector2(4, 30),
       towerInfo: towerInfo,
     );
     gameRef.add(transparentTower!);
@@ -249,13 +249,14 @@ class TransparentTower extends GameDecoration {
   TransparentTower({
     required super.position,
     required this.towerInfo,
-  }) : super(size: Vector2(16, 32));
+  }) : super(size: Vector2(24, 48));
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     add(RectangleHitbox(size: size));
     loadTowerSprite();
+    drawRange();
   }
 
   Future<void> loadTowerSprite() async {
@@ -265,5 +266,19 @@ class TransparentTower extends GameDecoration {
       size: size,
       paint: Paint()..color = Colors.white.withOpacity(0.5),
     ));
+  }
+
+  void drawRange() {
+    final rangeRadius = towerInfo.visionRange;
+    final rangePaint = Paint()
+      ..color = Colors.blue.withOpacity(0.3)
+      ..style = PaintingStyle.fill;
+
+    final rangeCircle = CircleComponent(
+      radius: rangeRadius,
+      paint: rangePaint,
+      position: position,
+    );
+    gameRef.add(rangeCircle);
   }
 }

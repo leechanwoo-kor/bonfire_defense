@@ -6,10 +6,10 @@ import 'package:bonfire_defense/utils/game_config.dart';
 class TowerMage extends Tower {
   TowerMage(Vector2 position)
       : super(
-          position: position + Vector2(0, -16),
+          position: position - Vector2(4, 30),
           type: TowerType.archer,
           attackDamage: 13,
-          size: Vector2(16, 32),
+          size: Vector2(24, 48),
           visionRange: BonfireDefense.tileSize * 10,
           attackInterval: 1500,
           imagePath: 'tower/tower_mage.png',
