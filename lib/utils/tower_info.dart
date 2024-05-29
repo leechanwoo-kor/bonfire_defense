@@ -5,6 +5,7 @@ class TowerInfo {
   final String imagePath;
   final double attackDamage;
   final double visionRange;
+  final int attackInterval;
   final int cost;
   final TowerType type;
   final String attackType;
@@ -14,6 +15,7 @@ class TowerInfo {
     required this.imagePath,
     required this.attackDamage,
     required this.visionRange,
+    required this.attackInterval,
     required this.cost,
     required this.type,
     required this.attackType,
@@ -27,6 +29,7 @@ class TowerInfo {
           imagePath: 'tower/tower_barrack.png',
           attackDamage: 2,
           visionRange: 16.0 * 5,
+          attackInterval: 1250,
           cost: 70,
           type: TowerType.barrack,
           attackType: 'Melee',
@@ -37,6 +40,7 @@ class TowerInfo {
           imagePath: 'tower/tower_archer.png',
           attackDamage: 5,
           visionRange: 16.0 * 5,
+          attackInterval: 1000,
           cost: 70,
           type: TowerType.archer,
           attackType: 'Ranged',
@@ -47,6 +51,7 @@ class TowerInfo {
           imagePath: 'tower/tower_dwarf.png',
           attackDamage: 12,
           visionRange: 16.0 * 5,
+          attackInterval: 1750,
           cost: 125,
           type: TowerType.dwarf,
           attackType: 'Explosive',
@@ -57,6 +62,7 @@ class TowerInfo {
           imagePath: 'tower/tower_mage.png',
           attackDamage: 13,
           visionRange: 16.0 * 5,
+          attackInterval: 1500,
           cost: 100,
           type: TowerType.mage,
           attackType: 'Magic',

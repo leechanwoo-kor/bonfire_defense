@@ -1,28 +1,19 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/projectile.dart';
-import 'package:bonfire_defense/utils/game_config.dart';
+import 'package:bonfire_defense/utils/tower_info.dart';
 import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
 
 abstract class Tower extends SimpleAlly with TapGesture {
-  final String imagePath;
-
-  final TowerType type;
-  final int attackInterval;
-  final double visionRange;
-  final double attackDamage;
+  final TowerInfo towerInfo;
   double lastAttackTime = 0;
 
   TowerInfoPanel? towerInfoPanel;
 
   Tower({
-    required this.type,
-    required this.attackDamage,
+    required this.towerInfo,
     required super.position,
-    required super.size,
-    required this.attackInterval,
-    required this.visionRange,
-    required this.imagePath,
   }) : super(
+          size: Vector2(24, 48),
           initDirection: Direction.down,
         );
 
@@ -33,7 +24,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
   }
 
   Future<void> loadTowerSprite() async {
-    final towerSprite = await Sprite.load(imagePath);
+    final towerSprite = await Sprite.load(towerInfo.imagePath);
     add(SpriteComponent(
       sprite: towerSprite,
       size: size,
@@ -50,7 +41,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
 
   bool shouldAttack(double dt) {
     lastAttackTime += dt * 1000;
-    if (lastAttackTime >= attackInterval) {
+    if (lastAttackTime >= towerInfo.attackInterval) {
       lastAttackTime = 0;
       return true;
     }
@@ -59,7 +50,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
 
   void performAttack() {
     seeComponentType<Enemy>(
-      radiusVision: visionRange,
+      radiusVision: towerInfo.visionRange,
       observed: (enemies) {
         if (enemies.isNotEmpty) {
           executeAttack(enemies);
@@ -74,7 +65,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
     if (enemy.life > 0 && !enemy.isRemoved) {
       enemy.receiveDamage(
         AttackFromEnum.PLAYER_OR_ALLY,
-        attackDamage,
+        towerInfo.attackDamage,
         null,
       );
     }
@@ -85,7 +76,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
       final projectile = Projectile(
         position: position.clone(),
         target: enemy.position,
-        damage: attackDamage,
+        damage: towerInfo.attackDamage,
         speed: 200,
         onHit: () {
           executeDamage(enemy);
@@ -107,20 +98,21 @@ abstract class Tower extends SimpleAlly with TapGesture {
           TowerInfoPanel(tower: this, position: position + Vector2(0, 16));
       gameRef.add(towerInfoPanel!);
     } else {
-      // 이미 활성화된 경우 제거
-      towerInfoPanel?.removeButtons();
-      towerInfoPanel?.removeFromParent();
-      towerInfoPanel = null;
+      removeTowerInfoPanel();
     }
+  }
+
+  void removeTowerInfoPanel() {
+    towerInfoPanel?.removeButtons();
+    towerInfoPanel?.removeFromParent();
+    towerInfoPanel = null;
   }
 
   // 배경을 클릭했을 때 버튼 제거
   void handleBackgroundTap() {
     if (towerInfoPanel != null) {
       if (!towerInfoPanel!.anyButtonTapped()) {
-        towerInfoPanel?.removeButtons();
-        towerInfoPanel?.removeFromParent();
-        towerInfoPanel = null;
+        removeTowerInfoPanel();
       } else {
         for (var button in towerInfoPanel!.buttons) {
           button.isTapped = false;

@@ -19,9 +19,11 @@ class TowerInfoPanel extends BasePanel<TowerActionButton> {
       createButton(
           offset: Vector2(-20, 0),
           icon: Icons.arrow_upward,
-          towerType: tower.type),
+          towerType: tower.towerInfo.type),
       createButton(
-          offset: Vector2(20, 0), icon: Icons.sell, towerType: tower.type),
+          offset: Vector2(20, 0),
+          icon: Icons.sell,
+          towerType: tower.towerInfo.type),
     ]);
   }
 
