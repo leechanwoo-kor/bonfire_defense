@@ -23,21 +23,21 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     await super.onLoad();
     initializeButtons([
       createButton(
-          offset: Vector2(0, -20),
+          offset: Vector2(-14.14, -14.14),
           icon: Icons.account_balance,
           towerType: TowerType.barrack),
       createButton(
-          offset: Vector2(20, 0),
+          offset: Vector2(14.14, -14.14),
           icon: Icons.arrow_forward,
           towerType: TowerType.archer),
       createButton(
-          offset: Vector2(0, 20),
-          icon: Icons.sports,
-          towerType: TowerType.dwarf),
-      createButton(
-          offset: Vector2(-20, 0),
+          offset: Vector2(-14.14, 14.14),
           icon: Icons.auto_fix_high,
           towerType: TowerType.mage),
+      createButton(
+          offset: Vector2(14.14, 14.14),
+          icon: Icons.sports,
+          towerType: TowerType.dwarf),
     ]);
   }
 
@@ -62,6 +62,7 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
       addTower(tappedButton.towerInfo);
       gameState.updateGold(-tappedButton.towerInfo.cost);
       transparentTower?.removeFromParent();
+      transparentTower?.removeRangeIndicator();
       transparentTower = null;
       selectedButton!.isSelected = false;
       selectedButton = null;
@@ -117,6 +118,7 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
 
   void addTransparentTower(TowerInfo towerInfo) {
     transparentTower?.removeFromParent();
+    transparentTower?.removeRangeIndicator();
 
     transparentTower = TransparentTower(
       position: position - Vector2(4, 30),
@@ -131,6 +133,7 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     selectedInfoWidget?.removeFromParent();
     selectedInfoWidget = null;
     transparentTower?.removeFromParent();
+    transparentTower?.removeRangeIndicator();
     transparentTower = null;
   }
 }
@@ -245,6 +248,7 @@ class TowerInfoWidget extends GameDecoration {
 
 class TransparentTower extends GameDecoration {
   final TowerInfo towerInfo;
+  RangeIndicator? rangeIndicator;
 
   TransparentTower({
     required super.position,
@@ -256,7 +260,7 @@ class TransparentTower extends GameDecoration {
     await super.onLoad();
     add(RectangleHitbox(size: size));
     loadTowerSprite();
-    drawRange();
+    addRangeIndicator();
   }
 
   Future<void> loadTowerSprite() async {
@@ -268,17 +272,42 @@ class TransparentTower extends GameDecoration {
     ));
   }
 
-  void drawRange() {
+  void addRangeIndicator() {
     final rangeRadius = towerInfo.visionRange;
-    final rangePaint = Paint()
+    final rangeIndicatorPosition = position + Vector2(size.x / 2, size.y / 2);
+
+    rangeIndicator = RangeIndicator(
+      radius: rangeRadius,
+      position: rangeIndicatorPosition - Vector2(rangeRadius, rangeRadius),
+    );
+
+    gameRef.add(rangeIndicator!);
+  }
+
+  void removeRangeIndicator() {
+    rangeIndicator?.removeFromParent();
+    rangeIndicator = null;
+  }
+}
+
+class RangeIndicator extends GameDecoration {
+  final double radius;
+
+  RangeIndicator({
+    required this.radius,
+    required super.position,
+  }) : super(
+          size: Vector2.all(radius * 2),
+        );
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    final paint = Paint()
       ..color = Colors.blue.withOpacity(0.3)
       ..style = PaintingStyle.fill;
 
-    final rangeCircle = CircleComponent(
-      radius: rangeRadius,
-      paint: rangePaint,
-      position: position,
-    );
-    gameRef.add(rangeCircle);
+    canvas.drawCircle(Offset(radius, radius), radius, paint);
   }
 }

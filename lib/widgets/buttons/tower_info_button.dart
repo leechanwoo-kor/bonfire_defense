@@ -17,11 +17,11 @@ class TowerInfoPanel extends BasePanel<TowerActionButton> {
     await super.onLoad();
     initializeButtons([
       createButton(
-          offset: Vector2(0, -20),
+          offset: Vector2(-20, 0),
           icon: Icons.arrow_upward,
           towerType: tower.type),
       createButton(
-          offset: Vector2(0, 20), icon: Icons.sell, towerType: tower.type),
+          offset: Vector2(20, 0), icon: Icons.sell, towerType: tower.type),
     ]);
   }
 
