@@ -8,7 +8,7 @@ class ArcherTower extends Tower {
       : super(
           position: position + Vector2(0, -16),
           type: TowerType.archer,
-          attackDamage: 20,
+          attackDamage: 2,
           size: Vector2(16, 32),
           visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1000,

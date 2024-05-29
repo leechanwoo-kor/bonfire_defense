@@ -15,6 +15,15 @@ class GameStateProvider with ChangeNotifier {
   int get gold => _gold;
   int get life => _life;
 
+  void init() {
+    _state = GameState.idle;
+    _currentStage = 1;
+    _count = 0;
+    _gold = 265;
+    _life = 20;
+    notifyListeners();
+  }
+
   void updateCount(int change) {
     _count += change;
     notifyListeners();
@@ -55,15 +64,6 @@ class GameStateProvider with ChangeNotifier {
 
   void endGame() {
     _state = GameState.ended;
-    notifyListeners();
-  }
-
-  void init() {
-    _state = GameState.idle;
-    _currentStage = 1;
-    _count = 0;
-    _gold = 100;
-    _life = 10;
     notifyListeners();
   }
 }

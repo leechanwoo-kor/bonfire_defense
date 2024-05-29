@@ -52,7 +52,7 @@ class EnemyManager {
     if (enemyStateProvider.enemyCount >= config.enemies.length) return;
     Enemy enemy;
 
-    double baseLife = 100;
+    double baseLife = 5;
     double life = baseLife * (pow(1.5, state.currentStage - 1));
 
     switch (config.enemies[enemyStateProvider.enemyCount]) {

@@ -1,11 +1,13 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/ally/archer_tower.dart';
 import 'package:bonfire_defense/components/ally/tower.dart';
+import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
 import 'package:bonfire_defense/widgets/buttons/base_button.dart';
 import 'package:bonfire_defense/widgets/buttons/base_panel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   TowerInfoWidget? selectedInfoWidget;
@@ -51,14 +53,21 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
 
   @override
   void handleSameButtonTap(TowerSelectionButton tappedButton) {
-    addTower(tappedButton.towerInfo);
-    transparentTower?.removeFromParent();
-    transparentTower = null;
-    selectedButton!.isSelected = false;
-    selectedButton = null;
-    selectedInfoWidget?.removeFromParent();
-    selectedInfoWidget = null;
-    removeButtons();
+    final gameState = gameRef.context.read<GameStateProvider>();
+
+    if (gameState.gold >= tappedButton.towerInfo.cost) {
+      addTower(tappedButton.towerInfo);
+      gameState.updateGold(-tappedButton.towerInfo.cost);
+      transparentTower?.removeFromParent();
+      transparentTower = null;
+      selectedButton!.isSelected = false;
+      selectedButton = null;
+      selectedInfoWidget?.removeFromParent();
+      selectedInfoWidget = null;
+      removeButtons();
+    } else {
+      print('Not enough gold to add tower');
+    }
   }
 
   void addTower(TowerInfo towerInfo) {
@@ -104,6 +113,8 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   }
 
   void addTransparentTower(TowerInfo towerInfo) {
+    transparentTower?.removeFromParent();
+
     transparentTower = TransparentTower(
       position: position - Vector2(0, 16),
       towerInfo: towerInfo,
