@@ -1,6 +1,9 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/ally/archer_tower.dart';
 import 'package:bonfire_defense/components/ally/tower.dart';
+import 'package:bonfire_defense/components/ally/tower_archer.dart';
+import 'package:bonfire_defense/components/ally/tower_barrack.dart';
+import 'package:bonfire_defense/components/ally/tower_dwarf.dart';
+import 'package:bonfire_defense/components/ally/tower_mage.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
@@ -73,18 +76,18 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   void addTower(TowerInfo towerInfo) {
     Tower tower;
     switch (towerInfo.type) {
-      // case TowerType.barrack:
-      //   tower = BarrackTower(position.clone());
-      //   break;
-      case TowerType.archer:
-        tower = ArcherTower(position.clone());
+      case TowerType.barrack:
+        tower = TowerBarrack(position.clone());
         break;
-      // case TowerType.dwarf:
-      //   tower = DwarfTower(position.clone());
-      //   break;
-      // case TowerType.mage:
-      //   tower = MageTower(position.clone());
-      //   break;
+      case TowerType.archer:
+        tower = TowerArcher(position.clone());
+        break;
+      case TowerType.dwarf:
+        tower = TowerDwarf(position.clone());
+        break;
+      case TowerType.mage:
+        tower = TowerMage(position.clone());
+        break;
       default:
         throw Exception('Invalid TowerType');
     }
