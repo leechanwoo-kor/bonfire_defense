@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/ally/tower.dart';
+import 'package:bonfire_defense/components/tower/tower.dart';
 import 'package:bonfire_defense/components/placeable_area.dart';
 import 'package:bonfire_defense/game_managers/camera_controller.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';

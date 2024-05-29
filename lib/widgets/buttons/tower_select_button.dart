@@ -1,9 +1,9 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/ally/tower.dart';
-import 'package:bonfire_defense/components/ally/tower_archer.dart';
-import 'package:bonfire_defense/components/ally/tower_barrack.dart';
-import 'package:bonfire_defense/components/ally/tower_dwarf.dart';
-import 'package:bonfire_defense/components/ally/tower_mage.dart';
+import 'package:bonfire_defense/components/tower/tower.dart';
+import 'package:bonfire_defense/components/tower/tower_archer.dart';
+import 'package:bonfire_defense/components/tower/tower_barrack.dart';
+import 'package:bonfire_defense/components/tower/tower_dwarf.dart';
+import 'package:bonfire_defense/components/tower/tower_mage.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';

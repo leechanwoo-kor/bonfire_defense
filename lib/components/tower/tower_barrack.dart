@@ -1,18 +1,18 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bonfire_defense/components/ally/tower.dart';
+import 'package:bonfire_defense/components/tower/tower.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
 
-class TowerMage extends Tower {
-  TowerMage(Vector2 position)
+class TowerBarrack extends Tower {
+  TowerBarrack(Vector2 position)
       : super(
-          towerInfo: TowerInfo.getInfo(TowerType.mage),
+          towerInfo: TowerInfo.getInfo(TowerType.barrack),
           position: position - Vector2(4, 30),
         );
 
   @override
   void executeAttack(List<Enemy> enemies) {
-    launchProjectile([enemies.first]);
+    launchProjectile(enemies);
     // final enemyDirection = getComponentDirectionFromMe(enemies.first);
     // animation?.playOnceOther(
     //   'attack-range-${enemyDirection.name}',
