@@ -83,7 +83,7 @@ abstract class Tower extends SimpleAlly with TapGesture {
   void launchProjectile(List<Enemy> enemies) {
     for (var enemy in enemies) {
       final projectile = Projectile(
-        position: position.clone() + Vector2(16, 32),
+        position: position.clone(),
         target: enemy.position,
         damage: attackDamage,
         speed: 200,

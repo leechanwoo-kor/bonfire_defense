@@ -10,7 +10,7 @@ class TowerDwarf extends Tower {
           type: TowerType.archer,
           attackDamage: 12,
           size: Vector2(24, 48),
-          visionRange: BonfireDefense.tileSize * 10,
+          visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1750,
           imagePath: 'tower/tower_dwarf.png',
         );

@@ -10,7 +10,7 @@ class TowerBarrack extends Tower {
           type: TowerType.archer,
           attackDamage: 2,
           size: Vector2(24, 48),
-          visionRange: BonfireDefense.tileSize * 10,
+          visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1250,
           imagePath: 'tower/tower_barrack.png',
         );

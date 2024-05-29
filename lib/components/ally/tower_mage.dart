@@ -10,7 +10,7 @@ class TowerMage extends Tower {
           type: TowerType.archer,
           attackDamage: 13,
           size: Vector2(24, 48),
-          visionRange: BonfireDefense.tileSize * 10,
+          visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1500,
           imagePath: 'tower/tower_mage.png',
         );

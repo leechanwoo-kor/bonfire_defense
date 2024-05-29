@@ -10,7 +10,7 @@ class TowerArcher extends Tower {
           type: TowerType.archer,
           attackDamage: 5,
           size: Vector2(24, 48),
-          visionRange: BonfireDefense.tileSize * 10,
+          visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1000,
           imagePath: 'tower/tower_archer.png',
         );
