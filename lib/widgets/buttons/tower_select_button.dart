@@ -80,7 +80,6 @@ class TowerSelectButtons extends GameDecoration with TapGesture {
   }
 
   void handleSameButtonTap(TowerSelectButton tappedButton) {
-    print('타워를 추가하기 위해 버튼을 다시 클릭했습니다.');
     addTower(tappedButton.towerInfo);
     transparentTower?.removeFromParent();
     transparentTower = null;

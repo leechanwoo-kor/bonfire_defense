@@ -74,7 +74,6 @@ class _BonfireDefenseState extends State<BonfireDefense> {
     return Stack(children: [
       GestureDetector(
         onTap: () {
-          print("Background tapped");
           gameController.handleBackgroundTap();
         },
         onScaleStart: _onScaleStart,

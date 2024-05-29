@@ -102,32 +102,25 @@ abstract class Tower extends SimpleAlly with TapGesture {
 
   @override
   void onTap() {
-    print("Tower type: $type");
-
-    // 타워 정보 버튼 표시
     if (towerInfoButtons == null) {
       towerInfoButtons =
           TowerInfoButtons(tower: this, position: position + Vector2(0, 16));
       gameRef.add(towerInfoButtons!);
-      print("onTap - towerInfoButtons added: $towerInfoButtons");
     } else {
       // 이미 활성화된 경우 제거
       towerInfoButtons?.removeButtons();
       towerInfoButtons?.removeFromParent();
       towerInfoButtons = null;
-      print("onTap - towerInfoButtons removed");
     }
   }
 
   // 배경을 클릭했을 때 버튼 제거
   void handleBackgroundTap() {
-    print("handleBackgroundTap");
     if (towerInfoButtons != null) {
       if (!towerInfoButtons!.anyButtonTapped()) {
         towerInfoButtons?.removeButtons();
         towerInfoButtons?.removeFromParent();
         towerInfoButtons = null;
-        print("handleBackgroundTap - towerInfoButtons removed");
       } else {
         for (var button in towerInfoButtons!.buttons) {
           button.isTapped = false;

@@ -109,14 +109,11 @@ class PlaceableArea extends GameDecoration with TapGesture {
 
   // 배경을 클릭했을 때 버튼 제거
   void handleBackgroundTap() {
-    print("handleBackgroundTap2");
-    print("towerSelectButtons: $towerSelectButtons");
     if (towerSelectButtons != null) {
       if (!towerSelectButtons!.anyButtonTapped()) {
         towerSelectButtons?.removeButtons();
         towerSelectButtons?.removeFromParent();
         towerSelectButtons = null;
-        print("handleBackgroundTap2 - towerSelectButtons removed");
       } else {
         for (var button in towerSelectButtons!.buttons) {
           button.isTapped = false;
