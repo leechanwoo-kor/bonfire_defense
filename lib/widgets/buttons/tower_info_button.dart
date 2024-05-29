@@ -15,8 +15,8 @@ class TowerInfoButtons extends GameDecoration with TapGesture {
         );
 
   @override
-  void onMount() {
-    super.onMount();
+  Future<void> onLoad() async {
+    await super.onLoad();
     initializeButtons();
   }
 

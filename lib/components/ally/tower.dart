@@ -1,7 +1,10 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/projectile.dart';
+import 'package:bonfire_defense/game_managers/button_manager.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
+import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 abstract class Tower extends SimpleAlly with TapGesture {
   final String imagePath;
@@ -11,6 +14,8 @@ abstract class Tower extends SimpleAlly with TapGesture {
   final double visionRange;
   final double attackDamage;
   double lastAttackTime = 0;
+
+  TowerInfoButtons? towerInfoButtons;
 
   Tower({
     required this.type,
@@ -101,5 +106,14 @@ abstract class Tower extends SimpleAlly with TapGesture {
   @override
   void onTap() {
     print("Tower type: $type");
+
+    // 타워 정보 버튼 표시
+    if (towerInfoButtons == null) {
+      towerInfoButtons = TowerInfoButtons(tower: this, position: position);
+      gameRef.add(towerInfoButtons!);
+      // ButtonsManager를 통해 버튼을 관리
+      final buttonsManager = gameRef.context.read<ButtonsManager>();
+      buttonsManager.displayTowerInfoButtons(towerInfoButtons!);
+    }
   }
 }

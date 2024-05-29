@@ -2,7 +2,7 @@ import 'package:bonfire_defense/provider/test_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
-import 'package:bonfire_defense/widgets/unit_card.dart';
+import 'package:bonfire_defense/widgets/overlays/unit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

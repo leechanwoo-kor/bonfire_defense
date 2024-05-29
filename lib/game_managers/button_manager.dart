@@ -3,7 +3,7 @@ import 'package:bonfire_defense/widgets/buttons/tower_info_button.dart';
 
 class ButtonsManager {
   TowerInfoButtons? activeTowerInfoButtons;
-  DefenseTowerButtons? activeTowerButtons;
+  TowerSelectButtons? activeTowerButtons;
 
   void displayTowerInfoButtons(TowerInfoButtons buttons) {
     activeTowerInfoButtons?.removeButtons();
@@ -11,13 +11,16 @@ class ButtonsManager {
     activeTowerInfoButtons = buttons;
   }
 
-  void displayTowerButtons(DefenseTowerButtons buttons) {
+  void displayTowerButtons(TowerSelectButtons buttons) {
     activeTowerButtons?.removeButtons();
     activeTowerButtons?.removeFromParent();
     activeTowerButtons = buttons;
   }
 
   void handleBackgroundTap() {
+    print("activeTowerButtons: $activeTowerButtons");
+    print("activeTowerInfoButtons: $activeTowerInfoButtons");
+
     if (activeTowerInfoButtons != null) {
       final bool anyButtonTapped =
           activeTowerInfoButtons!.buttons.any((button) => button.isTapped);

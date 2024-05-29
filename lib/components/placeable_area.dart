@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class PlaceableArea extends GameDecoration with TapGesture {
   GameController controller;
-  final void Function(DefenseTowerButtons) onTowerButtonsDisplayed;
+  final void Function(TowerSelectButtons) onTowerButtonsDisplayed;
   final void Function(TowerInfoButtons) onTowerInfoButtonsDisplayed;
 
   PlaceableArea({
@@ -30,21 +30,21 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final defender = state.selectedDefender;
     final index = state.selectedDefenderIndex;
 
-    Tower? existingTower = _getTowerAtPosition();
+    // Tower? existingTower = _getTowerAtPosition();
 
-    if (existingTower != null) {
-      // 이미 타워가 배치된 경우: 타워 정보 버튼 그룹을 표시
-      final towerIfnoButton =
-          TowerInfoButtons(tower: existingTower, position: position);
-      gameRef.add(towerIfnoButton);
-      onTowerInfoButtonsDisplayed(towerIfnoButton);
-      return;
-    }
+    // if (existingTower != null) {
+    //   // 이미 타워가 배치된 경우: 타워 정보 버튼 그룹을 표시
+    //   final towerIfnoButton =
+    //       TowerInfoButtons(tower: existingTower, position: position);
+    //   gameRef.add(towerIfnoButton);
+    //   onTowerInfoButtonsDisplayed(towerIfnoButton);
+    //   return;
+    // }
 
     if (defender == null) {
       // 선택된 Defender가 없을 때 DefenseTower 추가
       if (isPlaceable()) {
-        final tower = DefenseTowerButtons(position: position);
+        final tower = TowerSelectButtons(position: position);
         gameRef.add(tower);
         onTowerButtonsDisplayed(tower);
       }

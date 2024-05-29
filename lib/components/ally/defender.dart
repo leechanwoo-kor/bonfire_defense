@@ -5,7 +5,7 @@ import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
-import 'package:bonfire_defense/widgets/defender_detail_overlay.dart';
+import 'package:bonfire_defense/widgets/overlays/defender_detail_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
