@@ -1,4 +1,3 @@
-import 'package:bonfire_defense/provider/test_state_provider.dart';
 import 'package:bonfire_defense/utils/defender_info.dart';
 import 'package:bonfire_defense/provider/defender_state_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
@@ -6,34 +5,44 @@ import 'package:bonfire_defense/widgets/overlays/unit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DefenderSelectionPanel extends StatelessWidget {
+class DefenderSelectionPanel extends StatefulWidget {
   const DefenderSelectionPanel({super.key});
 
   @override
+  DefenderSelectionPanelState createState() => DefenderSelectionPanelState();
+}
+
+class DefenderSelectionPanelState extends State<DefenderSelectionPanel> {
+  bool isVisible = false;
+
+  void toggleVisibility() {
+    setState(() {
+      isVisible = !isVisible;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer3<GameStateProvider, DefenderStateProvider,
-        TestStateProvider>(
-      builder: (context, gameState, defenderState, visibilityProvider, child) {
+    return Consumer2<GameStateProvider, DefenderStateProvider>(
+      builder: (context, gameState, defenderState, child) {
         final isActivated = gameState.gold >= 10;
 
         return Column(
           children: [
             GestureDetector(
-              onTap: () => visibilityProvider.toggleVisibility(),
+              onTap: toggleVisibility,
               child: Container(
                 color: Colors.black.withOpacity(0.8),
                 alignment: Alignment.center,
                 child: Icon(
-                  visibilityProvider.isVisible
-                      ? Icons.arrow_downward
-                      : Icons.arrow_upward,
+                  isVisible ? Icons.arrow_downward : Icons.arrow_upward,
                   color: Colors.white,
                 ),
               ),
             ),
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              height: visibilityProvider.isVisible ? 200 : 0,
+              height: isVisible ? 200 : 0,
               color: Colors.black.withOpacity(0.8),
               child: SingleChildScrollView(
                 child: Column(

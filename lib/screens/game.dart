@@ -25,8 +25,8 @@ class _BonfireDefenseState extends State<BonfireDefense> {
   late BonfireGame _game;
 
   Offset _startOffset = Offset.zero;
-  double _currentZoom = 1.5;
-  double _baseZoom = 1.5;
+  double _currentZoom = 1.4;
+  double _baseZoom = 1.4;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _BonfireDefenseState extends State<BonfireDefense> {
       ),
       cameraConfig: CameraConfig(
         zoom: _currentZoom,
-        initPosition: Vector2(mapWidth * 0.425, mapHeight),
+        initPosition: Vector2(mapWidth * 0.275, mapHeight * 0.85),
       ),
       components: [
         gameController,

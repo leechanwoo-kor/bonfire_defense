@@ -5,7 +5,7 @@ class CameraController {
   final double mapWidth;
   final double mapHeight;
 
-  static const double minZoom = 1.5;
+  static const double minZoom = 1.4;
   static const double maxZoom = 3.0;
   static const double zoomSensitivity = 0.5;
   static const double panSensitivity = 1.2;

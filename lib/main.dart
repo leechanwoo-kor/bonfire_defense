@@ -4,7 +4,6 @@ import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/provider/test_state_provider.dart';
 import 'package:bonfire_defense/routes.dart';
 import 'package:bonfire_defense/utils/sounds.dart';
 import 'package:bonfire_defense/utils/stages.dart';
@@ -26,12 +25,11 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
             create: (_) =>
-                GameConfigProvider(GameStages.get(GameStageEnum.main))),
+                GameConfigProvider(GameStages.get(GameStageEnum.map))),
         ChangeNotifierProvider(create: (_) => GameStateProvider()),
         ChangeNotifierProvider(create: (_) => DefenderStateProvider()),
         ChangeNotifierProvider(create: (_) => EnemyStateProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),
-        ChangeNotifierProvider(create: (_) => TestStateProvider()),
       ],
       child: const MyApp(),
     ),
