@@ -3,52 +3,37 @@ import 'package:bonfire_defense/components/ally/archer_tower.dart';
 import 'package:bonfire_defense/components/ally/tower.dart';
 import 'package:bonfire_defense/utils/game_config.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
+import 'package:bonfire_defense/widgets/buttons/base_button.dart';
+import 'package:bonfire_defense/widgets/buttons/base_panel.dart';
 import 'package:flutter/material.dart';
 
-class TowerSelectionPanel extends GameDecoration with TapGesture {
-  late List<TowerSelectionButton> buttons;
-  TowerSelectionButton? selectedButton;
+class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   TowerInfoWidget? selectedInfoWidget;
   TransparentTower? transparentTower;
 
-  TowerSelectionPanel({required super.position})
-      : super(
-          size: Vector2.all(18),
-        );
+  TowerSelectionPanel({required super.position}) : super(size: Vector2.all(18));
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    initializeButtons();
-  }
-
-  void initializeButtons() {
-    buttons = [
+    initializeButtons([
       createButton(
-        offset: Vector2(0, 20),
-        icon: Icons.ac_unit,
-        towerType: TowerType.barrack,
-      ),
+          offset: Vector2(0, 20),
+          icon: Icons.ac_unit,
+          towerType: TowerType.barrack),
       createButton(
-        offset: Vector2(20, 0),
-        icon: Icons.arrow_forward,
-        towerType: TowerType.archer,
-      ),
+          offset: Vector2(20, 0),
+          icon: Icons.arrow_forward,
+          towerType: TowerType.archer),
       createButton(
-        offset: Vector2(0, -20),
-        icon: Icons.account_balance,
-        towerType: TowerType.dwarf,
-      ),
+          offset: Vector2(0, -20),
+          icon: Icons.account_balance,
+          towerType: TowerType.dwarf),
       createButton(
-        offset: Vector2(-20, 0),
-        icon: Icons.accessibility,
-        towerType: TowerType.mage,
-      )
-    ];
-
-    for (var button in buttons) {
-      gameRef.add(button);
-    }
+          offset: Vector2(-20, 0),
+          icon: Icons.accessibility,
+          towerType: TowerType.mage),
+    ]);
   }
 
   TowerSelectionButton createButton({
@@ -64,21 +49,7 @@ class TowerSelectionPanel extends GameDecoration with TapGesture {
     );
   }
 
-  void onButtonTap(TowerSelectionButton tappedButton) {
-    if (selectedButton != null) {
-      if (selectedButton == tappedButton) {
-        handleSameButtonTap(tappedButton);
-        return;
-      } else {
-        selectedButton!.isSelected = false;
-        transparentTower?.removeFromParent();
-        transparentTower = null;
-      }
-    }
-
-    handleNewButtonTap(tappedButton);
-  }
-
+  @override
   void handleSameButtonTap(TowerSelectionButton tappedButton) {
     addTower(tappedButton.towerInfo);
     transparentTower?.removeFromParent();
@@ -111,9 +82,9 @@ class TowerSelectionPanel extends GameDecoration with TapGesture {
     gameRef.add(tower);
   }
 
+  @override
   void handleNewButtonTap(TowerSelectionButton tappedButton) {
-    selectedButton = tappedButton;
-    tappedButton.isSelected = true;
+    super.handleNewButtonTap(tappedButton);
     updateInfoWidget(tappedButton.towerInfo);
     addTransparentTower(tappedButton.towerInfo);
   }
@@ -140,109 +111,25 @@ class TowerSelectionPanel extends GameDecoration with TapGesture {
     gameRef.add(transparentTower!);
   }
 
+  @override
   void removeButtons() {
-    for (var button in buttons) {
-      button.removeFromParent();
-    }
-    buttons.clear();
-    selectedButton = null;
+    super.removeButtons();
     selectedInfoWidget?.removeFromParent();
     selectedInfoWidget = null;
     transparentTower?.removeFromParent();
     transparentTower = null;
   }
-
-  bool anyButtonTapped() {
-    return buttons.any((button) => button.isTapped);
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-  }
-
-  @override
-  void onTap() {
-    // 방어 타워 클릭 시 행동 정의
-  }
 }
 
-class TowerSelectionButton extends GameDecoration with TapGesture {
-  final IconData icon;
-  final void Function(TowerSelectionButton) onTapCallback;
-  final TowerInfo towerInfo;
-  bool isTapped = false;
-  bool isSelected = false;
-
+class TowerSelectionButton extends BaseButton {
   TowerSelectionButton({
     required super.position,
-    required this.icon,
-    required this.onTapCallback,
-    required this.towerInfo,
+    required super.icon,
+    required super.onTapCallback,
+    required super.towerInfo,
   }) : super(
           size: Vector2.all(16),
         );
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    drawButtonBackground(canvas);
-    drawIcon(canvas);
-    drawCost(canvas);
-  }
-
-  void drawButtonBackground(Canvas canvas) {
-    final paint = Paint()..color = isSelected ? Colors.green : Colors.white;
-    final radius = size.x / 2;
-    canvas.drawCircle(Offset(size.x / 2, size.y / 2), radius, paint);
-  }
-
-  void drawIcon(Canvas canvas) {
-    const iconSize = 12.0;
-    final textPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-      text: TextSpan(
-        text: String.fromCharCode(icon.codePoint),
-        style: TextStyle(
-          fontSize: iconSize,
-          fontFamily: icon.fontFamily,
-          color: Colors.black,
-        ),
-      ),
-    );
-
-    textPainter.layout();
-    textPainter.paint(
-      canvas,
-      Offset((size.x - iconSize) / 2, (size.y - iconSize) / 2),
-    );
-  }
-
-  void drawCost(Canvas canvas) {
-    final costPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-      text: TextSpan(
-        text: '${towerInfo.cost}',
-        style: const TextStyle(
-          fontSize: 10,
-          color: Colors.black,
-        ),
-      ),
-    );
-
-    costPainter.layout();
-    costPainter.paint(
-      canvas,
-      Offset((size.x - costPainter.width) / 2, size.y + 2),
-    );
-  }
-
-  @override
-  void onTap() {
-    isTapped = true;
-    onTapCallback(this);
-  }
 }
 
 class TowerInfoWidget extends GameDecoration {
