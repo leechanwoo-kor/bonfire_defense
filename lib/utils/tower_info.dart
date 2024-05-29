@@ -24,7 +24,7 @@ class TowerInfo {
       attackType: '빠름',
       attackDamage: '5',
       cost: 70,
-      imagePath: 'tower/tower.png',
+      imagePath: 'tower/tower_archer.png',
     ),
     TowerType.barrack: TowerInfo(
       name: 'Barrack',
@@ -32,7 +32,7 @@ class TowerInfo {
       attackType: '보통',
       attackDamage: '2',
       cost: 70,
-      imagePath: 'tower/tower.png',
+      imagePath: 'tower/tower_barrack.png',
     ),
     TowerType.dwarf: TowerInfo(
       name: 'Dwarf Tower',
@@ -40,7 +40,7 @@ class TowerInfo {
       attackType: '매우 느림',
       attackDamage: '12',
       cost: 125,
-      imagePath: 'tower/tower.png',
+      imagePath: 'tower/tower_dwarf.png',
     ),
     TowerType.mage: TowerInfo(
       name: 'Mage Tower',
@@ -48,7 +48,7 @@ class TowerInfo {
       attackType: '느림',
       attackDamage: '13',
       cost: 100,
-      imagePath: 'tower/tower.png',
+      imagePath: 'tower/tower_mage.png',
     ),
   };
 

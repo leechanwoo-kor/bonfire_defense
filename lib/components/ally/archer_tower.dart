@@ -12,7 +12,7 @@ class ArcherTower extends Tower {
           size: Vector2(16, 32),
           visionRange: BonfireDefense.tileSize * 5,
           attackInterval: 1000,
-          imagePath: 'tower/tower.png',
+          imagePath: 'tower/tower_archer.png',
         );
 
   @override
