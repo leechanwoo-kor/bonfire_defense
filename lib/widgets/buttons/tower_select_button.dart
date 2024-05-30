@@ -258,7 +258,6 @@ class TransparentTower extends GameDecoration {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    add(RectangleHitbox(size: size));
     loadTowerSprite();
     addRangeIndicator();
   }
