@@ -25,7 +25,7 @@ class DefenderSelectionPanelState extends State<DefenderSelectionPanel> {
   Widget build(BuildContext context) {
     return Consumer2<GameStateProvider, DefenderStateProvider>(
       builder: (context, gameState, defenderState, child) {
-        final isActivated = gameState.gold >= 10;
+        final isActivated = gameState.spirit >= 10;
 
         return Column(
           children: [
@@ -57,14 +57,14 @@ class DefenderSelectionPanelState extends State<DefenderSelectionPanel> {
                           if (isActivated)
                             {
                               defenderState.shuffleDefenders(),
-                              gameState.updateGold(-10)
+                              gameState.updateSpirit(-10)
                             }
                         },
                       ),
                       const SizedBox(width: 4),
                       DefenderCardsRow(
                         defenderState: defenderState,
-                        gold: gameState.gold,
+                        spirit: gameState.spirit,
                       ),
                     ]),
                     const SizedBox(height: 10),
@@ -124,12 +124,12 @@ class RerollButton extends StatelessWidget {
 
 class DefenderCardsRow extends StatelessWidget {
   final DefenderStateProvider defenderState;
-  final int gold;
+  final int spirit;
 
   const DefenderCardsRow({
     super.key,
     required this.defenderState,
-    required this.gold,
+    required this.spirit,
   });
 
   @override
@@ -140,7 +140,7 @@ class DefenderCardsRow extends StatelessWidget {
         final defender = defenderState.availableDefenders[index];
         final defenderInfo =
             DefenderInfo.getInfos().firstWhere((i) => i.type == defender.type);
-        final isActivated = gold >= defenderInfo.cost;
+        final isActivated = spirit >= defenderInfo.cost;
         final isSelected = defenderState.selectedDefender == defender &&
             defenderState.selectedDefenderIndex == index;
 

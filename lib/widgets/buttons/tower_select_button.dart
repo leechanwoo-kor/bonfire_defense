@@ -58,9 +58,9 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   void handleSameButtonTap(TowerSelectionButton tappedButton) {
     final gameState = gameRef.context.read<GameStateProvider>();
 
-    if (gameState.gold >= tappedButton.towerInfo.cost) {
+    if (gameState.spirit >= tappedButton.towerInfo.cost) {
       addTower(tappedButton.towerInfo);
-      gameState.updateGold(-tappedButton.towerInfo.cost);
+      gameState.updateSpirit(-tappedButton.towerInfo.cost);
       transparentTower?.removeFromParent();
       transparentTower?.removeRangeIndicator();
       transparentTower = null;
@@ -70,7 +70,7 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
       selectedInfoWidget = null;
       removeButtons();
     } else {
-      print('Not enough gold to add tower');
+      print('Not enough spirit to add tower');
     }
   }
 

@@ -61,7 +61,9 @@ class DefenderManager {
 
   static void sellDefender(Defender defender) {
     int refundAmount = DefenderInfo.getInfo(defender.type).cost ~/ 2;
-    defender.gameRef.context.read<GameStateProvider>().updateGold(refundAmount);
+    defender.gameRef.context
+        .read<GameStateProvider>()
+        .updateSpirit(refundAmount);
     defender.removeFromParent();
     Navigator.pop(defender.gameRef.context);
   }
@@ -86,7 +88,7 @@ class DefenderManager {
 
       // 머지 유닛 생성
       Vector2 mergePosition = defender.position.clone();
-      defender.gameRef.context.read<GameStateProvider>().updateGold(-50);
+      defender.gameRef.context.read<GameStateProvider>().updateSpirit(-50);
       createUpgradedDefender(mergePosition, defender);
     }
     Navigator.pop(defender.gameRef.context);

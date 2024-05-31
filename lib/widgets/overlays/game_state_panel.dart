@@ -53,8 +53,8 @@ class GameStatePanel extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Selector<GameStateProvider, int>(
-                  selector: (_, state) => state.gold,
-                  builder: (context, gold, __) => Row(
+                  selector: (_, state) => state.spirit,
+                  builder: (context, spirit, __) => Row(
                     children: [
                       const Icon(
                         Icons.price_change,
@@ -63,7 +63,7 @@ class GameStatePanel extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        ': $gold',
+                        ': $spirit',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,

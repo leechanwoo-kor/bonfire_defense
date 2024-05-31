@@ -35,7 +35,7 @@ class Peon extends Defender {
 
     hitsCount++;
     if (hitsCount % 5 == 0) {
-      gameRef.context.read<GameStateProvider>().updateGold(1);
+      gameRef.context.read<GameStateProvider>().updateSpirit(1);
     }
   }
 }

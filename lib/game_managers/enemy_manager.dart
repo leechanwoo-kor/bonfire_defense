@@ -86,6 +86,6 @@ class EnemyManager {
 
   void death(SimpleEnemy enemy) {
     state.updateCount(-1);
-    state.updateGold(3);
+    state.updateSpirit(3);
   }
 }

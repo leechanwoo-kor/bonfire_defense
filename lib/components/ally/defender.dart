@@ -93,7 +93,7 @@ abstract class Defender extends SimpleAlly with TapGesture {
         final defenderInfo = DefenderInfo.getInfo(type);
         bool canMerge =
             (gameRef.context.read<DefenderStateProvider>().canMerge(type)) &&
-                (gameRef.context.read<GameStateProvider>().gold >= 50) &&
+                (gameRef.context.read<GameStateProvider>().spirit >= 50) &&
                 (defenderInfo.type != DefenderType.test); // TODO test 코드 제거
         return DefenderInfoDialog(
           defender: this,

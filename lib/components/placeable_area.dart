@@ -45,9 +45,9 @@ class PlaceableArea extends GameDecoration with TapGesture {
     final info = infos.firstWhere((info) => info.type == defender.type);
 
     if (index != null && isPlaceable()) {
-      if (gameState.gold >= info.cost) {
+      if (gameState.spirit >= info.cost) {
         controller.addDefender(info, position);
-        gameState.updateGold(-info.cost);
+        gameState.updateSpirit(-info.cost);
         state.replaceDefenderAfterPlacement(index); // 선택된 카드의 인덱스로 교체
         state.setSelectedDefender(null);
       }
