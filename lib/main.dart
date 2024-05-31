@@ -4,7 +4,9 @@ import 'package:bonfire_defense/provider/enemy_state_provider.dart';
 import 'package:bonfire_defense/provider/game_config_provider.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
 import 'package:bonfire_defense/provider/overlay_provider.dart';
-import 'package:bonfire_defense/routes.dart';
+import 'package:bonfire_defense/screens/about_screen.dart';
+import 'package:bonfire_defense/screens/game.dart';
+import 'package:bonfire_defense/screens/splash_screen.dart';
 import 'package:bonfire_defense/utils/sounds.dart';
 import 'package:bonfire_defense/utils/stages.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -53,7 +55,11 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialRoute: '/',
-      routes: AppRoutes.defineRoutes(),
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/about': (context) => const AboutScreen(),
+        '/game': (context) => const BonfireDefense(),
+      },
       builder: (context, child) {
         return LayoutBuilder(
           builder: (context, constraints) {
