@@ -2,10 +2,13 @@ import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/utils/tower_info.dart';
 import 'package:flutter/material.dart';
 
+enum ButtonType { addTower, upgrade, sell }
+
 class BaseButton extends GameDecoration with TapGesture {
   final IconData icon;
   final void Function(BaseButton) onTapCallback;
   final TowerInfo towerInfo;
+  final ButtonType buttonType;
   bool isTapped = false;
   bool isSelected = false;
 
@@ -15,6 +18,7 @@ class BaseButton extends GameDecoration with TapGesture {
     required this.onTapCallback,
     required this.towerInfo,
     required super.size,
+    required this.buttonType,
   });
 
   @override

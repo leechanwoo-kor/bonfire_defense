@@ -25,19 +25,23 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
       createButton(
           offset: Vector2(-14.14, -14.14),
           icon: Icons.whatshot,
-          towerType: TowerType.spirit),
+          towerType: TowerType.spirit,
+          buttonType: ButtonType.addTower),
       createButton(
           offset: Vector2(14.14, -14.14),
           icon: Icons.arrow_forward,
-          towerType: TowerType.archer),
+          towerType: TowerType.archer,
+          buttonType: ButtonType.addTower),
       createButton(
           offset: Vector2(-14.14, 14.14),
           icon: Icons.auto_fix_high,
-          towerType: TowerType.mage),
+          towerType: TowerType.mage,
+          buttonType: ButtonType.addTower),
       createButton(
           offset: Vector2(14.14, 14.14),
           icon: Icons.sports,
-          towerType: TowerType.dwarf),
+          towerType: TowerType.dwarf,
+          buttonType: ButtonType.addTower),
     ]);
   }
 
@@ -45,12 +49,14 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     required Vector2 offset,
     required IconData icon,
     required TowerType towerType,
+    required ButtonType buttonType,
   }) {
     return TowerSelectionButton(
       position: position + offset,
       icon: icon,
       onTapCallback: onButtonTap,
       towerInfo: TowerInfo.getInfo(towerType),
+      buttonType: buttonType,
     );
   }
 
@@ -139,12 +145,13 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
 }
 
 class TowerSelectionButton extends BaseButton {
-  TowerSelectionButton({
-    required super.position,
-    required super.icon,
-    required super.onTapCallback,
-    required super.towerInfo,
-  }) : super(
+  TowerSelectionButton(
+      {required super.position,
+      required super.icon,
+      required super.onTapCallback,
+      required super.towerInfo,
+      required super.buttonType})
+      : super(
           size: Vector2.all(16),
         );
 }
