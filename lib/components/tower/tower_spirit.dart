@@ -14,7 +14,7 @@ class TowerSpirit extends Tower {
 
   @override
   void executeAttack(List<Enemy> enemies) {
-    launchProjectile(enemies);
+    launchProjectile([enemies.first]);
     // final enemyDirection = getComponentDirectionFromMe(enemies.first);
     // animation?.playOnceOther(
     //   'attack-range-${enemyDirection.name}',
