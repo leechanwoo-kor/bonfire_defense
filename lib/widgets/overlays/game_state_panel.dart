@@ -37,9 +37,9 @@ class GameStatePanel extends StatelessWidget {
                       Text(
                         ': $life',
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Catholicon'),
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
@@ -65,9 +65,9 @@ class GameStatePanel extends StatelessWidget {
                       Text(
                         ': $spirit',
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Catholicon'),
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
@@ -99,9 +99,9 @@ class GameStatePanel extends StatelessWidget {
                   Text(
                     'Count: $count',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: 'Catholicon'),
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
