@@ -19,7 +19,7 @@ class MenuScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Bonfire Defense',
+              'City of Invasion',
               style: TextStyle(
                 fontFamily: 'Catholicon',
                 fontSize: 48,

@@ -21,7 +21,7 @@ class SplashScreenState extends State<SplashScreen>
       vsync: this,
     );
 
-    _animation = IntTween(begin: 0, end: 'Bonfire Defense'.length)
+    _animation = IntTween(begin: 0, end: 'City of Invasion'.length)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
 
     _controller.forward();
@@ -44,7 +44,7 @@ class SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    String fullText = 'Bonfire Defense';
+    String fullText = 'City of Invasion';
     return Scaffold(
       backgroundColor: const Color(0xff1b1b1b),
       body: Center(
