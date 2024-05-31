@@ -24,4 +24,4 @@ enum EnemyType { orc, skeleton }
 
 enum DefenderType { arch, knight, lancer, orcArcher, orcWarrior, test, peon }
 
-enum TowerType { archer, barrack, dwarf, mage }
+enum TowerType { spirit, archer, dwarf, mage }

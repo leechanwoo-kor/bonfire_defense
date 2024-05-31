@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire_defense/components/tower/tower.dart';
 import 'package:bonfire_defense/components/tower/tower_archer.dart';
-import 'package:bonfire_defense/components/tower/tower_barrack.dart';
+import 'package:bonfire_defense/components/tower/tower_spirit.dart';
 import 'package:bonfire_defense/components/tower/tower_dwarf.dart';
 import 'package:bonfire_defense/components/tower/tower_mage.dart';
 import 'package:bonfire_defense/provider/game_state_provider.dart';
@@ -24,8 +24,8 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
     initializeButtons([
       createButton(
           offset: Vector2(-14.14, -14.14),
-          icon: Icons.account_balance,
-          towerType: TowerType.barrack),
+          icon: Icons.whatshot,
+          towerType: TowerType.spirit),
       createButton(
           offset: Vector2(14.14, -14.14),
           icon: Icons.arrow_forward,
@@ -77,8 +77,8 @@ class TowerSelectionPanel extends BasePanel<TowerSelectionButton> {
   void addTower(TowerInfo towerInfo) {
     Tower tower;
     switch (towerInfo.type) {
-      case TowerType.barrack:
-        tower = TowerBarrack(position.clone());
+      case TowerType.spirit:
+        tower = TowerSpirit(position.clone());
         break;
       case TowerType.archer:
         tower = TowerArcher(position.clone());

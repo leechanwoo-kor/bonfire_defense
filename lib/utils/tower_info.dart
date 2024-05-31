@@ -23,16 +23,16 @@ class TowerInfo {
 
   static TowerInfo getInfo(TowerType type) {
     switch (type) {
-      case TowerType.barrack:
+      case TowerType.spirit:
         return TowerInfo(
-          name: 'Barrack Tower',
-          imagePath: 'tower/tower_barrack.png',
+          name: 'Spirit Tower',
+          imagePath: 'tower/tower_spirit.png',
           attackDamage: 2,
           visionRange: 16.0 * 5,
           attackInterval: 1250,
           cost: 70,
-          type: TowerType.barrack,
-          attackType: 'Melee',
+          type: TowerType.spirit,
+          attackType: 'Spirit',
         );
       case TowerType.archer:
         return TowerInfo(
